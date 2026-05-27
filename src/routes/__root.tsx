@@ -71,8 +71,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-// 💡 Modification ici : Utilisation de .create() pour effacer le conflit syntaxique Babel
-export const Route = createRootRouteWithContext<MyRouterContext>().create({
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -111,7 +110,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>().create({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         <HeadContent />
       </head>
