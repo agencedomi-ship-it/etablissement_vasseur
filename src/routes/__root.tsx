@@ -79,37 +79,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Artisan serrurier français. Intervient en 20 minutes. Devis annoncé, paiement après travaux." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-   // 1. Ajoutez cet import tout en haut du fichier avec vos autres imports
-import faviconUrl from "../../public/favicon.png?url"; 
-
-// ... le reste de votre code reste identique
-
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      // ... vos métadonnées
     ],
     links: [
       { rel: "preconnect", href: "https://googleapis.com" },
       { rel: "preconnect", href: "https://gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" },
-      { rel: "stylesheet", href: appCss },
-      
-      // 2. Utilisez la variable dynamique générée par Vite ici :
+      {
+        rel: "stylesheet",
+        href: "https://googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap",
+      },
+      {
+        rel: "stylesheet",
+        href: appCss,
+      },
       {
         rel: "icon",
         type: "image/png",
-        href: faviconUrl, 
+        href: "/favicon.png",
       },
-    ],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
-});
-
-
     ],
   }),
   shellComponent: RootShell,
