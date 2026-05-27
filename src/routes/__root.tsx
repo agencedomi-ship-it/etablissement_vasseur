@@ -91,11 +91,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-          {
+              links: [
+      { rel: "preconnect", href: "https://googleapis.com" },
+      { rel: "preconnect", href: "https://gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap",
+      },
+      {
+        rel: "stylesheet",
+        href: appCss,
+      },
+      // 💡 CHANGEZ LE CHEMIN PAR UN LIEN RELATIF AVEC PARAMÈTRE DE CACHE
+      {
         rel: "icon",
         type: "image/png",
-        href: "/favicon.png?v=2", // 💡 Le ?v=2 force le rechargement immédiat
+        href: "./favicon.png?v=3", 
       },
+    ],
+
     ],
   }),
   shellComponent: RootShell,
