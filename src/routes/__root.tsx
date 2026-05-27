@@ -10,6 +10,11 @@ import {
 
 import appCss from "../styles.css?url";
 
+// 💡 Extraction du type pour éviter le bug du compilateur TanStack
+interface MyRouterContext {
+  queryClient: QueryClient;
+}
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -67,15 +72,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ets Serrurier Vasseur — Devis annoncé, prix tenu | Intervient en 20 mn" },
+      { title: "Ets Serrurier Vasseur — Devis announced, prix tenu | Intervient en 20 mn" },
       { name: "description", content: "Artisan serrurier français depuis 2009. Intervient chez vous en 20 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances." },
       { name: "theme-color", content: "#1A2F4E" },
-      { property: "og:title", content: "Ets Serrurier Vasseur — Devis annoncé, prix tenu" },
+      { property: "og:title", content: "Ets Serrurier Vasseur — Devis announced, prix tenu" },
       { property: "og:description", content: "Artisan serrurier français. Intervient en 20 minutes. Devis annoncé, paiement après travaux." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
