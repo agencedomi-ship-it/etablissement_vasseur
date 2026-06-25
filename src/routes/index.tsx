@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { type FormEvent, useId, useState } from "react";
 import { useDynamicH1, useGeoDept } from "@/hooks/use-dynamic-content";
 
 function pushGtmEvent(event: string, data: Record<string, unknown> = {}) {
@@ -904,85 +904,235 @@ function FaqSection() {
 
 /* ------------------------------ FORM ------------------------------ */
 function DevisForm() {
-  const [sent, setSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (isSending) return;
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const nom = String(formData.get("nom") || "").trim();
+    const tel = String(formData.get("tel") || "").trim();
+    const codepostal = String(formData.get("codepostal") || "").trim();
+    const besoin = String(formData.get("besoin") || "").trim();
+    const messageClient = String(formData.get("message") || "").trim();
+
+    if (!nom || !tel || !codepostal || !besoin) {
+      setErrorMessage("Merci de remplir tous les champs obligatoires.");
+      return;
+    }
+
+    setIsSending(true);
+    setErrorMessage("");
+
+    try {
+      const response = await fetch(
+        "https://mrdispatch.app.n8n.cloud/webhook/form-leads",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            site: "Ets Serrurier Vasseur",
+            nom,
+            tel,
+            codepostal,
+            ville: "",
+            message:
+              `Prestation : ${besoin}\n` +
+              (messageClient || "(aucun message)"),
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Erreur webhook n8n : ${response.status}`);
+      }
+
+      pushGtmEvent("form_submit", {
+        form_name: "devis",
+        site: "Ets Serrurier Vasseur",
+      });
+
+      window.location.assign("/merci");
+    } catch (error) {
+      console.error("Erreur lors de l'envoi du formulaire :", error);
+      pushGtmEvent("form_error", {
+        form_name: "devis",
+        site: "Ets Serrurier Vasseur",
+      });
+      setErrorMessage(
+        "L'envoi n'a pas fonctionné. Merci de réessayer ou de nous appeler.",
+      );
+      setIsSending(false);
+    }
+  }
+
   return (
     <section id="devis" className="relative py-16 md:py-24 bg-navy text-cream scroll-mt-20 overflow-hidden">
       {/* Subtle ornament background */}
-      <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
-           style={{ backgroundImage: "radial-gradient(circle at 20% 20%, #C9A04E 0, transparent 40%), radial-gradient(circle at 80% 80%, #C9A04E 0, transparent 40%)" }} />
+      <div
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, #C9A04E 0, transparent 40%), radial-gradient(circle at 80% 80%, #C9A04E 0, transparent 40%)",
+        }}
+      />
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
+
       <div className="relative max-w-2xl mx-auto container-px">
         <div className="text-center mb-8">
-          <p className="text-[11px] sm:text-xs tracking-[0.34em] uppercase text-gold font-semibold mb-3">Contact</p>
-          <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">Demandez votre devis gratuit</h2>
+          <p className="text-[11px] sm:text-xs tracking-[0.34em] uppercase text-gold font-semibold mb-3">
+            Contact
+          </p>
+          <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">
+            Demandez votre devis gratuit
+          </h2>
           <Ornament />
-          <p className="text-cream/80 mt-2">On vous rappelle sous 15 minutes avec un tarif annoncé.</p>
+          <p className="text-cream/80 mt-2">
+            On vous rappelle sous 15 minutes avec un tarif annoncé.
+          </p>
         </div>
 
-        {!sent ? (
-          <form
-            className="bg-cream text-ink rounded-2xl p-6 md:p-8 shadow-card-hover space-y-4 corner-ornament"
-            noValidate
-            onSubmit={(e) => {
-              e.preventDefault();
-              pushGtmEvent("form_submit", { form_name: "devis" });
-              setSent(true);
-            }}
-          >
-            <Field id="f-nom" label="Nom" required type="text" autoComplete="name" />
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field id="f-tel" label="Téléphone" required type="tel" autoComplete="tel" placeholder="06 12 34 56 78" />
-              <Field id="f-cp" label="Code postal" required type="text" inputMode="numeric" autoComplete="postal-code" placeholder="75001" />
-            </div>
-            <div>
-              <label htmlFor="f-besoin" className="block text-sm font-semibold text-navy mb-1.5">
-                Type de besoin <span className="text-brick">*</span>
-              </label>
-              <select id="f-besoin" required defaultValue=""
-                      className="w-full border border-parchment rounded-md px-4 py-3 bg-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/30 transition">
-                <option value="" disabled>— Choisir —</option>
-                <option value="ouverture">Ouverture porte</option>
-                <option value="serrure">Changement serrure</option>
-                <option value="cylindre">Cylindre</option>
-                <option value="blindage">Blindage</option>
-                <option value="coffre">Coffre</option>
-                <option value="autre">Autre</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="f-msg" className="block text-sm font-semibold text-navy mb-1.5">
-                Message <span className="text-ink/50 font-normal">(optionnel)</span>
-              </label>
-              <textarea id="f-msg" rows={3}
-                        className="w-full border border-parchment rounded-md px-4 py-3 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/30 resize-y transition" />
-            </div>
-            <button type="submit" className="btn-primary w-full !py-4 text-base md:text-lg uppercase tracking-wide">
-              Recevoir mon devis sous 15 min
-            </button>
-            <p className="text-xs text-ink/60 text-center">En envoyant ce formulaire, vous acceptez d'être recontacté par téléphone.</p>
-          </form>
-        ) : (
-          <div className="bg-validate text-white rounded-2xl p-8 text-center shadow-card-hover">
-            <I.check size={48} className="mx-auto mb-3" />
-            <p className="font-display text-2xl font-bold">Merci, nous vous rappelons sous 15 minutes.</p>
+        <form
+          className="bg-cream text-ink rounded-2xl p-6 md:p-8 shadow-card-hover space-y-4 corner-ornament"
+          onSubmit={handleSubmit}
+        >
+          <Field
+            id="f-nom"
+            name="nom"
+            label="Nom"
+            required
+            type="text"
+            autoComplete="name"
+          />
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              id="f-tel"
+              name="tel"
+              label="Téléphone"
+              required
+              type="tel"
+              autoComplete="tel"
+              placeholder="06 12 34 56 78"
+            />
+
+            <Field
+              id="f-cp"
+              name="codepostal"
+              label="Code postal"
+              required
+              type="text"
+              inputMode="numeric"
+              autoComplete="postal-code"
+              placeholder="75001"
+            />
           </div>
-        )}
+
+          <div>
+            <label
+              htmlFor="f-besoin"
+              className="block text-sm font-semibold text-navy mb-1.5"
+            >
+              Type de besoin <span className="text-brick">*</span>
+            </label>
+
+            <select
+              id="f-besoin"
+              name="besoin"
+              required
+              defaultValue=""
+              className="w-full border border-parchment rounded-md px-4 py-3 bg-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/30 transition"
+            >
+              <option value="" disabled>
+                — Choisir —
+              </option>
+              <option value="Ouverture de porte">Ouverture de porte</option>
+              <option value="Changement de serrure">
+                Changement de serrure
+              </option>
+              <option value="Cylindre">Cylindre</option>
+              <option value="Blindage">Blindage</option>
+              <option value="Coffre-fort">Coffre-fort</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="f-msg"
+              className="block text-sm font-semibold text-navy mb-1.5"
+            >
+              Message{" "}
+              <span className="text-ink/50 font-normal">(optionnel)</span>
+            </label>
+
+            <textarea
+              id="f-msg"
+              name="message"
+              rows={3}
+              className="w-full border border-parchment rounded-md px-4 py-3 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/30 resize-y transition"
+            />
+          </div>
+
+          {errorMessage && (
+            <p
+              role="alert"
+              className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"
+            >
+              {errorMessage}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSending}
+            className="btn-primary w-full !py-4 text-base md:text-lg uppercase tracking-wide disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSending
+              ? "Envoi en cours…"
+              : "Recevoir mon devis sous 15 min"}
+          </button>
+
+          <p className="text-xs text-ink/60 text-center">
+            En envoyant ce formulaire, vous acceptez d'être recontacté par
+            téléphone.
+          </p>
+        </form>
       </div>
     </section>
   );
 }
 
 function Field(props: {
-  id: string; label: string; required?: boolean; type: string;
-  autoComplete?: string; placeholder?: string; inputMode?: "numeric" | "text" | "tel";
+  id: string;
+  name: string;
+  label: string;
+  required?: boolean;
+  type: string;
+  autoComplete?: string;
+  placeholder?: string;
+  inputMode?: "numeric" | "text" | "tel";
 }) {
   return (
     <div>
-      <label htmlFor={props.id} className="block text-sm font-semibold text-navy mb-1.5">
-        {props.label} {props.required && <span className="text-brick">*</span>}
+      <label
+        htmlFor={props.id}
+        className="block text-sm font-semibold text-navy mb-1.5"
+      >
+        {props.label}{" "}
+        {props.required && <span className="text-brick">*</span>}
       </label>
+
       <input
         id={props.id}
+        name={props.name}
         type={props.type}
         required={props.required}
         autoComplete={props.autoComplete}
