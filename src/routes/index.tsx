@@ -2,6 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { useDynamicH1, useGeoDept } from "@/hooks/use-dynamic-content";
 
+function pushGtmEvent(event: string, data: Record<string, unknown> = {}) {
+  if (typeof window === "undefined") return;
+  const w = window as Window & { dataLayer?: Array<Record<string, unknown>> };
+  w.dataLayer = w.dataLayer || [];
+  w.dataLayer.push({ event, ...data });
+}
+
+
 export const Route = createFileRoute("/")({
   component: HomePage,
   head: () => ({
@@ -177,7 +185,7 @@ function Ornament() {
 /* ------------------------------ PHONE BUTTON ------------------------------ */
 function PhoneButton({ small = false }: { small?: boolean }) {
   return (
-    <a href="tel:+33970708211" className={`inline-flex items-center justify-center gap-3 bg-gold hover:bg-[#B8902F] text-navy font-bold rounded-md transition-all shadow-[0_6px_18px_rgba(201,160,78,0.35)] hover:-translate-y-0.5 ${small ? "px-4 py-2.5" : "px-6 py-3.5"}`}>
+    <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className={`inline-flex items-center justify-center gap-3 bg-gold hover:bg-[#B8902F] text-navy font-bold rounded-md transition-all shadow-[0_6px_18px_rgba(201,160,78,0.35)] hover:-translate-y-0.5 ${small ? "px-4 py-2.5" : "px-6 py-3.5"}`}>
       <I.phone />
       <span className="text-left leading-tight">
         <span className="block text-base md:text-lg">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
@@ -224,7 +232,7 @@ function Header() {
           <span className="font-display text-base text-cream font-bold leading-none sm:hidden">Ets Vasseur</span>
         </a>
         <div className="flex items-center gap-2 md:gap-4">
-          <a href="tel:+33970708211" className="flex items-center gap-1.5 md:gap-2 text-cream font-semibold hover:text-gold transition-colors">
+          <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="flex items-center gap-1.5 md:gap-2 text-cream font-semibold hover:text-gold transition-colors">
             <I.phone size={18} />
             <span className="leading-tight text-left">
               <span className="block text-sm md:text-lg whitespace-nowrap">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
@@ -313,7 +321,7 @@ function Hero() {
             Artisan disponible — 7j/7, 8h à 22h
           </p>
           <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
-            <a href="tel:+33970708211" className="btn-primary !py-2.5 !px-2 text-xs uppercase tracking-wide leading-tight flex-col">
+            <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="btn-primary !py-2.5 !px-2 text-xs uppercase tracking-wide leading-tight flex-col">
               <I.phone size={16} />
               <span className="block">09 70 70 82 11</span>
               <span className="block text-[9px]">Appel gratuit</span>
@@ -915,7 +923,11 @@ function DevisForm() {
           <form
             className="bg-cream text-ink rounded-2xl p-6 md:p-8 shadow-card-hover space-y-4 corner-ornament"
             noValidate
-            onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              pushGtmEvent("form_submit", { form_name: "devis" });
+              setSent(true);
+            }}
           >
             <Field id="f-nom" label="Nom" required type="text" autoComplete="name" />
             <div className="grid sm:grid-cols-2 gap-4">
@@ -1004,7 +1016,7 @@ function Footer() {
           <div>
             <p className="font-semibold text-gold mb-3 uppercase tracking-wider text-xs">Contact</p>
             <ul className="space-y-2 text-sm">
-              <li><a href="tel:+33970708211" className="hover:text-gold transition-colors font-semibold text-base">09 70 70 82 11</a></li>
+              <li><a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="hover:text-gold transition-colors font-semibold text-base">09 70 70 82 11</a></li>
               <li className="text-cream/70">Disponible 7j/7 — 8h à 22h</li>
             </ul>
           </div>
@@ -1025,7 +1037,7 @@ function Footer() {
 function MobileStickyCta() {
   return (
     <div className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-cream/95 backdrop-blur border-t border-parchment p-3 shadow-[0_-4px_14px_rgba(0,0,0,0.08)] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-      <a href="tel:+33970708211" className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-[#B8902F] text-navy font-bold px-3 py-2.5 rounded-md transition-colors whitespace-nowrap min-w-0">
+      <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-[#B8902F] text-navy font-bold px-3 py-2.5 rounded-md transition-colors whitespace-nowrap min-w-0">
         <I.phone size={18} />
         <span className="leading-tight text-left min-w-0">
           <span className="block text-[15px] tracking-tight whitespace-nowrap">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
@@ -1035,4 +1047,3 @@ function MobileStickyCta() {
     </div>
   );
 }
-
