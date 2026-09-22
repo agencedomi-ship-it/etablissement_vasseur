@@ -20,11 +20,12 @@ Règles (aucune supposition) :
     de la région : écartée (doute).
   - Tout ce qui n'est pas certain est écarté : le site garde alors son contenu générique.
 
-Usage :
-  python3 outils/table_lieux_google.py --geotargets geotargets-AAAA-MM-JJ.csv
-  (options : --communes communes.json --geo-data src/lib/geo-data.ts --sortie src/lib/google-lieux-fr.json)
+Usage (depuis le dossier du site) :
+  python3 outils/table_lieux_google.py
+  → télécharge le dernier fichier Geo Targets de Google et les communes, puis écrit la table.
+  (options : --geotargets fichier.csv pour utiliser un CSV déjà téléchargé, --sortie autre-fichier.json)
 """
-import argparse, collections, csv, json, os, re, time, unicodedata, urllib.parse, urllib.request
+import argparse, collections, csv, io, json, os, re, tempfile, time, unicodedata, urllib.parse, urllib.request, zipfile
 import concurrent.futures as cf
 
 REGIONS = {"Ile-de-France": "11", "Centre-Val de Loire": "24", "Bourgogne-Franche-Comte": "27", "Burgundy": "27",
@@ -95,16 +96,41 @@ def adresse(q, limit=10):
     return None
 
 
+PAGE_GEOTARGETS = "https://developers.google.com/google-ads/api/data/geotargets"
+
+
+def telecharger_geotargets(dossier):
+    """Télécharge le fichier Geo Targets le plus récent publié par Google et renvoie le chemin du CSV."""
+    page = urllib.request.urlopen(PAGE_GEOTARGETS, timeout=60).read().decode("utf-8", "ignore")
+    liens = sorted(set(re.findall(r'/static/google-ads/api/data/geo/geotargets-(\d{4}-\d{2}-\d{2})\.csv\.zip', page)))
+    if not liens:
+        raise SystemExit("Lien du fichier Geo Targets introuvable sur " + PAGE_GEOTARGETS)
+    date = liens[-1]
+    url = f"https://developers.google.com/static/google-ads/api/data/geo/geotargets-{date}.csv.zip"
+    print(f"Téléchargement du fichier Google du {date}…")
+    with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(url, timeout=300).read())) as z:
+        nom = next(n for n in z.namelist() if n.endswith(".csv"))
+        chemin = os.path.join(dossier, os.path.basename(nom))
+        with open(chemin, "wb") as f:
+            f.write(z.read(nom))
+    return chemin
+
+
 def main():
     a = argparse.ArgumentParser()
-    a.add_argument("--geotargets", required=True)
-    a.add_argument("--communes", default="communes.json")
+    a.add_argument("--geotargets", help="CSV Geo Targets déjà téléchargé (sinon : dernier fichier Google)")
+    a.add_argument("--communes", help="JSON des communes déjà téléchargé (sinon : téléchargé)")
     a.add_argument("--geo-data", default="src/lib/geo-data.ts")
     a.add_argument("--sortie", default="src/lib/google-lieux-fr.json")
     args = a.parse_args()
-
-    if not os.path.exists(args.communes):
+    temp = tempfile.mkdtemp(prefix="geotargets-")
+    if not args.geotargets:
+        args.geotargets = telecharger_geotargets(temp)
+    if not args.communes or not os.path.exists(args.communes):
+        args.communes = args.communes or os.path.join(temp, "communes.json")
+        print("Téléchargement des communes officielles…")
         urllib.request.urlretrieve("https://geo.api.gouv.fr/communes?fields=nom,codeDepartement,codeRegion,population,codesPostaux&format=json", args.communes)
+    print("Génération de la table (environ 10 minutes)…")
     communes_liste = json.load(open(args.communes, encoding="utf-8"))
     communes = collections.defaultdict(list)          # (nom normalisé, région) → [(population, dept, nom officiel)]
     par_cp = collections.defaultdict(set)             # code postal → {(dept, nom officiel)}

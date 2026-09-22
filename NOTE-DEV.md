@@ -92,11 +92,13 @@ de département.
    - arrondissements municipaux de Paris / Lyon / Marseille → 75 / 69 / 13.
 3. Tout cas douteux est écarté : l'ID n'est pas dans la table et le site reste générique.
 
-**Mettre la table à jour** (Google publie un nouveau CSV quelques fois par an) :
-1. Télécharger le dernier CSV : https://developers.google.com/google-ads/api/data/geotargets
-2. `python3 outils/table_lieux_google.py --geotargets geotargets-AAAA-MM-JJ.csv --communes /tmp/communes.json`
-   (le fichier des communes est téléchargé automatiquement s'il n'existe pas ; compter ~10 min).
-3. Vérifier le résumé affiché, puis `npm run build` et déployer.
+**Mettre la table à jour** (Google publie un nouveau fichier quelques fois par an), depuis le dossier du site :
+```bash
+cd ~/etablissement-vasseur
+python3 outils/table_lieux_google.py
+```
+Le script télécharge lui-même le dernier fichier Google et les communes officielles (~10 min), puis réécrit
+`src/lib/google-lieux-fr.json`. Vérifier le résumé affiché, puis `npm run build && npx wrangler deploy`.
 
 **Afficher le département ou la ville** dans n'importe quelle page : marquer l'élément, le texte d'origine
 sert de contenu générique.
