@@ -1,11 +1,11 @@
 // Hooks de personnalisation dynamique de la landing :
 // - useKeyword() lit le mot-clé Google Ads dans ?kw= (ligne dédiée sous le sous-titre de l'en-tête)
 // - useDynamicH1() renvoie le H1 (département Google Ads ou marque)
-// - useGeoDept() renvoie le département Google Ads (?loc=, voir lib/geo-ads) avec ses voisins et
-//   un pool de villes pour les avis. Sans lieu Google Ads certain : contenu générique.
+// - useGeoDept() renvoie le département Google Ads (?loc=, voir lib/geo-ads) avec ses voisins.
+//   Sans lieu Google Ads certain : contenu générique.
 
 import { useEffect, useMemo, useState } from "react";
-import { FR_DEPT, DEPT_ADJ, DEPT_CITIES, DEPT_CITY } from "@/lib/geo-data";
+import { FR_DEPT, DEPT_ADJ, DEPT_CITY } from "@/lib/geo-data";
 import { useLieuGoogleAds } from "@/lib/geo-ads";
 
 const FALLBACK_H1 = "Serrurier Vantory";
@@ -52,8 +52,6 @@ export type GeoData = {
   neighborCities: string | null;
   /** Texte court pour le footer : "tout le 07 — Ardèche et les départements limitrophes" */
   footerLabel: string | null;
-  /** Pool de villes (dept visiteur + voisins) — utilisé pour réécrire les avis */
-  cityPool: string[];
 };
 
 const EMPTY: GeoData = {
@@ -63,7 +61,6 @@ const EMPTY: GeoData = {
   neighborsLabel: null,
   neighborCities: null,
   footerLabel: null,
-  cityPool: [],
 };
 
 function buildGeo(code: string | null | undefined): GeoData {
@@ -99,13 +96,8 @@ function buildGeo(code: string | null | undefined): GeoData {
     ? `tout le ${code} — ${name} et les départements limitrophes`
     : `tout le ${code} — ${name}`;
 
-  // Pool de villes pour réécrire les avis
-  const cityPool: string[] = [];
-  [code, ...adjList].forEach((c) => {
-    if (DEPT_CITIES[c]) cityPool.push(...DEPT_CITIES[c]);
-  });
 
-  return { deptCode: code, deptName: name, deptLabel: `${code} — ${name}`, neighborsLabel, neighborCities, footerLabel, cityPool };
+  return { deptCode: code, deptName: name, deptLabel: `${code} — ${name}`, neighborsLabel, neighborCities, footerLabel };
 }
 
 /** Département du visiteur d'après Google Ads (?loc=) ; EMPTY tant qu'il n'est pas connu avec certitude. */

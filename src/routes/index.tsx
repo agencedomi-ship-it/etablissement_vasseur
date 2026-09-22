@@ -732,21 +732,20 @@ function AssuranceSection() {
 
 /* ------------------------------ REVIEWS ------------------------------ */
 const REVIEWS = [
-  ["M", "Marie L.", "Lyon", "il y a 2 semaines", "Intervention rapide et tarif annoncé au téléphone. Pas de mauvaise surprise. Très satisfaite de l'artisan, très professionnel.", "#C8527A", "#fff"],
-  ["T", "Thomas D.", "Bordeaux", "il y a 1 mois", "Ma serrure était bloquée un dimanche soir, ils sont venus en 25 minutes. Travail propre, devis respecté. Je recommande.", "#2D7A3A", "#fff"],
-  ["S", "Sophie M.", "Lille", "il y a 3 semaines", "Devis clair, paiement après l'intervention. Tout est expliqué. Artisan honnête, ça change.", "#1A2F4E", "#fff"],
-  ["P", "Pierre R.", "Toulouse", "il y a 5 jours", "Effraction sur ma porte, intervention rapide et constat fourni pour mon assurance. Tout a été pris en charge sans problème.", "#9B2A2A", "#fff"],
-  ["C", "Camille V.", "Marseille", "il y a 4 jours", "Serrure cassée un samedi soir, dépanné en moins d'une demi-heure. Tarif respecté à l'euro près. Très bon service.", "#5F7A8C", "#fff"],
-  ["J", "Julien R.", "Nantes", "il y a 1 semaine", "Intervention nickel, l'artisan a pris le temps d'expliquer ce qu'il faisait. Devis tenu, paiement après. Rien à dire.", "#F2B73B", "#1A2F4E"],
-  ["M", "Mathilde K.", "Strasbourg", "il y a 2 semaines", "Cylindre haute sécurité installé en 40 minutes. Travail propre, conseils utiles pour l'entretien. Je recommande sans hésiter.", "#C8527A", "#fff"],
-  ["A", "Antoine D.", "Rennes", "il y a 6 jours", "Porte claquée à 22h, ils sont venus vite, dépanné sans casser. Tarif annoncé respecté. Sérieux.", "#2D7A3A", "#fff"],
-  ["É", "Émilie S.", "Montpellier", "il y a 3 semaines", "Mon assurance a pris en charge l'intervention après effraction. Constat fourni clair, pas de stress. Merci.", "#1A2F4E", "#fff"],
-  ["N", "Nathalie B.", "Nice", "il y a 1 semaine", "Très bonne expérience. Devis signé sur place, prix exact. Aucun frais surprise.", "#9B2A2A", "#fff"],
-  ["L", "Léa T.", "Besançon", "il y a 4 jours", "Très bonne intervention, prix exact annoncé. Artisan professionnel, j'ai été rassurée.", "#F2B73B", "#1A2F4E"],
+  ["M", "Marie L.", "il y a 2 semaines", "Intervention rapide et tarif annoncé au téléphone. Pas de mauvaise surprise. Très satisfaite de l'artisan, très professionnel.", "#C8527A", "#fff"],
+  ["T", "Thomas D.", "il y a 1 mois", "Ma serrure était bloquée un dimanche soir, ils sont venus en 25 minutes. Travail propre, devis respecté. Je recommande.", "#2D7A3A", "#fff"],
+  ["S", "Sophie M.", "il y a 3 semaines", "Devis clair, paiement après l'intervention. Tout est expliqué. Artisan honnête, ça change.", "#1A2F4E", "#fff"],
+  ["P", "Pierre R.", "il y a 5 jours", "Effraction sur ma porte, intervention rapide et constat fourni pour mon assurance. Tout a été pris en charge sans problème.", "#9B2A2A", "#fff"],
+  ["C", "Camille V.", "il y a 4 jours", "Serrure cassée un samedi soir, dépanné en moins d'une demi-heure. Tarif respecté à l'euro près. Très bon service.", "#5F7A8C", "#fff"],
+  ["J", "Julien R.", "il y a 1 semaine", "Intervention nickel, l'artisan a pris le temps d'expliquer ce qu'il faisait. Devis tenu, paiement après. Rien à dire.", "#F2B73B", "#1A2F4E"],
+  ["M", "Mathilde K.", "il y a 2 semaines", "Cylindre haute sécurité installé en 40 minutes. Travail propre, conseils utiles pour l'entretien. Je recommande sans hésiter.", "#C8527A", "#fff"],
+  ["A", "Antoine D.", "il y a 6 jours", "Porte claquée à 22h, ils sont venus vite, dépanné sans casser. Tarif annoncé respecté. Sérieux.", "#2D7A3A", "#fff"],
+  ["É", "Émilie S.", "il y a 3 semaines", "Mon assurance a pris en charge l'intervention après effraction. Constat fourni clair, pas de stress. Merci.", "#1A2F4E", "#fff"],
+  ["N", "Nathalie B.", "il y a 1 semaine", "Très bonne expérience. Devis signé sur place, prix exact. Aucun frais surprise.", "#9B2A2A", "#fff"],
+  ["L", "Léa T.", "il y a 4 jours", "Très bonne intervention, prix exact annoncé. Artisan professionnel, j'ai été rassurée.", "#F2B73B", "#1A2F4E"],
 ] as const;
 
 function ReviewsSection() {
-  const geo = useGeoDept();
   return (
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px">
@@ -762,10 +761,7 @@ function ReviewsSection() {
 
         <div className="relative -mx-5 md:-mx-8">
           <div className="reviews-track flex gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory scroll-px-5 md:scroll-px-8 px-5 md:px-8 pb-5">
-            {REVIEWS.map(([initial, name, city, when, body, bg, fg], i) => {
-              // Si la géoloc a renvoyé un pool de villes, on remplace la ville statique
-              // par une ville du dept du visiteur (ou voisin), en cyclant sur le pool.
-              const displayCity = geo.cityPool.length > 0 ? geo.cityPool[i % geo.cityPool.length] : city;
+            {REVIEWS.map(([initial, name, when, body, bg, fg], i) => {
               return (
               <article key={i} className="snap-start shrink-0 w-72 sm:w-80 bg-[#fbf4e8] rounded-xl p-5 shadow-card border border-gold/20 flex flex-col hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
                 <div className="flex gap-0.5 mb-3" aria-label="5 étoiles">
@@ -778,10 +774,9 @@ function ReviewsSection() {
                   </div>
                   <div>
                     <p className="font-semibold text-navy text-sm leading-tight">{name}</p>
-                    <p className="text-xs text-ink/60">{displayCity}</p>
+                    <p className="text-xs text-ink/50">{when}</p>
                   </div>
                 </div>
-                <p className="text-xs text-ink/50 mb-2">{when}</p>
                 <p className="text-sm text-ink/85 leading-relaxed">{body}</p>
               </article>
               );

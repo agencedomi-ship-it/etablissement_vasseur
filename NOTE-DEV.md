@@ -48,7 +48,7 @@ src/
 ├── routeTree.gen.ts            # généré auto par TanStack Router — NE PAS modifier à la main
 ├── router.tsx, server.ts, start.ts
 public/assets/
-└── logos/[10 SVG]              # assurances + Trustpilot + Avis Vérifiés
+└── logos/[8 SVG]               # assureurs (affichés à titre indicatif)
 ```
 
 ## ⚡ Dynamiques côté client
@@ -77,8 +77,8 @@ de département.
 - `src/lib/geo-ads.ts` — côté navigateur : lecture de `?loc=`, validation, mémorisation `sessionStorage`,
   mise à jour des éléments `data-dynamic-*`, hook `useLieuGoogleAds()`.
 - `src/routes/__root.tsx` — démarre le module sur toutes les pages (`demarrerGeoAds()`).
-- `src/hooks/use-dynamic-content.ts` — `useGeoDept()` alimente la zone d'intervention, le H1, les villes
-  des avis et le pied de page à partir du même lieu.
+- `src/hooks/use-dynamic-content.ts` — `useGeoDept()` alimente la zone d'intervention, le H1 et le pied de
+  page à partir du même lieu. Les avis clients n'affichent aucune ville.
 
 **Correspondance Geo Target ID → localisation → département**
 1. Le CSV officiel Google Ads Geo Targets donne pour chaque ID : nom, type (City, Postal Code, Department,
