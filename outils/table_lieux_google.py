@@ -23,7 +23,7 @@ Règles (aucune supposition) :
 Usage (depuis le dossier du site) :
   python3 outils/table_lieux_google.py
   → télécharge le dernier fichier Geo Targets de Google et les communes, puis écrit la table.
-  (options : --geotargets fichier.csv pour utiliser un CSV déjà téléchargé, --sortie autre-fichier.json)
+  (options : --geotargets fichier.csv ou fichier.csv.zip déjà téléchargé, --sortie autre-fichier.json)
 """
 import argparse, collections, csv, io, json, os, re, tempfile, time, unicodedata, urllib.parse, urllib.request, zipfile
 import concurrent.futures as cf
@@ -116,16 +116,33 @@ def telecharger_geotargets(dossier):
     return chemin
 
 
+def preparer_geotargets(chemin, dossier):
+    """Accepte le CSV Google ou directement le .zip téléchargé ; renvoie le chemin du CSV."""
+    chemin = os.path.expanduser(chemin)
+    if not os.path.exists(chemin) and os.path.exists(chemin + ".zip"):
+        chemin += ".zip"
+    if not os.path.exists(chemin):
+        raise SystemExit(f"Fichier introuvable : {chemin}\n"
+                         "Indiquez le .csv ou le .csv.zip téléchargé chez Google, ou lancez le script sans --geotargets.")
+    if chemin.endswith(".zip"):
+        with zipfile.ZipFile(chemin) as z:
+            nom = next(n for n in z.namelist() if n.endswith(".csv"))
+            sortie = os.path.join(dossier, os.path.basename(nom))
+            with open(sortie, "wb") as f:
+                f.write(z.read(nom))
+        return sortie
+    return chemin
+
+
 def main():
     a = argparse.ArgumentParser()
-    a.add_argument("--geotargets", help="CSV Geo Targets déjà téléchargé (sinon : dernier fichier Google)")
+    a.add_argument("--geotargets", help="CSV ou .csv.zip Geo Targets déjà téléchargé (sinon : dernier fichier Google)")
     a.add_argument("--communes", help="JSON des communes déjà téléchargé (sinon : téléchargé)")
     a.add_argument("--geo-data", default="src/lib/geo-data.ts")
     a.add_argument("--sortie", default="src/lib/google-lieux-fr.json")
     args = a.parse_args()
     temp = tempfile.mkdtemp(prefix="geotargets-")
-    if not args.geotargets:
-        args.geotargets = telecharger_geotargets(temp)
+    args.geotargets = preparer_geotargets(args.geotargets, temp) if args.geotargets else telecharger_geotargets(temp)
     if not args.communes or not os.path.exists(args.communes):
         args.communes = args.communes or os.path.join(temp, "communes.json")
         print("Téléchargement des communes officielles…")
