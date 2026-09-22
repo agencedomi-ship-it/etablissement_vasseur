@@ -1,4 +1,4 @@
-# Note pour le dev — Landing Page Ets Serrurier Vasseur
+# Note pour le dev — Landing Page Serrurier Vantory
 
 ## 🛠 Stack technique
 
@@ -53,37 +53,71 @@ public/assets/
 
 ## ⚡ Dynamiques côté client
 
-### 1. H1 dynamique via param URL `?kw=...`
+### 1. Mot-clé Google Ads `?kw=...`
 
-Hook `useDynamicH1()` dans `src/hooks/use-dynamic-content.ts`.
+Hook `useKeyword()` (`src/hooks/use-dynamic-content.ts`) : lit `?kw=`, nettoie (lettres, chiffres, espaces,
+tirets, 60 caractères max, majuscule à chaque mot) et l'affiche sur une ligne dédiée sous « Un artisan près
+de chez vous ». Sans `?kw=`, la ligne n'existe pas.
 
-Lit `?kw=` depuis `window.location.search`, sanitize (regex stricte `[a-zA-ZÀ-ÿ0-9 -]`, max 60 chars, Title Case), injecte dans le H1.
+### 2. Personnalisation géographique Google Ads `?loc=...`
 
-**URL Google Ads à utiliser** (dans le champ "URL finale" ou template d'URL final) :
+**Suffixe d'URL finale Google Ads** (compte ou campagne) :
 ```
-{lpurl}?kw={keyword}
+kw={keyword}&loc={loc_physical_ms}&loci={loc_interest_ms}
 ```
+`{loc_physical_ms}` est un **Geo Target ID Google** (ex. 1005969 = Boulogne-Billancourt), jamais un numéro
+de département.
 
-Exemple : Google tape "serrurier urgence 92" → l'URL devient `https://ets-serrurier-vasseur.fr/?kw=serrurier+urgence+92` → le H1 affiche **"Serrurier Urgence 92"**.
+**Fichiers**
+- `src/lib/google-lieux-fr.json` — table locale `Geo Target ID → [département, ville | null]` (France).
+- `outils/table_lieux_google.py` — génère cette table à partir des données officielles.
+- `src/lib/geo-serveur.ts` — `lieuDepuisGeoId()` : lecture de la table (côté serveur, jamais envoyée au navigateur).
+- `src/server.ts` — `GET /api/geo?loc=<ID>` → `{ lieu: { geoId, ville, departementNumero, departementNom } | null }`
+  (réponse mise en cache 24 h, aucune géolocalisation IP).
+- `src/lib/geo-ads.ts` — côté navigateur : lecture de `?loc=`, validation, mémorisation `sessionStorage`,
+  mise à jour des éléments `data-dynamic-*`, hook `useLieuGoogleAds()`.
+- `src/routes/__root.tsx` — démarre le module sur toutes les pages (`demarrerGeoAds()`).
+- `src/hooks/use-dynamic-content.ts` — `useGeoDept()` alimente la zone d'intervention, le H1, les villes
+  des avis et le pied de page à partir du même lieu.
 
-Fallback statique = `"Ets Serrurier Vasseur"` si pas de `?kw=` ou paramètre invalide.
+**Correspondance Geo Target ID → localisation → département**
+1. Le CSV officiel Google Ads Geo Targets donne pour chaque ID : nom, type (City, Postal Code, Department,
+   District, Neighborhood…) et région parente. Google ne rattache pas les villes à leur département.
+2. Le département est retrouvé avec les données officielles de l'État :
+   - Postal Code → département déduit du code ; ville seulement si le code ne couvre qu'une commune ;
+   - Department → nom du département ;
+   - City / Municipality / District → commune officielle au nom identique dans la même région
+     (geo.api.gouv.fr), sinon ancienne commune ou lieu-dit au nom identique (Base Adresse Nationale) ;
+   - Neighborhood → uniquement les quartiers vérifiés à la main (table `MANUEL` du script) ;
+   - arrondissements municipaux de Paris / Lyon / Marseille → 75 / 69 / 13.
+3. Tout cas douteux est écarté : l'ID n'est pas dans la table et le site reste générique.
 
-### 2. Géoloc IP visiteur
+**Mettre la table à jour** (Google publie un nouveau CSV quelques fois par an) :
+1. Télécharger le dernier CSV : https://developers.google.com/google-ads/api/data/geotargets
+2. `python3 outils/table_lieux_google.py --geotargets geotargets-AAAA-MM-JJ.csv --communes /tmp/communes.json`
+   (le fichier des communes est téléchargé automatiquement s'il n'existe pas ; compter ~10 min).
+3. Vérifier le résumé affiché, puis `npm run build` et déployer.
 
-Hook `useGeoDept()` dans le même fichier.
+**Afficher le département ou la ville** dans n'importe quelle page : marquer l'élément, le texte d'origine
+sert de contenu générique.
+```html
+<span data-dynamic-department>Île-de-France</span>   → « Hauts-de-Seine (92) »
+<span data-dynamic-city>votre secteur</span>          → « Boulogne-Billancourt »
+```
+(En JSX : `<span data-dynamic-department>Île-de-France</span>`.) La ville n'est remplacée que si elle est
+connue avec certitude ; sinon le texte générique reste.
 
-- Fetch `https://ipapi.co/json/` au chargement (async, non bloquant, AbortController 4.5s)
-- Si visiteur FR + postal valide → résout le département + 4 limitrophes + pool de villes
-- Injecte le contenu dynamique à **4 endroits** :
-  - `Hero` → (rien, juste le H1)
-  - `ZoneSection` → "le 93 — Seine-Saint-Denis" + liste des voisins avec villes
-  - `ReviewsSection` → réécrit la ville des 11 cartes d'avis (cycle sur le pool)
-  - `Footer` → "intervient dans Seine-Saint-Denis (93) et les départements limitrophes"
-- Si hors France / DOM / postal KO / timeout → fallback statique sans cassure visuelle
+**Règles**
+- Sans `?loc=` : lieu mémorisé pendant la session (sessionStorage, effacé à la fermeture de l'onglet).
+- `?loc=` présent (nouveau clic) : il remplace l'ancien lieu ; s'il est vide, non numérique ou inconnu,
+  le lieu est effacé et le contenu reste générique.
+- Jamais de géolocalisation IP ni GPS, jamais de demande d'autorisation.
+- L'URL n'est jamais modifiée : `gclid`, `gbraid`, `wbraid`, `kw`, `loc`, `loci` restent intacts.
 
-**Couverture** : 96 départements métropole + Corse 2A/2B, ~560 communes.
-
-**⚠️ Quota ipapi.co free tier = 1 000 req/jour**. Si volume Google Ads soutenu (> 800 clics/jour), basculer sur Cloudflare Pages Function — détails dans le commentaire en haut du hook.
+**Tester** : `https://serrurier-vantory.fr/?loc=1005969` (Boulogne-Billancourt, 92),
+`?loc=1006138` (Versailles, 78), `?loc=abc` ou `?loc=999999999` (générique).
+Vérifier ensuite dans l'onglet Réseau que l'URL et les appels Google (gtm.js, gtag, collect) contiennent
+toujours `gclid`/`kw` inchangés.
 
 ## 📋 À faire AVANT mise en prod
 
@@ -102,11 +136,11 @@ Hook `useGeoDept()` dans le même fichier.
 
 ## 🛡️ RGPD
 
-Page `/rgpd` créée et déployée (validée HTTP 200, contient mention ipapi.co + droits + méthode d'opposition + méta `noindex`).
+Page `/rgpd` : droits, personnalisation par zone Google Ads (sans IP ni GPS), méta `noindex`.
 
 Lien discret dans le footer sous le copyright.
 
-Base légale invoquée : **intérêt légitime** (art. 6.1.f du RGPD) pour la géoloc.
+Base légale invoquée : **intérêt légitime** (art. 6.1.f du RGPD) pour la personnalisation géographique.
 
 ## 🚫 Interdictions strictes (Quality Score Google Ads)
 

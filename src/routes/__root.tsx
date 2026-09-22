@@ -8,6 +8,9 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 
+import { useEffect } from "react";
+
+import { demarrerGeoAds } from "@/lib/geo-ads";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -146,6 +149,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  // Personnalisation géographique Google Ads (?loc=), sur toutes les pages, après l'hydratation.
+  useEffect(() => {
+    demarrerGeoAds();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

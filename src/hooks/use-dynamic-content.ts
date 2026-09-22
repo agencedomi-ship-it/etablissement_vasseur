@@ -1,11 +1,12 @@
 // Hooks de personnalisation dynamique de la landing :
 // - useKeyword() lit le mot-clé Google Ads dans ?kw= (ligne dédiée sous le sous-titre de l'en-tête)
-// - useDynamicH1() renvoie le H1 (département du visiteur ou marque)
-// - useGeoDept() interroge /api/geo (département calculé côté serveur, async, non bloquant) et
-//   renvoie les informations de département + voisins + pool de villes pour les avis.
+// - useDynamicH1() renvoie le H1 (département Google Ads ou marque)
+// - useGeoDept() renvoie le département Google Ads (?loc=, voir lib/geo-ads) avec ses voisins et
+//   un pool de villes pour les avis. Sans lieu Google Ads certain : contenu générique.
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FR_DEPT, DEPT_ADJ, DEPT_CITIES, DEPT_CITY } from "@/lib/geo-data";
+import { useLieuGoogleAds } from "@/lib/geo-ads";
 
 const FALLBACK_H1 = "Serrurier Vantory";
 
@@ -37,17 +38,6 @@ export function useDynamicH1(): string {
   const geo = useGeoDept();
   if (geo.deptName && geo.deptCode) return `Serrurier ${geo.deptName} (${geo.deptCode})`;
   return FALLBACK_H1;
-}
-
-function deriveDeptCode(postal: unknown): string | null {
-  if (!postal) return null;
-  const p = String(postal).trim();
-  if (/^97[1-6]\d{2}$/.test(p)) return p.slice(0, 3);
-  if (/^20\d{3}$/.test(p)) {
-    return parseInt(p.slice(2, 3), 10) <= 1 ? "2A" : "2B";
-  }
-  if (/^\d{5}$/.test(p)) return p.slice(0, 2);
-  return null;
 }
 
 export type GeoData = {
@@ -118,43 +108,9 @@ function buildGeo(code: string | null | undefined): GeoData {
   return { deptCode: code, deptName: name, deptLabel: `${code} — ${name}`, neighborsLabel, neighborCities, footerLabel, cityPool };
 }
 
-// Une seule requête par visite, partagée par tous les composants qui utilisent le hook.
-let geoPromise: Promise<GeoData> | null = null;
-function loadGeo(): Promise<GeoData> {
-  const params = new URLSearchParams(window.location.search);
-  // ?dep=07 : département imposé par l'URL de l'annonce (prioritaire sur la localisation IP).
-  const dep = (params.get("dep") || "").toUpperCase();
-  if (FR_DEPT[dep]) return Promise.resolve(buildGeo(dep));
-  // ?cp=07000 : simule un visiteur de ce code postal (test).
-  const testCp = params.get("cp");
-  if (testCp && /^\d{5}$/.test(testCp)) return Promise.resolve(buildGeo(deriveDeptCode(testCp)));
-  // ?loc={loc_physical_ms}&loci={loc_interest_ms} : position Google Ads, transmise au serveur.
-  const annonce = new URLSearchParams();
-  for (const k of ["loc", "loci"]) {
-    const v = params.get(k);
-    if (v && /^\d{4,9}$/.test(v)) annonce.set(k, v);
-  }
-  const query = annonce.toString();
-  geoPromise ??= fetch(`/api/geo${query ? `?${query}` : ""}`, { cache: "no-store" })
-    .then((r) => (r.ok ? r.json() : null))
-    .then((d: { dept?: string | null } | null) => buildGeo(d?.dept))
-    .catch(() => EMPTY);
-  return geoPromise;
-}
-
-/** Renvoie les infos géo du visiteur. Fallback silencieux si hors FR ou échec. */
+/** Département du visiteur d'après Google Ads (?loc=) ; EMPTY tant qu'il n'est pas connu avec certitude. */
 export function useGeoDept(): GeoData {
-  const [data, setData] = useState<GeoData>(EMPTY);
-
-  useEffect(() => {
-    let cancelled = false;
-    loadGeo().then((d) => {
-      if (!cancelled) setData(d);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return data;
+  const lieu = useLieuGoogleAds();
+  const code = lieu?.departementNumero ?? null;
+  return useMemo(() => buildGeo(code), [code]);
 }

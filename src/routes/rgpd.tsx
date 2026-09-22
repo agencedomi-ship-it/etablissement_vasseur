@@ -48,25 +48,25 @@ function RgpdPage() {
       </section>
 
       <section className="mt-10 space-y-4 leading-relaxed">
-        <h2 className="font-display text-2xl text-navy font-bold">3. Localisation approximative de votre visite</h2>
+        <h2 className="font-display text-2xl text-navy font-bold">3. Personnalisation selon la zone de l'annonce Google</h2>
         <p>
-          Afin d'afficher le nom de votre département dans la section <em>« Où nous intervenons »</em> et de
-          personnaliser la liste des communes affichées dans les avis clients, le site utilise la localisation
-          approximative que notre hébergeur Cloudflare déduit de votre adresse IP lors de la visite.
+          Si vous arrivez sur le site en cliquant sur une annonce Google, le lien peut contenir un identifiant de zone
+          géographique fourni par Google (paramètre « loc »). Le site le convertit, grâce à une table interne, en nom de
+          département et, lorsqu'elle est connue avec certitude, de commune, afin d'adapter certains textes de la page.
         </p>
         <p>
-          <strong>Données utilisées</strong> : pays, code postal et coordonnées approximatives (à l'échelle de la ville), déduits de votre adresse IP par Cloudflare.<br />
-          <strong>Finalité</strong> : personnaliser l'affichage de la zone d'intervention.<br />
-          <strong>Destinataires</strong> : lorsque le code postal n'est pas connu, les seules coordonnées approximatives — jamais votre adresse IP — sont envoyées au service public geo.api.gouv.fr (État français) pour identifier le département. Aucun autre tiers.<br />
-          <strong>Annonces Google</strong> : si vous arrivez depuis une annonce Google, le lien peut contenir l'identifiant de la zone géographique déterminée par Google ; il sert uniquement à afficher votre département.<br />
-          <strong>Stockage</strong> : aucun. Nous ne conservons ni votre adresse IP ni votre localisation. Aucun cookie n'est posé.
+          <strong>Données utilisées</strong> : uniquement l'identifiant de zone Google présent dans le lien. Aucune
+          géolocalisation par adresse IP ou par GPS n'est réalisée, et aucune autorisation de localisation ne vous est demandée.<br />
+          <strong>Destinataires</strong> : aucun ; la conversion est faite par notre site.<br />
+          <strong>Conservation</strong> : la zone reconnue est gardée dans le stockage de session de votre navigateur pour
+          conserver l'affichage d'une page à l'autre ; elle est effacée à la fermeture de l'onglet. Aucun cookie n'est posé à cette fin.
         </p>
         <p>
-          <strong>Base légale</strong> : intérêt légitime (article 6.1.f du RGPD) pour fournir une expérience pertinente géographiquement.
+          <strong>Base légale</strong> : intérêt légitime (article 6.1.f du RGPD) pour fournir une information pertinente géographiquement.
         </p>
         <p className="text-sm text-ink/70 italic">
-          Si la localisation n'est pas disponible (JavaScript désactivé, connexion depuis l'étranger…), le site reste entièrement
-          fonctionnel : la zone d'intervention affiche simplement la formulation générique.
+          Sans identifiant de zone reconnu (accès direct au site, lien partagé, zone inconnue…), le site affiche simplement
+          sa formulation générique.
         </p>
       </section>
 

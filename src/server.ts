@@ -2,7 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
-import { departementDuVisiteur, type CfGeo } from "./lib/geo-serveur";
+import { lieuDepuisGeoId } from "./lib/geo-serveur";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -67,29 +67,11 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
-// Département du visiteur d'après la localisation Cloudflare (request.cf), voir lib/geo-serveur.
-// ?detail=1 ajoute ce que Cloudflare voit de la connexion (sans l'adresse IP), pour diagnostic.
-async function geoResponse(request: Request, params: URLSearchParams): Promise<Response> {
-  const cf = (request as Request & { cf?: CfGeo }).cf;
-  const detail = params.has("detail");
-  // loc = {loc_physical_ms}, loci = {loc_interest_ms} transmis par l'annonce Google Ads
-  const resultat = await departementDuVisiteur(cf, [params.get("loc"), params.get("loci")]);
-  const corps = detail
-    ? {
-        ...resultat,
-        cloudflare: {
-          pays: cf?.country ?? null,
-          ville: cf?.city ?? null,
-          region: cf?.region ?? null,
-          codePostal: cf?.postalCode ?? null,
-          latitude: cf?.latitude ?? null,
-          longitude: cf?.longitude ?? null,
-          operateur: cf?.asOrganization ?? null,
-        },
-      }
-    : resultat;
-  return new Response(JSON.stringify(corps, null, detail ? 2 : 0), {
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "private, no-store" },
+// /api/geo?loc=<Geo Target ID Google Ads> → { lieu: { geoId, ville, departementNumero, departementNom } | null }.
+// Simple lecture de la table locale : la réponse ne dépend que de l'ID, elle peut donc être mise en cache.
+function geoResponse(params: URLSearchParams): Response {
+  return new Response(JSON.stringify({ lieu: lieuDepuisGeoId(params.get("loc")) }), {
+    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=86400" },
   });
 }
 
@@ -100,7 +82,7 @@ export default {
       url.hostname = url.hostname.slice(4);
       return Response.redirect(url.toString(), 301);
     }
-    if (url.pathname === "/api/geo") return geoResponse(request, url.searchParams);
+    if (url.pathname === "/api/geo") return geoResponse(url.searchParams);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
