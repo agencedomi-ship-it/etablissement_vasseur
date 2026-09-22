@@ -14,11 +14,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
   head: () => ({
     meta: [
-      { title: "Ets Serrurier Vasseur — Devis annoncé, prix tenu | Intervient en 20 mn" },
+      { title: "Serrurier Vantory — Devis annoncé, prix tenu | Intervient en 30 mn" },
       {
         name: "description",
         content:
-          "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 20 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances.",
+          "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances.",
       },
     ],
   }),
@@ -128,10 +128,10 @@ function SealLogo({ size = 38, dark = false }: { size?: number; dark?: boolean }
         return <circle key={a} cx={cx} cy={cy} r="1.1" fill={goldBright} />;
       })}
 
-      {/* Top arc text "ETS SERRURIER" */}
+      {/* Top arc text "SERRURIER" */}
       <text fill={gold} fontFamily="Cormorant Garamond, Georgia, serif" fontWeight="700" fontSize="6.2" letterSpacing="2.4">
         <textPath href={`#top-arc-${uid}`} startOffset="50%" textAnchor="middle">
-          • ETS SERRURIER •
+          • SERRURIER •
         </textPath>
       </text>
 
@@ -157,10 +157,10 @@ function SealLogo({ size = 38, dark = false }: { size?: number; dark?: boolean }
       <path d="M 30 23 Q 40 18 50 23" fill="none" stroke={gold} strokeWidth="0.7" strokeLinecap="round" />
       <circle cx="40" cy="20.5" r="0.9" fill={goldBright} />
 
-      {/* Bottom arc text "DEPUIS 2009" */}
+      {/* Bottom arc text "VANTORY" */}
       <text fill={gold} fontFamily="Inter, system-ui, sans-serif" fontWeight="600" fontSize="4.8" letterSpacing="2.2">
         <textPath href={`#bot-arc-${uid}`} startOffset="50%" textAnchor="middle">
-          DEPUIS 2009
+          VANTORY
         </textPath>
       </text>
 
@@ -224,12 +224,12 @@ function Header() {
     <header className="sticky top-0 z-40 bg-navy-deep/95 backdrop-blur-md border-b border-navy-deep">
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
       <div className="max-w-6xl mx-auto container-px min-h-16 py-2 flex items-center justify-between gap-2">
-        <a href="#" className="flex items-center gap-2 shrink-0" aria-label="Ets Serrurier Vasseur — accueil">
+        <a href="#" className="flex items-center gap-2 shrink-0" aria-label="Serrurier Vantory — accueil">
           <SealLogo size={34} />
           <span className="font-display text-xl text-cream font-bold leading-none hidden sm:block">
-            Ets Serrurier Vasseur
+            Serrurier Vantory
           </span>
-          <span className="font-display text-base text-cream font-bold leading-none sm:hidden">Ets Vasseur</span>
+          <span className="font-display text-base text-cream font-bold leading-none sm:hidden">Vantory</span>
         </a>
         <div className="flex items-center gap-2 md:gap-4">
           <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="flex items-center gap-1.5 md:gap-2 text-cream font-semibold hover:text-gold transition-colors">
@@ -252,8 +252,8 @@ function Header() {
 function Hero() {
   const dynamicH1 = useDynamicH1();
   return (
-    <section className="relative text-cream overflow-hidden flex flex-col bg-navy-deep">
-      {/* Fond sans photo : halos dorés discrets */}
+    <section className="relative text-cream overflow-hidden bg-navy-deep">
+      {/* Halos dorés discrets */}
       <div
         className="absolute inset-0 opacity-[0.09] pointer-events-none"
         style={{
@@ -264,41 +264,43 @@ function Hero() {
       />
       <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: "inset 0 0 200px rgba(0,0,0,0.35)" }} aria-hidden />
 
-      <div className="relative">
-        <div className="container-px pt-10 md:pt-20 text-center max-w-4xl mx-auto fade-up">
-          <div className="flex justify-center mb-5 md:mb-7">
-            <SealLogo size={96} />
+      <div className="relative max-w-6xl mx-auto container-px pt-9 pb-8 md:pt-16 md:pb-20 grid md:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-14 items-center">
+        <div className="text-center fade-up">
+          <div className="flex justify-center mb-4 md:mb-6">
+            <SealLogo size={80} />
           </div>
-        <p className="text-[11px] sm:text-xs tracking-[0.34em] uppercase text-gold font-semibold mb-2 md:mb-4">
-          Serrurier&nbsp;·&nbsp;Vasseur&nbsp;·&nbsp;Depuis&nbsp;2009
-        </p>
-        <Ornament />
-          <h1 id="hero-h1" className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-cream font-bold leading-[1.05] text-balance mt-1"
+          <p className="text-[11px] sm:text-xs tracking-[0.34em] uppercase text-gold font-semibold mb-2 md:mb-4">
+            Serrurier&nbsp;·&nbsp;Vantory&nbsp;·&nbsp;7j/7
+          </p>
+          <Ornament />
+          <h1 id="hero-h1" className="font-display text-3xl sm:text-5xl lg:text-6xl text-cream font-bold leading-[1.05] text-balance mt-1"
             style={{ textShadow: "0 2px 24px rgba(0,0,0,0.4)" }}>
-          {dynamicH1}
-        </h1>
-          <p className="font-display italic text-xl sm:text-3xl md:text-4xl text-gold mt-1.5 md:mt-4 leading-tight"
-           style={{ textShadow: "0 2px 16px rgba(0,0,0,0.45)" }}>
-          Devis annoncé, prix tenu.
-        </p>
+            {dynamicH1}
+          </h1>
+          <p className="font-display italic text-xl sm:text-3xl lg:text-4xl text-gold mt-1.5 md:mt-4 leading-tight"
+            style={{ textShadow: "0 2px 16px rgba(0,0,0,0.45)" }}>
+            Devis annoncé, prix tenu.
+          </p>
           <p className="font-display italic text-base sm:text-xl text-cream/95 mt-3 sm:mt-4 max-w-xl mx-auto leading-relaxed tracking-wide"
-             style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}>
-          Un réseau d'artisans serruriers partenaires, au plus près de chez vous
-        </p>
-        </div>
+            style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}>
+            Un réseau d'artisans serruriers partenaires, au plus près de chez vous
+          </p>
 
-        {/* Mobile: pill + buttons */}
-        <div className="md:hidden container-px pt-7 pb-8 text-center">
-          <p className="inline-flex items-center gap-1.5 text-[11px] font-bold text-navy bg-gold px-2.5 py-0.5 rounded-full mb-2 tracking-wide shadow-md">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-            Chez vous en moins de 20 min
-          </p>
-          <br />
-          <p className="inline-flex items-center gap-2 text-xs font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-            Artisan partenaire dispo — 7j/7, 8h à 22h
-          </p>
-          <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
+          <div className="mt-7 md:mt-8">
+            <p className="inline-flex items-center gap-1.5 text-[11px] md:text-xs font-bold text-navy bg-gold px-2.5 md:px-3 py-0.5 md:py-1 rounded-full mb-2 md:mb-3 tracking-wide shadow-md">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+              Chez vous en moins de 30 min
+            </p>
+            <br />
+            <p className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4 md:mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
+              <span className="md:hidden">Artisan partenaire dispo — 7j/7, 8h à 22h</span>
+              <span className="hidden md:inline">Artisan partenaire disponible — 7j/7, 8h à 22h</span>
+            </p>
+          </div>
+
+          {/* Mobile : boutons compacts */}
+          <div className="md:hidden grid grid-cols-2 gap-2.5 max-w-md mx-auto">
             <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="btn-primary !py-2.5 !px-2 text-xs uppercase tracking-wide leading-tight flex-col">
               <I.phone size={16} />
               <span className="block">09 70 70 82 11</span>
@@ -308,40 +310,45 @@ function Hero() {
               Demander un devis
             </a>
           </div>
-        </div>
-      </div>
 
-      {/* Desktop bottom block (mobile uses the block above + features bar below) */}
-      <div className="hidden md:block relative container-px pt-10 pb-20 text-center max-w-4xl mx-auto">
-        <p className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-gold px-3 py-1 rounded-full mb-3 tracking-wide shadow-md">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-          Chez vous en moins de 20 min
-        </p>
-        <br />
-        <p className="inline-flex items-center gap-2 text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-          Artisan partenaire disponible — 7j/7, 8h à 22h
-        </p>
+          {/* Ordinateur : boutons + garanties */}
+          <div className="hidden md:flex flex-row flex-wrap gap-3 justify-center">
+            <PhoneButton />
+            <a href="#devis" className="inline-flex items-center justify-center gap-2 border-2 border-cream/85 text-cream hover:bg-cream hover:text-navy font-semibold uppercase tracking-wide text-base px-6 py-3.5 rounded-md transition-all backdrop-blur bg-navy/30">
+              Demander un devis
+            </a>
+          </div>
 
-        <div className="flex flex-row gap-3 justify-center">
-          <PhoneButton />
-          <a href="#devis" className="inline-flex items-center justify-center gap-2 border-2 border-cream/85 text-cream hover:bg-cream hover:text-navy font-semibold uppercase tracking-wide text-base px-6 py-3.5 rounded-md transition-all backdrop-blur bg-navy/30">
-            Demander un devis
-          </a>
+          <div className="hidden md:grid grid-cols-3 gap-6 mt-10 max-w-xl mx-auto">
+            {[
+              { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
+              { icon: <I.key className="text-gold" />, label: <>Paiement<br />après travaux</> },
+              { icon: <I.shield className="text-gold" />, label: <>Agréé<br />assurances</> },
+            ].map((t, i) => (
+              <div key={i} className="flex flex-col items-center gap-2">
+                {t.icon}
+                <p className="text-xs text-cream/95 font-semibold leading-tight">{t.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-6 mt-10 max-w-xl mx-auto">
-          {[
-            { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
-            { icon: <I.key className="text-gold" />, label: <>Paiement<br />après travaux</> },
-            { icon: <I.shield className="text-gold" />, label: <>Agréé<br />assurances</> },
-          ].map((t, i) => (
-            <div key={i} className="flex flex-col items-center gap-2">
-              {t.icon}
-              <p className="text-xs text-cream/95 font-semibold leading-tight">{t.label}</p>
-            </div>
-          ))}
-        </div>
+        {/* Photo terrain (technicien de dos, sans visage) */}
+        <figure className="relative mx-auto w-full max-w-md md:max-w-none">
+          <div className="hidden md:block absolute -inset-3 rounded-2xl border border-gold/30 pointer-events-none" aria-hidden />
+          <picture>
+            <source media="(min-width: 768px)" srcSet="/assets/terrain/intervention-palier.webp" width={960} height={1200} />
+            <img
+              src="/assets/terrain/intervention-palier-mobile.webp"
+              alt="Technicien serrurier remplaçant le cylindre d'une porte palière"
+              width={1000}
+              height={750}
+              fetchPriority="high"
+              decoding="async"
+              className="relative block w-full aspect-[4/3] md:aspect-[4/5] object-cover rounded-xl ring-1 ring-gold/40 shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
+            />
+          </picture>
+        </figure>
       </div>
 
       {/* Mobile features strip */}
@@ -370,7 +377,7 @@ function Hero() {
 function TrustBar() {
   const items = [
     { icon: <I.doc />, label: "Devis annoncé" },
-    { icon: <I.clock />, label: "Intervient en 20 mn" },
+    { icon: <I.clock />, label: "Intervient en 30 mn" },
     { icon: <I.shield size={26} />, label: "Agréé par assurances" },
     { icon: <I.card />, label: "Paiement après travaux" },
   ];
@@ -393,7 +400,7 @@ function TrustBar() {
 /* ------------------------------ URGENCE ------------------------------ */
 function UrgenceSection() {
   const cards = [
-    { icon: <I.clock />, title: "Intervention sous 20 minutes" },
+    { icon: <I.clock />, title: "Intervention sous 30 minutes" },
     { icon: <I.cal />, title: "Disponible 7j/7, 8h à 22h" },
     { icon: <I.phone size={32} />, title: "Un conseiller répond, un artisan se déplace" },
   ];
@@ -401,7 +408,7 @@ function UrgenceSection() {
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px text-center">
         <p className="section-eyebrow mb-3">Urgence serrurier</p>
-        <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 20 minutes</h2>
+        <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 30 minutes</h2>
         <Ornament />
         <p className="section-subtitle mx-auto">
           Porte claquée, clé cassée dans la serrure, serrure HS — nous missionnons en express l'artisan partenaire le plus proche, matin, après-midi et soirée.
@@ -742,7 +749,7 @@ function FonctionnementSection() {
     {
       icon: <I.phone size={26} />,
       title: "Vous appelez",
-      desc: "Un conseiller Vasseur écoute votre besoin et vous annonce le tarif avant tout déplacement.",
+      desc: "Un conseiller Vantory écoute votre besoin et vous annonce le tarif avant tout déplacement.",
     },
     {
       icon: <I.key />,
@@ -763,7 +770,7 @@ function FonctionnementSection() {
           <h2 className="section-title">Un appel, un artisan près de chez vous</h2>
           <Ornament />
           <p className="section-subtitle mx-auto">
-            Ets Vasseur coordonne un réseau d'artisans serruriers indépendants&nbsp;: nous prenons votre demande, puis nous missionnons le plus proche de chez vous.
+            Serrurier Vantory coordonne un réseau d'artisans serruriers indépendants&nbsp;: nous prenons votre demande, puis nous missionnons le plus proche de chez vous.
           </p>
         </div>
 
@@ -797,7 +804,7 @@ function ZoneSection() {
           <p>
             Nos artisans partenaires interviennent dans{" "}
             <strong className="text-navy">{geo.deptLabel ?? "tout votre département"}</strong>
-            {" "}en moins de <strong className="text-navy">20 minutes</strong>, ainsi que dans
+            {" "}en moins de <strong className="text-navy">30 minutes</strong>, ainsi que dans
             {" "}
             <strong className="text-navy">
               {geo.neighborsLabel ? `les départements limitrophes (${geo.neighborsLabel})` : "les départements limitrophes"}
@@ -814,7 +821,7 @@ function ZoneSection() {
         </div>
         <div className="mt-8 inline-flex items-center gap-3 bg-cream border border-gold/40 rounded-full px-6 py-3 shadow-card">
           <I.clock className="text-navy" />
-          <p className="font-semibold text-navy">Délai moyen d'intervention&nbsp;: 20 minutes</p>
+          <p className="font-semibold text-navy">Délai moyen d'intervention&nbsp;: 30 minutes</p>
         </div>
       </div>
     </section>
@@ -824,14 +831,14 @@ function ZoneSection() {
 /* ------------------------------ FAQ ------------------------------ */
 function FaqSection() {
   const items = [
-    ["Combien de temps pour arriver chez moi ?", "L'artisan partenaire missionné arrive en 20 minutes en moyenne pendant nos horaires (8h-22h, 7 jours sur 7)."],
+    ["Combien de temps pour arriver chez moi ?", "L'artisan partenaire missionné arrive en 30 minutes en moyenne pendant nos horaires (8h-22h, 7 jours sur 7)."],
     ["Comment connaître le prix avant l'intervention ?", "Le tarif vous est annoncé au téléphone avant que l'artisan ne se déplace, puis confirmé par un devis signé sur place."],
     ["Quels modes de paiement acceptez-vous ?", "Espèces, cartes bancaires (CB, Visa, Mastercard), virements, et prise en charge directe par votre assurance habitation. Le paiement n'est demandé qu'après validation du travail."],
     ["Mon assurance habitation prend-elle en charge ?", "Dans la majorité des cas (effraction, perte de clés, sinistre), votre assurance prend en charge tout ou partie de l'intervention. Un constat détaillé vous est remis pour faciliter votre dossier."],
     ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "L'artisan privilégie toujours l'ouverture sans dégât. Si c'est techniquement impossible, il vous explique les options et leur coût avant toute intervention. Vous décidez."],
     ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, notre standard répond et nos artisans partenaires interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
     ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression."],
-    ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Ets Vasseur prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
+    ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Serrurier Vantory prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
   ];
   return (
     <section className="py-16 md:py-24 bg-cream">
@@ -895,7 +902,7 @@ function DevisForm() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            site: "Ets Serrurier Vasseur",
+            site: "Serrurier Vantory",
             nom,
             tel,
             codepostal,
@@ -913,7 +920,7 @@ function DevisForm() {
 
       pushGtmEvent("form_submit", {
         form_name: "devis",
-        site: "Ets Serrurier Vasseur",
+        site: "Serrurier Vantory",
       });
 
       window.location.assign("/merci");
@@ -921,7 +928,7 @@ function DevisForm() {
       console.error("Erreur lors de l'envoi du formulaire :", error);
       pushGtmEvent("form_error", {
         form_name: "devis",
-        site: "Ets Serrurier Vasseur",
+        site: "Serrurier Vantory",
       });
       setErrorMessage(
         "L'envoi n'a pas fonctionné. Merci de réessayer ou de nous appeler.",
@@ -1059,7 +1066,8 @@ function DevisForm() {
 
           <p className="text-xs text-ink/60 text-center">
             En envoyant ce formulaire, vous acceptez d'être recontacté par
-            téléphone.
+            téléphone, selon nos{" "}
+            <a href="/cgv" className="underline underline-offset-2 hover:text-navy">conditions générales</a>.
           </p>
         </form>
       </div>
@@ -1113,10 +1121,10 @@ function Footer() {
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               <SealLogo size={36} />
-              <p className="font-display text-xl text-cream font-bold">Ets Serrurier Vasseur</p>
+              <p className="font-display text-xl text-cream font-bold">Serrurier Vantory</p>
             </div>
             <p className="text-sm text-cream/70 leading-relaxed">
-              Centrale de dépannage en serrurerie — devis annoncé, prix tenu. Ets Serrurier Vasseur missionne des artisans serruriers partenaires dans {footerZone}.
+              Centrale de dépannage en serrurerie — devis annoncé, prix tenu. Serrurier Vantory missionne des artisans serruriers partenaires dans {footerZone}.
             </p>
           </div>
 
@@ -1130,8 +1138,10 @@ function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-cream/15 text-xs text-cream/60 text-center space-y-2">
-          <p>© 2026 Ets Serrurier Vasseur — Tous droits réservés.</p>
-          <p>
+          <p>© 2026 Serrurier Vantory — VANTORY SASU — Tous droits réservés.</p>
+          <p className="flex flex-wrap justify-center gap-x-5 gap-y-1">
+            <a href="/mentions-legales" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Mentions légales</a>
+            <a href="/cgv" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Conditions générales</a>
             <a href="/rgpd" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Politique de confidentialité (RGPD)</a>
           </p>
         </div>

@@ -1,4 +1,4 @@
-// Ets Serrurier Vasseur — données géographiques pour la personnalisation
+// Serrurier Vantory — données géographiques pour la personnalisation
 // dynamique de la landing (zone d'intervention + villes des avis + footer).
 // Source : INSEE.
 

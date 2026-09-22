@@ -5,7 +5,7 @@ export const Route = createFileRoute("/merci")({
   component: MerciPage,
   head: () => ({
     meta: [
-      { title: "Demande envoyée — Ets Serrurier Vasseur" },
+      { title: "Demande envoyée — Serrurier Vantory" },
       {
         name: "description",
         content: "Votre demande de devis a bien été envoyée. Un conseiller vous rappelle rapidement.",

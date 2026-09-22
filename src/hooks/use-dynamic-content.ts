@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { FR_DEPT, DEPT_ADJ, DEPT_CITIES, DEPT_CITY } from "@/lib/geo-data";
 
-const FALLBACK_H1 = "Ets Serrurier Vasseur";
+const FALLBACK_H1 = "Serrurier Vantory";
 
 function sanitizeKw(raw: string | null): string | null {
   if (!raw) return null;

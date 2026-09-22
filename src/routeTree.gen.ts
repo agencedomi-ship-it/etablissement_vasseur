@@ -10,12 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CgvRouteImport } from './routes/cgv'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as MerciRouteImport } from './routes/merci'
 import { Route as RgpdRouteImport } from './routes/rgpd'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CgvRoute = CgvRouteImport.update({
+  id: '/cgv',
+  path: '/cgv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MerciRoute = MerciRouteImport.update({
@@ -31,30 +43,38 @@ const RgpdRoute = RgpdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cgv': typeof CgvRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/merci': typeof MerciRoute
   '/rgpd': typeof RgpdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cgv': typeof CgvRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/merci': typeof MerciRoute
   '/rgpd': typeof RgpdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cgv': typeof CgvRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/merci': typeof MerciRoute
   '/rgpd': typeof RgpdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/merci' | '/rgpd'
+  fullPaths: '/' | '/cgv' | '/mentions-legales' | '/merci' | '/rgpd'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/merci' | '/rgpd'
-  id: '__root__' | '/' | '/merci' | '/rgpd'
+  to: '/' | '/cgv' | '/mentions-legales' | '/merci' | '/rgpd'
+  id: '__root__' | '/' | '/cgv' | '/mentions-legales' | '/merci' | '/rgpd'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CgvRoute: typeof CgvRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
   MerciRoute: typeof MerciRoute
   RgpdRoute: typeof RgpdRoute
 }
@@ -66,6 +86,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cgv': {
+      id: '/cgv'
+      path: '/cgv'
+      fullPath: '/cgv'
+      preLoaderRoute: typeof CgvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/merci': {
@@ -87,6 +121,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CgvRoute: CgvRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
   MerciRoute: MerciRoute,
   RgpdRoute: RgpdRoute,
 }
