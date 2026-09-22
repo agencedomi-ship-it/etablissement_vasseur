@@ -93,8 +93,9 @@ function CgvPage() {
 
       <LegalSection title="9. Réclamations">
         <p>
-          Toute réclamation peut être adressée par téléphone au <PhoneLink /> ou par courrier à {EDITEUR.raisonSociale},{" "}
-          {EDITEUR.siege}. Nous nous engageons à vous répondre dans les meilleurs délais.
+          Toute réclamation peut être adressée par téléphone au <PhoneLink />, par e-mail à{" "}
+          <a href={`mailto:${EDITEUR.email}`} className="text-navy font-semibold underline underline-offset-2">{EDITEUR.email}</a>{" "}
+          ou par courrier à {EDITEUR.raisonSociale}, {EDITEUR.siege}. Nous nous engageons à vous répondre dans les meilleurs délais.
         </p>
       </LegalSection>
 

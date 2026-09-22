@@ -25,7 +25,8 @@ function RgpdPage() {
         <p>
           Le responsable du traitement est la société <strong>{EDITEUR.raisonSociale}</strong> ({EDITEUR.forme}, {EDITEUR.rcs}),
           {" "}{EDITEUR.siege}, qui exploite le service {EDITEUR.nomCommercial}. Pour toute question relative à vos données
-          personnelles, vous pouvez nous contacter au <PhoneLink />.
+          personnelles, vous pouvez nous contacter au <PhoneLink /> ou à{" "}
+          <a href={`mailto:${EDITEUR.email}`} className="text-navy font-semibold underline underline-offset-2">{EDITEUR.email}</a>.
         </p>
       </section>
 
@@ -105,8 +106,8 @@ function RgpdPage() {
           <li>Droit d'opposition</li>
         </ul>
         <p>
-          Pour exercer ces droits, contactez-nous au{" "}
-          <PhoneLink />.
+          Pour exercer ces droits, contactez-nous au <PhoneLink /> ou à{" "}
+          <a href={`mailto:${EDITEUR.email}`} className="text-navy font-semibold underline underline-offset-2">{EDITEUR.email}</a>.
           Vous disposez également du droit d'introduire une réclamation auprès de la{" "}
           <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" className="text-navy underline underline-offset-2">CNIL</a>.
         </p>

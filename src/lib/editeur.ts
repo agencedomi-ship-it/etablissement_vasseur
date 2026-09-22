@@ -15,8 +15,8 @@ export const EDITEUR = {
   president: "Karim Ait Abdelmalek",
   telephone: "09 70 70 82 11",
   telephoneLien: "tel:+33970708211",
-  // Adresse électronique de contact (obligatoire, art. 6 LCEN) : à renseigner.
-  email: null as string | null,
+  // Adresse électronique de contact (obligatoire, art. 6 LCEN) : boîte OVH MX Plan.
+  email: "contact@serrurier-vantory.fr" as string | null,
   // Médiateur de la consommation : null = formule d'attente. Format : { nom, adresse, site }.
   mediateur: null as { nom: string; adresse: string; site: string } | null,
 };
