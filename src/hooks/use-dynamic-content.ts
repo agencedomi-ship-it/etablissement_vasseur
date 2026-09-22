@@ -126,7 +126,14 @@ function loadGeo(): Promise<GeoData> {
   // ?cp=07000 : simule un visiteur de ce code postal (test).
   const testCp = params.get("cp");
   if (testCp && /^\d{5}$/.test(testCp)) return Promise.resolve(buildGeo(deriveDeptCode(testCp)));
-  geoPromise ??= fetch("/api/geo", { cache: "no-store" })
+  // ?loc={loc_physical_ms}&loci={loc_interest_ms} : position Google Ads, transmise au serveur.
+  const annonce = new URLSearchParams();
+  for (const k of ["loc", "loci"]) {
+    const v = params.get(k);
+    if (v && /^\d{4,9}$/.test(v)) annonce.set(k, v);
+  }
+  const query = annonce.toString();
+  geoPromise ??= fetch(`/api/geo${query ? `?${query}` : ""}`, { cache: "no-store" })
     .then((r) => (r.ok ? r.json() : null))
     .then((d: { dept?: string | null } | null) => buildGeo(d?.dept))
     .catch(() => EMPTY);

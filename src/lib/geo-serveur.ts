@@ -2,7 +2,13 @@
 // associe à la requête (request.cf) :
 //   1. code postal fourni par Cloudflare ;
 //   2. à défaut, coordonnées approximatives → commune via geo.api.gouv.fr (API publique de l'État).
+// Avant cela, si l'URL de l'annonce contient la position Google Ads du visiteur ({loc_physical_ms},
+// sinon {loc_interest_ms}), c'est elle qui fait foi : elle est fiable même sur mobile.
 // Aucune adresse IP n'est transmise ni stockée.
+
+import LIEUX_GOOGLE from "./google-lieux-fr.json";
+
+const lieuxGoogle = LIEUX_GOOGLE as Record<string, string>;
 
 export type CfGeo = {
   country?: string;
@@ -17,7 +23,7 @@ export type CfGeo = {
 export type GeoVisiteur = {
   country: string | null;
   dept: string | null;
-  source: "code postal" | "coordonnées" | "outre-mer" | "inconnu" | "hors France" | "Paris incertain";
+  source: "google ads" | "code postal" | "coordonnées" | "outre-mer" | "inconnu" | "hors France" | "Paris incertain";
 };
 
 // Beaucoup de connexions françaises (réseaux mobiles, certaines box, relais iCloud) sortent par
@@ -55,7 +61,16 @@ async function deptDepuisCoordonnees(lat: number, lon: number): Promise<string |
   }
 }
 
-export async function departementDuVisiteur(cf: CfGeo | undefined): Promise<GeoVisiteur> {
+/** Département correspondant à un identifiant de lieu Google Ads (France), ou null. */
+export function deptDepuisLieuGoogle(id: string | null | undefined): string | null {
+  return id && /^\d{4,9}$/.test(id) ? (lieuxGoogle[id] ?? null) : null;
+}
+
+export async function departementDuVisiteur(cf: CfGeo | undefined, lieuxAnnonce: (string | null)[] = []): Promise<GeoVisiteur> {
+  for (const id of lieuxAnnonce) {
+    const dept = deptDepuisLieuGoogle(id);
+    if (dept) return { country: "FR", dept, source: "google ads" };
+  }
   const country = cf?.country ?? null;
   if (country && PAYS_OUTRE_MER[country]) return { country: "FR", dept: PAYS_OUTRE_MER[country], source: "outre-mer" };
   if (country !== "FR") return { country, dept: null, source: "hors France" };

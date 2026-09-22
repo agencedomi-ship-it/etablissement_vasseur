@@ -58,6 +58,7 @@ function RgpdPage() {
           <strong>Données utilisées</strong> : pays, code postal et coordonnées approximatives (à l'échelle de la ville), déduits de votre adresse IP par Cloudflare.<br />
           <strong>Finalité</strong> : personnaliser l'affichage de la zone d'intervention.<br />
           <strong>Destinataires</strong> : lorsque le code postal n'est pas connu, les seules coordonnées approximatives — jamais votre adresse IP — sont envoyées au service public geo.api.gouv.fr (État français) pour identifier le département. Aucun autre tiers.<br />
+          <strong>Annonces Google</strong> : si vous arrivez depuis une annonce Google, le lien peut contenir l'identifiant de la zone géographique déterminée par Google ; il sert uniquement à afficher votre département.<br />
           <strong>Stockage</strong> : aucun. Nous ne conservons ni votre adresse IP ni votre localisation. Aucun cookie n'est posé.
         </p>
         <p>

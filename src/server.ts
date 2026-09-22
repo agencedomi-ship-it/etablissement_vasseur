@@ -69,9 +69,11 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 
 // Département du visiteur d'après la localisation Cloudflare (request.cf), voir lib/geo-serveur.
 // ?detail=1 ajoute ce que Cloudflare voit de la connexion (sans l'adresse IP), pour diagnostic.
-async function geoResponse(request: Request, detail: boolean): Promise<Response> {
+async function geoResponse(request: Request, params: URLSearchParams): Promise<Response> {
   const cf = (request as Request & { cf?: CfGeo }).cf;
-  const resultat = await departementDuVisiteur(cf);
+  const detail = params.has("detail");
+  // loc = {loc_physical_ms}, loci = {loc_interest_ms} transmis par l'annonce Google Ads
+  const resultat = await departementDuVisiteur(cf, [params.get("loc"), params.get("loci")]);
   const corps = detail
     ? {
         ...resultat,
@@ -98,7 +100,7 @@ export default {
       url.hostname = url.hostname.slice(4);
       return Response.redirect(url.toString(), 301);
     }
-    if (url.pathname === "/api/geo") return geoResponse(request, url.searchParams.has("detail"));
+    if (url.pathname === "/api/geo") return geoResponse(request, url.searchParams);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
