@@ -895,8 +895,12 @@ function ZoneSection() {
         <Ornament />
         <div className="mt-6 space-y-4 text-lg text-ink/85 leading-relaxed">
           <p>
-            Nos artisans partenaires interviennent dans{" "}
-            <strong className="text-navy">{geo.deptLabel ?? "tout votre département"}</strong>
+            Nos artisans partenaires interviennent dans tout votre département
+            {geo.deptLabel && (
+              <>
+                {" "}— <strong className="text-navy">{geo.deptLabel}</strong> —
+              </>
+            )}
             {" "}en moins de <strong className="text-navy">30 minutes</strong>, ainsi que dans
             {" "}
             <strong className="text-navy">
@@ -930,7 +934,7 @@ function FaqSection() {
     ["Mon assurance habitation prend-elle en charge ?", "Dans la majorité des cas (effraction, perte de clés, sinistre), votre assurance prend en charge tout ou partie de l'intervention. Un constat détaillé vous est remis pour faciliter votre dossier."],
     ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "L'artisan privilégie toujours l'ouverture sans dégât. Si c'est techniquement impossible, il vous explique les options et leur coût avant toute intervention. Vous décidez."],
     ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, notre standard répond et nos artisans partenaires interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
-    ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression."],
+    ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression. Tous les artisans de notre réseau sont soumis à une charte bien définie : qualification, respect des tarifs annoncés, devis écrit avant travaux, assurance professionnelle et comportement irréprochable chez le client."],
     ["Faites-vous les doubles de clés ?", "Non, nous ne réalisons pas la reproduction de clés. Pour faire faire un double, rapprochez-vous d'un cordonnier."],
     ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Serrurier Vantory prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
   ];

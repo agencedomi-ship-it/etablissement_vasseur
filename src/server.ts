@@ -66,8 +66,18 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+// Localisation approximative du visiteur fournie par Cloudflare (request.cf) :
+// pays + code postal, rien n'est stocké ni transmis à un tiers.
+function geoResponse(request: Request): Response {
+  const cf = (request as Request & { cf?: { country?: string; postalCode?: string } }).cf;
+  return new Response(JSON.stringify({ country: cf?.country ?? null, postal: cf?.postalCode ?? null }), {
+    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "private, no-store" },
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    if (new URL(request.url).pathname === "/api/geo") return geoResponse(request);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);

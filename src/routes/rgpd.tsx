@@ -48,29 +48,24 @@ function RgpdPage() {
       </section>
 
       <section className="mt-10 space-y-4 leading-relaxed">
-        <h2 className="font-display text-2xl text-navy font-bold">3. Géolocalisation par adresse IP — service tiers ipapi.co</h2>
+        <h2 className="font-display text-2xl text-navy font-bold">3. Localisation approximative de votre visite</h2>
         <p>
-          Afin d'adapter dynamiquement le nom de votre département dans la section
-          <em>« Où nous intervenons »</em> et de personnaliser la liste des communes affichées
-          dans les avis clients, votre <strong>adresse IP</strong> est transmise au service tiers{" "}
-          <a href="https://ipapi.co/privacy/" target="_blank" rel="noopener noreferrer" className="text-gold underline">ipapi.co</a>,
-          édité par Kloudend, Inc., et qui agit en tant que sous-traitant.
+          Afin d'afficher le nom de votre département dans la section <em>« Où nous intervenons »</em> et de
+          personnaliser la liste des communes affichées dans les avis clients, le site utilise la localisation
+          approximative (pays et code postal) que notre hébergeur Cloudflare déduit de votre adresse IP lors de la visite.
         </p>
         <p>
-          <strong>Données transmises</strong> : votre adresse IP uniquement.<br />
-          <strong>Données reçues</strong> : code département, ville approximative, code postal (lecture seule, en mémoire navigateur, le temps de votre visite).<br />
+          <strong>Données utilisées</strong> : pays et code postal approximatifs, déduits de votre adresse IP par Cloudflare.<br />
           <strong>Finalité</strong> : personnaliser l'affichage de la zone d'intervention.<br />
-          <strong>Stockage</strong> : aucun. Nous ne conservons pas votre adresse IP ni les données géographiques retournées. Aucun cookie n'est posé.<br />
-          <strong>Hébergement</strong> : ipapi.co est basé aux États-Unis ; le service est conforme au RGPD et au Data Privacy Framework UE-US (cf. leur{" "}
-          <a href="https://ipapi.co/privacy/" target="_blank" rel="noopener noreferrer" className="text-gold underline">politique de confidentialité</a>).
+          <strong>Destinataires</strong> : aucun service tiers ; l'information reste entre votre navigateur et notre hébergeur.<br />
+          <strong>Stockage</strong> : aucun. Nous ne conservons ni votre adresse IP ni votre localisation. Aucun cookie n'est posé.
         </p>
         <p>
           <strong>Base légale</strong> : intérêt légitime (article 6.1.f du RGPD) pour fournir une expérience pertinente géographiquement.
         </p>
         <p className="text-sm text-ink/70 italic">
-          Vous pouvez bloquer cet appel en désactivant JavaScript dans votre navigateur ou en utilisant
-          une extension de blocage de tiers (uBlock Origin, etc.). Le site reste alors entièrement fonctionnel,
-          le texte de la zone d'intervention affiche simplement la formulation générique par défaut.
+          Si la localisation n'est pas disponible (JavaScript désactivé, connexion depuis l'étranger…), le site reste entièrement
+          fonctionnel : la zone d'intervention affiche simplement la formulation générique.
         </p>
       </section>
 
