@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { type FormEvent, useId, useState } from "react";
 import { useDynamicH1, useGeoDept } from "@/hooks/use-dynamic-content";
-import { SITE_URL } from "@/lib/editeur";
+import { EDITEUR, SITE_URL } from "@/lib/editeur";
 
 function pushGtmEvent(event: string, data: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
@@ -210,10 +210,10 @@ function HomePage() {
       <TarifsSection />
       <AntiArnaqueSection />
       <AssuranceSection />
+      <ZoneSection />
       <ReviewsSection />
       <QuiSommesNousSection />
       <FonctionnementSection />
-      <ZoneSection />
       <FaqSection />
       <DevisForm />
       <Footer />
@@ -741,7 +741,7 @@ const REVIEWS = [
 function ReviewsSection() {
   const geo = useGeoDept();
   return (
-    <section className="py-16 md:py-24 bg-parchment-paper">
+    <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-10">
           <p className="section-eyebrow mb-3">Avis clients</p>
@@ -760,7 +760,7 @@ function ReviewsSection() {
               // par une ville du dept du visiteur (ou voisin), en cyclant sur le pool.
               const displayCity = geo.cityPool.length > 0 ? geo.cityPool[i % geo.cityPool.length] : city;
               return (
-              <article key={i} className="snap-start shrink-0 w-72 sm:w-80 bg-cream rounded-xl p-5 shadow-card border border-parchment/70 flex flex-col hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
+              <article key={i} className="snap-start shrink-0 w-72 sm:w-80 bg-[#fbf4e8] rounded-xl p-5 shadow-card border border-gold/20 flex flex-col hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
                 <div className="flex gap-0.5 mb-3" aria-label="5 étoiles">
                   {Array.from({ length: 5 }).map((_, j) => <I.star key={j} className="text-gold" />)}
                 </div>
@@ -808,7 +808,7 @@ function QuiSommesNousSection() {
     },
   ];
   return (
-    <section id="qui-sommes-nous" className="py-16 md:py-24 bg-cream scroll-mt-20 border-t border-gold/20">
+    <section id="qui-sommes-nous" className="py-16 md:py-24 bg-parchment-paper scroll-mt-20">
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-12 md:mb-14">
           <p className="section-eyebrow mb-3">Qui sommes-nous</p>
@@ -898,11 +898,13 @@ function ZoneSection() {
         <Ornament />
         <div className="mt-6 space-y-4 text-lg text-ink/85 leading-relaxed">
           <p>
-            Nos artisans partenaires interviennent dans tout votre département
-            {geo.deptLabel && (
+            Nos artisans partenaires interviennent dans{" "}
+            {geo.deptLabel ? (
               <>
-                {" "}— <strong className="text-navy">{geo.deptLabel}</strong> —
+                tout le <strong className="text-navy">{geo.deptLabel}</strong>
               </>
+            ) : (
+              <strong className="text-navy">tout votre département</strong>
             )}
             {" "}en moins de <strong className="text-navy">30 minutes</strong>, ainsi que dans
             {" "}
@@ -942,7 +944,7 @@ function FaqSection() {
     ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Serrurier Vantory prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
   ];
   return (
-    <section className="py-16 md:py-24 bg-cream">
+    <section className="py-16 md:py-24 bg-parchment-paper">
       <div className="max-w-3xl mx-auto container-px">
         <div className="text-center mb-10">
           <p className="section-eyebrow mb-3">Questions fréquentes</p>
@@ -951,7 +953,7 @@ function FaqSection() {
         </div>
         <div className="space-y-3">
           {items.map(([q, a], i) => (
-            <details key={i} className="bg-white rounded-xl shadow-card border border-parchment/70 overflow-hidden group open:shadow-card-hover transition-shadow">
+            <details key={i} className="bg-[#fbf4e8] rounded-xl shadow-card border border-gold/20 overflow-hidden group open:shadow-card-hover transition-shadow">
               <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-semibold text-navy font-display text-lg">
                 <span>{q}</span>
                 <svg className="faq-chevron shrink-0 text-gold" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -1239,7 +1241,7 @@ function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-cream/15 text-xs text-cream/60 text-center space-y-2">
-          <p>© 2026 Serrurier Vantory — VANTORY SASU — Tous droits réservés.</p>
+          <p>© 2026 Serrurier Vantory — {EDITEUR.raisonSociale} {EDITEUR.forme}, {EDITEUR.siege} — SIRET {EDITEUR.siret} — Tous droits réservés.</p>
           <p className="flex flex-wrap justify-center gap-x-5 gap-y-1">
             <a href="/mentions-legales" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Mentions légales</a>
             <a href="/cgv" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Conditions générales</a>

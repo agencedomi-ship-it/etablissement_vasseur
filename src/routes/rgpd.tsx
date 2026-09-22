@@ -52,12 +52,12 @@ function RgpdPage() {
         <p>
           Afin d'afficher le nom de votre département dans la section <em>« Où nous intervenons »</em> et de
           personnaliser la liste des communes affichées dans les avis clients, le site utilise la localisation
-          approximative (pays et code postal) que notre hébergeur Cloudflare déduit de votre adresse IP lors de la visite.
+          approximative que notre hébergeur Cloudflare déduit de votre adresse IP lors de la visite.
         </p>
         <p>
-          <strong>Données utilisées</strong> : pays et code postal approximatifs, déduits de votre adresse IP par Cloudflare.<br />
+          <strong>Données utilisées</strong> : pays, code postal et coordonnées approximatives (à l'échelle de la ville), déduits de votre adresse IP par Cloudflare.<br />
           <strong>Finalité</strong> : personnaliser l'affichage de la zone d'intervention.<br />
-          <strong>Destinataires</strong> : aucun service tiers ; l'information reste entre votre navigateur et notre hébergeur.<br />
+          <strong>Destinataires</strong> : lorsque le code postal n'est pas connu, les seules coordonnées approximatives — jamais votre adresse IP — sont envoyées au service public geo.api.gouv.fr (État français) pour identifier le département. Aucun autre tiers.<br />
           <strong>Stockage</strong> : aucun. Nous ne conservons ni votre adresse IP ni votre localisation. Aucun cookie n'est posé.
         </p>
         <p>

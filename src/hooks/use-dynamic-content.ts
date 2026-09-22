@@ -1,6 +1,6 @@
 // Hooks de personnalisation dynamique de la landing :
 // - useDynamicH1() lit le keyword Google Ads dans ?kw= et renvoie le H1 à afficher
-// - useGeoDept() interroge /api/geo (localisation Cloudflare, async, non bloquant) et
+// - useGeoDept() interroge /api/geo (département calculé côté serveur, async, non bloquant) et
 //   renvoie les informations de département + voisins + pool de villes pour les avis.
 
 import { useEffect, useState } from "react";
@@ -18,19 +18,23 @@ function sanitizeKw(raw: string | null): string | null {
     .replace(/(^|[\s\-])([a-zà-ÿ])/g, (_, sep, ch) => sep + ch.toUpperCase());
 }
 
-/** Renvoie le H1 à afficher : keyword sanitisé depuis ?kw= sinon fallback marque. */
+/**
+ * Renvoie le H1 à afficher : mot-clé de l'annonce (?kw=) s'il y en a un, sinon
+ * « Serrurier <département> (<code>) » si le département du visiteur est connu, sinon la marque.
+ */
 export function useDynamicH1(): string {
-  const [h1, setH1] = useState<string>(FALLBACK_H1);
+  const [kw, setKw] = useState<string | null>(null);
+  const geo = useGeoDept();
   useEffect(() => {
     try {
-      const params = new URLSearchParams(window.location.search);
-      const kw = sanitizeKw(params.get("kw"));
-      if (kw) setH1(kw);
+      setKw(sanitizeKw(new URLSearchParams(window.location.search).get("kw")));
     } catch {
       /* noop : on garde le fallback */
     }
   }, []);
-  return h1;
+  if (kw) return kw;
+  if (geo.deptName && geo.deptCode) return `Serrurier ${geo.deptName} (${geo.deptCode})`;
+  return FALLBACK_H1;
 }
 
 function deriveDeptCode(postal: unknown): string | null {
@@ -45,19 +49,24 @@ function deriveDeptCode(postal: unknown): string | null {
 }
 
 export type GeoData = {
-  /** "Ardèche (07)" ou null tant que la géoloc n'a pas répondu / hors FR */
+  /** "07" et "Ardèche", ou null si le département n'est pas connu */
+  deptCode: string | null;
+  deptName: string | null;
+  /** "07 — Ardèche" ou null tant que la géoloc n'a pas répondu / non localisé */
   deptLabel: string | null;
   /** "Hauts-de-Seine (92), Seine-Saint-Denis (93), Val-de-Marne (94)" */
   neighborsLabel: string | null;
   /** "Nanterre (92), Bobigny (93) et Créteil (94)" — villes top des voisins */
   neighborCities: string | null;
-  /** Texte court pour le footer : "votre département (Ardèche, 07) et les départements limitrophes" */
+  /** Texte court pour le footer : "tout le 07 — Ardèche et les départements limitrophes" */
   footerLabel: string | null;
   /** Pool de villes (dept visiteur + voisins) — utilisé pour réécrire les avis */
   cityPool: string[];
 };
 
 const EMPTY: GeoData = {
+  deptCode: null,
+  deptName: null,
   deptLabel: null,
   neighborsLabel: null,
   neighborCities: null,
@@ -65,9 +74,7 @@ const EMPTY: GeoData = {
   cityPool: [],
 };
 
-function buildGeo(d: { country?: string | null; postal?: string | null } | null): GeoData {
-  if (!d || d.country !== "FR") return EMPTY;
-  const code = deriveDeptCode(d.postal);
+function buildGeo(code: string | null | undefined): GeoData {
   if (!code) return EMPTY;
   const name = FR_DEPT[code];
   if (!name) return EMPTY;
@@ -97,8 +104,8 @@ function buildGeo(d: { country?: string | null; postal?: string | null } | null)
 
   // Footer
   const footerLabel = adjList.length
-    ? `votre département (${name}, ${code}) et les départements limitrophes`
-    : `votre département (${name}, ${code})`;
+    ? `tout le ${code} — ${name} et les départements limitrophes`
+    : `tout le ${code} — ${name}`;
 
   // Pool de villes pour réécrire les avis
   const cityPool: string[] = [];
@@ -106,18 +113,22 @@ function buildGeo(d: { country?: string | null; postal?: string | null } | null)
     if (DEPT_CITIES[c]) cityPool.push(...DEPT_CITIES[c]);
   });
 
-  return { deptLabel: `${name} (${code})`, neighborsLabel, neighborCities, footerLabel, cityPool };
+  return { deptCode: code, deptName: name, deptLabel: `${code} — ${name}`, neighborsLabel, neighborCities, footerLabel, cityPool };
 }
 
 // Une seule requête par visite, partagée par tous les composants qui utilisent le hook.
 let geoPromise: Promise<GeoData> | null = null;
 function loadGeo(): Promise<GeoData> {
-  // Test : ?cp=07000 simule un visiteur de ce code postal (affichage local uniquement).
-  const testCp = new URLSearchParams(window.location.search).get("cp");
-  if (testCp && /^\d{5}$/.test(testCp)) return Promise.resolve(buildGeo({ country: "FR", postal: testCp }));
+  const params = new URLSearchParams(window.location.search);
+  // ?dep=07 : département imposé par l'URL de l'annonce (prioritaire sur la localisation IP).
+  const dep = (params.get("dep") || "").toUpperCase();
+  if (FR_DEPT[dep]) return Promise.resolve(buildGeo(dep));
+  // ?cp=07000 : simule un visiteur de ce code postal (test).
+  const testCp = params.get("cp");
+  if (testCp && /^\d{5}$/.test(testCp)) return Promise.resolve(buildGeo(deriveDeptCode(testCp)));
   geoPromise ??= fetch("/api/geo", { cache: "no-store" })
     .then((r) => (r.ok ? r.json() : null))
-    .then(buildGeo)
+    .then((d: { dept?: string | null } | null) => buildGeo(d?.dept))
     .catch(() => EMPTY);
   return geoPromise;
 }

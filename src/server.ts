@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { departementDuVisiteur, type CfGeo } from "./lib/geo-serveur";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -66,11 +67,10 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
-// Localisation approximative du visiteur fournie par Cloudflare (request.cf) :
-// pays + code postal, rien n'est stocké ni transmis à un tiers.
-function geoResponse(request: Request): Response {
-  const cf = (request as Request & { cf?: { country?: string; postalCode?: string } }).cf;
-  return new Response(JSON.stringify({ country: cf?.country ?? null, postal: cf?.postalCode ?? null }), {
+// Département du visiteur d'après la localisation Cloudflare (request.cf), voir lib/geo-serveur.
+async function geoResponse(request: Request): Promise<Response> {
+  const cf = (request as Request & { cf?: CfGeo }).cf;
+  return new Response(JSON.stringify(await departementDuVisiteur(cf)), {
     headers: { "content-type": "application/json; charset=utf-8", "cache-control": "private, no-store" },
   });
 }
