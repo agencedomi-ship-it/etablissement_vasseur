@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Artisan serrurier français depuis 2009. Intervient chez vous en 20 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances.",
+          "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 20 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances.",
       },
     ],
   }),
@@ -208,7 +208,7 @@ function HomePage() {
       <AntiArnaqueSection />
       <AssuranceSection />
       <ReviewsSection />
-      <TeamSection />
+      <FonctionnementSection />
       <ZoneSection />
       <FaqSection />
       <DevisForm />
@@ -252,45 +252,23 @@ function Header() {
 function Hero() {
   const dynamicH1 = useDynamicH1();
   return (
-    <section className="relative text-cream overflow-hidden flex flex-col md:min-h-[760px] bg-navy-deep">
-      {/* Image: in flow on mobile (full image visible), absolute cover on desktop */}
-      <div className="relative md:absolute md:inset-0">
-        <picture>
-          <source media="(min-width: 768px)" srcSet="/assets/hero-team.webp" />
-          <img
-            src="/assets/hero-team-mobile.webp"
-            alt="L'équipe d'artisans serruriers Ets Vasseur devant la boutique"
-            width={800}
-            height={1422}
-            fetchPriority="high"
-            decoding="async"
-            className="block w-full h-[70vh] max-h-[590px] object-cover object-[55%_center] md:h-full md:max-h-none md:absolute md:inset-0 md:w-full md:object-cover md:object-center"
-          />
-        </picture>
-        {/* Top gradient for title legibility */}
-        <div
-          className="absolute inset-x-0 top-0 h-[38%] md:h-[40%] pointer-events-none"
-          style={{ background: "linear-gradient(to bottom, rgba(15,31,53,0.92) 0%, rgba(15,31,53,0.55) 60%, rgba(15,31,53,0) 100%)" }}
-          aria-hidden
-        />
-        {/* Desktop bottom gradient */}
-        <div
-          className="hidden md:block absolute inset-x-0 bottom-0 h-[48%] pointer-events-none"
-          style={{ background: "linear-gradient(to top, rgba(15,31,53,0.96) 0%, rgba(15,31,53,0.78) 50%, rgba(15,31,53,0) 100%)" }}
-          aria-hidden
-        />
-        {/* Vignette */}
-        <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: "inset 0 0 200px rgba(0,0,0,0.35)" }} aria-hidden />
+    <section className="relative text-cream overflow-hidden flex flex-col bg-navy-deep">
+      {/* Fond sans photo : halos dorés discrets */}
+      <div
+        className="absolute inset-0 opacity-[0.09] pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 15% 15%, #C9A04E 0, transparent 42%), radial-gradient(circle at 85% 85%, #C9A04E 0, transparent 42%)",
+        }}
+        aria-hidden
+      />
+      <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: "inset 0 0 200px rgba(0,0,0,0.35)" }} aria-hidden />
 
-        {/* Bottom gradient on mobile too (for button legibility) */}
-        <div
-          className="md:hidden absolute inset-x-0 bottom-0 h-[40%] pointer-events-none"
-          style={{ background: "linear-gradient(to top, rgba(15,31,53,0.85) 0%, rgba(15,31,53,0.35) 60%, rgba(15,31,53,0) 100%)" }}
-          aria-hidden
-        />
-
-        {/* Title overlay on top of image */}
-        <div className="absolute inset-x-0 top-0 container-px pt-4 md:pt-12 text-center max-w-4xl mx-auto fade-up">
+      <div className="relative">
+        <div className="container-px pt-10 md:pt-20 text-center max-w-4xl mx-auto fade-up">
+          <div className="flex justify-center mb-5 md:mb-7">
+            <SealLogo size={96} />
+          </div>
         <p className="text-[11px] sm:text-xs tracking-[0.34em] uppercase text-gold font-semibold mb-2 md:mb-4">
           Serrurier&nbsp;·&nbsp;Vasseur&nbsp;·&nbsp;Depuis&nbsp;2009
         </p>
@@ -305,12 +283,12 @@ function Hero() {
         </p>
           <p className="font-display italic text-base sm:text-xl text-cream/95 mt-3 sm:mt-4 max-w-xl mx-auto leading-relaxed tracking-wide"
              style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}>
-          Le savoir-faire français à votre service depuis 2009
+          Un réseau d'artisans serruriers partenaires, au plus près de chez vous
         </p>
         </div>
 
-        {/* Mobile: pill + buttons overlay on bottom of photo */}
-        <div className="md:hidden absolute inset-x-0 bottom-0 container-px pb-5 text-center">
+        {/* Mobile: pill + buttons */}
+        <div className="md:hidden container-px pt-7 pb-8 text-center">
           <p className="inline-flex items-center gap-1.5 text-[11px] font-bold text-navy bg-gold px-2.5 py-0.5 rounded-full mb-2 tracking-wide shadow-md">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
             Chez vous en moins de 20 min
@@ -318,7 +296,7 @@ function Hero() {
           <br />
           <p className="inline-flex items-center gap-2 text-xs font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-            Artisan disponible — 7j/7, 8h à 22h
+            Artisan partenaire dispo — 7j/7, 8h à 22h
           </p>
           <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
             <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="btn-primary !py-2.5 !px-2 text-xs uppercase tracking-wide leading-tight flex-col">
@@ -333,10 +311,8 @@ function Hero() {
         </div>
       </div>
 
-      <div className="hidden md:block md:flex-1" aria-hidden />
-
-      {/* Desktop bottom block (mobile uses overlay above + features bar below) */}
-      <div className="hidden md:block relative container-px pb-14 text-center max-w-4xl mx-auto">
+      {/* Desktop bottom block (mobile uses the block above + features bar below) */}
+      <div className="hidden md:block relative container-px pt-10 pb-20 text-center max-w-4xl mx-auto">
         <p className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-gold px-3 py-1 rounded-full mb-3 tracking-wide shadow-md">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
           Chez vous en moins de 20 min
@@ -344,7 +320,7 @@ function Hero() {
         <br />
         <p className="inline-flex items-center gap-2 text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-          Artisan disponible — 7j/7, 8h à 22h
+          Artisan partenaire disponible — 7j/7, 8h à 22h
         </p>
 
         <div className="flex flex-row gap-3 justify-center">
@@ -419,16 +395,16 @@ function UrgenceSection() {
   const cards = [
     { icon: <I.clock />, title: "Intervention sous 20 minutes" },
     { icon: <I.cal />, title: "Disponible 7j/7, 8h à 22h" },
-    { icon: <I.phone size={32} />, title: "Numéro direct de l'artisan" },
+    { icon: <I.phone size={32} />, title: "Un conseiller répond, un artisan se déplace" },
   ];
   return (
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px text-center">
         <p className="section-eyebrow mb-3">Urgence serrurier</p>
-        <h2 className="section-title">Une urgence&nbsp;? On intervient en 20 minutes</h2>
+        <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 20 minutes</h2>
         <Ornament />
         <p className="section-subtitle mx-auto">
-          Porte claquée, clé cassée dans la serrure, serrure HS — nos artisans interviennent en express, matin, après-midi et soirée.
+          Porte claquée, clé cassée dans la serrure, serrure HS — nous missionnons en express l'artisan partenaire le plus proche, matin, après-midi et soirée.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-12">
@@ -504,9 +480,9 @@ function ServicesSection() {
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-12 md:mb-16">
           <p className="section-eyebrow mb-3">Savoir-faire</p>
-          <h2 className="section-title">Nos prestations d'artisan serrurier</h2>
+          <h2 className="section-title">Prestations de serrurerie</h2>
           <Ornament />
-          <p className="section-subtitle mx-auto">Dépannage et installation, pour le particulier comme pour le professionnel.</p>
+          <p className="section-subtitle mx-auto">Dépannage et installation par nos artisans partenaires, pour le particulier comme pour le professionnel.</p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
@@ -760,68 +736,49 @@ function ReviewsSection() {
   );
 }
 
-/* ------------------------------ TEAM ------------------------------ */
-function TeamSection() {
-  const team = [
-    { name: "Antoine", since: "depuis 2009", badge: "Fondateur", file: "antoine" },
-    { name: "Cyril", since: "depuis 2012", file: "cyril" },
-    { name: "Lucas", since: "depuis 2014", file: "lucas" },
-    { name: "Mathieu", since: "depuis 2017", file: "mathieu" },
-    { name: "Romain", since: "depuis 2019", file: "romain" },
+/* ------------------------------ FONCTIONNEMENT ------------------------------ */
+function FonctionnementSection() {
+  const steps = [
+    {
+      icon: <I.phone size={26} />,
+      title: "Vous appelez",
+      desc: "Un conseiller Vasseur écoute votre besoin et vous annonce le tarif avant tout déplacement.",
+    },
+    {
+      icon: <I.key />,
+      title: "Nous missionnons un artisan",
+      desc: "Nous contactons l'artisan serrurier partenaire le plus proche et disponible, puis vous indiquons son délai d'arrivée.",
+    },
+    {
+      icon: <I.check size={26} />,
+      title: "L'artisan intervient",
+      desc: "Devis signé sur place avant de commencer, paiement uniquement après validation du travail.",
+    },
   ];
   return (
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-12 md:mb-16">
-          <p className="section-eyebrow mb-3">Une maison française fondée en 2009</p>
-          <h2 className="section-title">Notre équipe de techniciens</h2>
+          <p className="section-eyebrow mb-3">Notre fonctionnement</p>
+          <h2 className="section-title">Un appel, un artisan près de chez vous</h2>
           <Ornament />
-          <p className="section-subtitle mx-auto">Cinq artisans serruriers expérimentés, formés en interne, mobiles 7 jours sur 7.</p>
+          <p className="section-subtitle mx-auto">
+            Ets Vasseur coordonne un réseau d'artisans serruriers indépendants&nbsp;: nous prenons votre demande, puis nous missionnons le plus proche de chez vous.
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5 max-w-6xl mx-auto">
-          {team.map((m) => (
-            <article key={m.name} className="card-artisan overflow-hidden flex flex-col">
-              <figure className="relative aspect-[4/5] bg-gradient-to-br from-navy/15 via-parchment/50 to-cream">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-display text-6xl text-navy/30 font-bold">{m.name[0]}</span>
-                </div>
-                <img
-                  src={`/assets/team/${m.file}.webp`}
-                  alt={`Portrait de ${m.name}`}
-                  loading="lazy"
-                  decoding="async"
-                  width={400}
-                  height={500}
-                  className="absolute inset-0 w-full h-full object-cover object-center"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-navy/40 to-transparent pointer-events-none" />
-                {m.badge && (
-                  <span className="absolute top-2 left-2 text-[10px] uppercase tracking-wider bg-brick text-white font-bold px-2 py-0.5 rounded shadow">
-                    {m.badge}
-                  </span>
-                )}
-              </figure>
-              <div className="p-4 text-center">
-                <p className="font-display text-2xl text-navy font-bold leading-tight">{m.name}</p>
-                <p className="text-xs text-ink/70 mt-1 tracking-wide uppercase">{m.since}</p>
+        <ol className="grid md:grid-cols-3 gap-5 md:gap-6 max-w-5xl mx-auto">
+          {steps.map((st, i) => (
+            <li key={st.title} className="corner-ornament bg-parchment/50 rounded-lg p-7 text-center">
+              <div className="w-14 h-14 rounded-full bg-navy text-gold flex items-center justify-center mx-auto mb-4 ring-2 ring-gold/40">
+                {st.icon}
               </div>
-            </article>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-brick">Étape {i + 1}</p>
+              <h3 className="font-display text-2xl text-navy font-bold mt-1">{st.title}</h3>
+              <p className="text-ink/75 text-sm mt-2 leading-relaxed">{st.desc}</p>
+            </li>
           ))}
-        </div>
-
-        <div className="grid sm:grid-cols-3 gap-5 md:gap-6 mt-12 md:mt-16 max-w-4xl mx-auto">
-          {[
-            ["+15", "années d'expérience cumulées"],
-            ["5", "artisans serruriers mobiles"],
-            ["2009", "année de fondation de l'établissement"],
-          ].map(([n, l]) => (
-            <div key={l} className="corner-ornament bg-parchment/50 rounded-lg p-6 text-center">
-              <p className="font-display text-5xl text-navy font-bold">{n}</p>
-              <p className="text-sm text-ink/75 mt-2">{l}</p>
-            </div>
-          ))}
-        </div>
+        </ol>
       </div>
     </section>
   );
@@ -838,7 +795,7 @@ function ZoneSection() {
         <Ornament />
         <div className="mt-6 space-y-4 text-lg text-ink/85 leading-relaxed">
           <p>
-            Nous intervenons dans{" "}
+            Nos artisans partenaires interviennent dans{" "}
             <strong className="text-navy">{geo.deptLabel ?? "tout votre département"}</strong>
             {" "}en moins de <strong className="text-navy">20 minutes</strong>, ainsi que dans
             {" "}
@@ -848,11 +805,11 @@ function ZoneSection() {
             {" "}pour les cas d'urgence.
           </p>
           <p>
-            Notre maillage est dimensionné pour couvrir <strong className="text-navy">le département</strong> en priorité, avec des artisans positionnés dans les{" "}
+            Notre réseau couvre <strong className="text-navy">le département</strong> en priorité, avec des artisans partenaires dans les{" "}
             <strong className="text-navy">
               {geo.neighborCities ? `départements voisins (${geo.neighborCities})` : "départements voisins"}
             </strong>
-            {" "}prêts à intervenir en renfort sur les cas urgents — nuit, dimanche ou jour férié.
+            {" "}prêts à intervenir en renfort sur les cas urgents — en soirée, le dimanche ou un jour férié.
           </p>
         </div>
         <div className="mt-8 inline-flex items-center gap-3 bg-cream border border-gold/40 rounded-full px-6 py-3 shadow-card">
@@ -867,14 +824,14 @@ function ZoneSection() {
 /* ------------------------------ FAQ ------------------------------ */
 function FaqSection() {
   const items = [
-    ["Combien de temps pour arriver chez moi ?", "Notre délai d'intervention est de 20 minutes en moyenne pendant nos horaires (8h-22h, 7 jours sur 7)."],
+    ["Combien de temps pour arriver chez moi ?", "L'artisan partenaire missionné arrive en 20 minutes en moyenne pendant nos horaires (8h-22h, 7 jours sur 7)."],
     ["Comment connaître le prix avant l'intervention ?", "Le tarif vous est annoncé au téléphone avant que l'artisan ne se déplace, puis confirmé par un devis signé sur place."],
     ["Quels modes de paiement acceptez-vous ?", "Espèces, cartes bancaires (CB, Visa, Mastercard), virements, et prise en charge directe par votre assurance habitation. Le paiement n'est demandé qu'après validation du travail."],
-    ["Mon assurance habitation prend-elle en charge ?", "Dans la majorité des cas (effraction, perte de clés, sinistre), votre assurance prend en charge tout ou partie de l'intervention. Nous fournissons un constat détaillé pour faciliter votre dossier."],
-    ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "Nous priorisons toujours l'ouverture sans dégât. Si techniquement impossible, nous vous expliquons les options et leur coût avant toute intervention. Vous décidez."],
-    ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, nos artisans interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
+    ["Mon assurance habitation prend-elle en charge ?", "Dans la majorité des cas (effraction, perte de clés, sinistre), votre assurance prend en charge tout ou partie de l'intervention. Un constat détaillé vous est remis pour faciliter votre dossier."],
+    ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "L'artisan privilégie toujours l'ouverture sans dégât. Si c'est techniquement impossible, il vous explique les options et leur coût avant toute intervention. Vous décidez."],
+    ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, notre standard répond et nos artisans partenaires interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
     ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression."],
-    ["Combien d'années d'expérience avez-vous ?", "Depuis 2009, les Établissements Vasseur opèrent avec une équipe de 5 artisans serruriers expérimentés, formés en interne."],
+    ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Ets Vasseur prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
   ];
   return (
     <section className="py-16 md:py-24 bg-cream">
@@ -1159,7 +1116,7 @@ function Footer() {
               <p className="font-display text-xl text-cream font-bold">Ets Serrurier Vasseur</p>
             </div>
             <p className="text-sm text-cream/70 leading-relaxed">
-              L'artisan français — devis annoncé, prix tenu. Ets Serrurier Vasseur intervient dans {footerZone}.
+              Centrale de dépannage en serrurerie — devis annoncé, prix tenu. Ets Serrurier Vasseur missionne des artisans serruriers partenaires dans {footerZone}.
             </p>
           </div>
 

@@ -48,9 +48,6 @@ src/
 ├── routeTree.gen.ts            # généré auto par TanStack Router — NE PAS modifier à la main
 ├── router.tsx, server.ts, start.ts
 public/assets/
-├── hero-team.webp              # desktop landscape
-├── hero-team-mobile.webp       # mobile portrait
-├── team/[5 portraits].webp
 └── logos/[10 SVG]              # assurances + Trustpilot + Avis Vérifiés
 ```
 

@@ -9,55 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RgpdRouteImport } from './routes/rgpd'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MerciRouteImport } from './routes/merci'
+import { Route as RgpdRouteImport } from './routes/rgpd'
 
-const RgpdRoute = RgpdRouteImport.update({
-  id: '/rgpd',
-  path: '/rgpd',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MerciRoute = MerciRouteImport.update({
+  id: '/merci',
+  path: '/merci',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RgpdRoute = RgpdRouteImport.update({
+  id: '/rgpd',
+  path: '/rgpd',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/merci': typeof MerciRoute
   '/rgpd': typeof RgpdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/merci': typeof MerciRoute
   '/rgpd': typeof RgpdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/merci': typeof MerciRoute
   '/rgpd': typeof RgpdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/rgpd'
+  fullPaths: '/' | '/merci' | '/rgpd'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/rgpd'
-  id: '__root__' | '/' | '/rgpd'
+  to: '/' | '/merci' | '/rgpd'
+  id: '__root__' | '/' | '/merci' | '/rgpd'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MerciRoute: typeof MerciRoute
   RgpdRoute: typeof RgpdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/rgpd': {
-      id: '/rgpd'
-      path: '/rgpd'
-      fullPath: '/rgpd'
-      preLoaderRoute: typeof RgpdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -65,11 +68,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/merci': {
+      id: '/merci'
+      path: '/merci'
+      fullPath: '/merci'
+      preLoaderRoute: typeof MerciRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rgpd': {
+      id: '/rgpd'
+      path: '/rgpd'
+      fullPath: '/rgpd'
+      preLoaderRoute: typeof RgpdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MerciRoute: MerciRoute,
   RgpdRoute: RgpdRoute,
 }
 export const routeTree = rootRouteImport
