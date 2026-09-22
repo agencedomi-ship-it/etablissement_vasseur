@@ -253,18 +253,28 @@ function Hero() {
   const dynamicH1 = useDynamicH1();
   return (
     <section className="relative text-cream overflow-hidden bg-navy-deep">
-      {/* Halos dorés discrets */}
+      {/* Photo terrain en fond (technicien de dos, sans visage) */}
+      <picture>
+        <source media="(min-width: 768px)" srcSet="/assets/terrain/hero-palier.webp" width={1920} height={1078} />
+        <img
+          src="/assets/terrain/hero-palier-mobile.webp"
+          alt=""
+          width={720}
+          height={1280}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover object-[60%_center] md:object-center"
+        />
+      </picture>
+      {/* Voile bleu nuit pour la lisibilité */}
       <div
-        className="absolute inset-0 opacity-[0.09] pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 15% 15%, #C9A04E 0, transparent 42%), radial-gradient(circle at 85% 85%, #C9A04E 0, transparent 42%)",
-        }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, rgba(15,31,53,0.90) 0%, rgba(15,31,53,0.72) 45%, rgba(15,31,53,0.92) 100%)" }}
         aria-hidden
       />
-      <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: "inset 0 0 200px rgba(0,0,0,0.35)" }} aria-hidden />
+      <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: "inset 0 0 220px rgba(0,0,0,0.45)" }} aria-hidden />
 
-      <div className="relative max-w-6xl mx-auto container-px pt-9 pb-8 md:pt-16 md:pb-20 grid md:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-14 items-center">
+      <div className="relative max-w-4xl mx-auto container-px pt-9 pb-10 md:pt-20 md:pb-24 md:min-h-[720px] flex flex-col justify-center">
         <div className="text-center fade-up">
           <div className="flex justify-center mb-4 md:mb-6">
             <SealLogo size={80} />
@@ -273,11 +283,11 @@ function Hero() {
             Serrurier&nbsp;·&nbsp;Vantory&nbsp;·&nbsp;7j/7
           </p>
           <Ornament />
-          <h1 id="hero-h1" className="font-display text-3xl sm:text-5xl lg:text-6xl text-cream font-bold leading-[1.05] text-balance mt-1"
+          <h1 id="hero-h1" className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-cream font-bold leading-[1.05] text-balance mt-1"
             style={{ textShadow: "0 2px 24px rgba(0,0,0,0.4)" }}>
             {dynamicH1}
           </h1>
-          <p className="font-display italic text-xl sm:text-3xl lg:text-4xl text-gold mt-1.5 md:mt-4 leading-tight"
+          <p className="font-display italic text-xl sm:text-3xl md:text-4xl text-gold mt-1.5 md:mt-4 leading-tight"
             style={{ textShadow: "0 2px 16px rgba(0,0,0,0.45)" }}>
             Devis annoncé, prix tenu.
           </p>
@@ -333,26 +343,10 @@ function Hero() {
           </div>
         </div>
 
-        {/* Photo terrain (technicien de dos, sans visage) */}
-        <figure className="relative mx-auto w-full max-w-md md:max-w-none">
-          <div className="hidden md:block absolute -inset-3 rounded-2xl border border-gold/30 pointer-events-none" aria-hidden />
-          <picture>
-            <source media="(min-width: 768px)" srcSet="/assets/terrain/intervention-palier.webp" width={960} height={1200} />
-            <img
-              src="/assets/terrain/intervention-palier-mobile.webp"
-              alt="Technicien serrurier remplaçant le cylindre d'une porte palière"
-              width={1000}
-              height={750}
-              fetchPriority="high"
-              decoding="async"
-              className="relative block w-full aspect-[4/3] md:aspect-[4/5] object-cover rounded-xl ring-1 ring-gold/40 shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
-            />
-          </picture>
-        </figure>
       </div>
 
       {/* Mobile features strip */}
-      <div className="md:hidden bg-navy-deep border-t border-gold/30">
+      <div className="md:hidden relative bg-navy-deep border-t border-gold/30">
         <div className="container-px py-4 grid grid-cols-3 max-w-xl mx-auto">
           {[
             { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
