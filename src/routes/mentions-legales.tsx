@@ -47,6 +47,7 @@ function MentionsLegalesPage() {
         <dl>
           <Row label="Société">{HEBERGEUR.nom}</Row>
           <Row label="Adresse">{HEBERGEUR.adresse}</Row>
+          <Row label="Téléphone">{HEBERGEUR.telephone}</Row>
           <Row label="Site">
             <a href={HEBERGEUR.site} target="_blank" rel="noopener noreferrer" className="text-navy underline underline-offset-2">www.cloudflare.com</a>
           </Row>

@@ -216,7 +216,7 @@ function PhoneButton({ small = false }: { small?: boolean }) {
       <I.phone />
       <span className="text-left leading-tight">
         <span className="block text-base md:text-lg">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
-        <span className="block text-[10px] md:text-xs uppercase tracking-wider text-navy/75 font-bold">Appel non surtaxé</span>
+        <span className="block text-[10px] md:text-xs uppercase tracking-wider text-navy/90 font-bold">Appel non surtaxé</span>
       </span>
     </a>
   );
@@ -1120,7 +1120,7 @@ function DevisForm() {
               : "Être rappelé pour un devis"}
           </button>
 
-          <p className="text-xs text-ink/60 text-center">
+          <p className="text-xs text-ink/75 text-center">
             En envoyant ce formulaire, vous acceptez d'être recontacté par
             téléphone, selon nos{" "}
             <a href="/cgv" className="underline underline-offset-2 hover:text-navy">conditions générales</a>.
@@ -1213,7 +1213,7 @@ function MobileStickyCta() {
         <I.phone size={18} />
         <span className="leading-tight text-left min-w-0">
           <span className="block text-[15px] tracking-tight whitespace-nowrap">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
-          <span className="block text-[10px] uppercase tracking-wider text-navy/75 font-bold whitespace-nowrap">Non surtaxé · 7j/7</span>
+          <span className="block text-[10px] uppercase tracking-wider text-navy/90 font-bold whitespace-nowrap">Non surtaxé · 7j/7</span>
         </span>
       </a>
     </div>

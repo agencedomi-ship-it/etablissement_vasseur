@@ -26,5 +26,6 @@ export const EDITEUR = {
 export const HEBERGEUR = {
   nom: "Cloudflare, Inc.",
   adresse: "101 Townsend Street, San Francisco, CA 94107, États-Unis",
+  telephone: "+1 888 993 5273", // source : rapport annuel 10-K (SEC), page de couverture
   site: "https://www.cloudflare.com",
 };
