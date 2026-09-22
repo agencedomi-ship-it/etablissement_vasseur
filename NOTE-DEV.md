@@ -48,7 +48,6 @@ src/
 ├── routeTree.gen.ts            # généré auto par TanStack Router — NE PAS modifier à la main
 ├── router.tsx, server.ts, start.ts
 public/assets/
-└── logos/[8 SVG]               # assureurs (affichés à titre indicatif)
 ```
 
 ## ⚡ Dynamiques côté client
@@ -138,7 +137,12 @@ toujours `gclid`/`kw` inchangés.
 
 ## 🛡️ RGPD
 
-Page `/rgpd` : droits, personnalisation par zone Google Ads (sans IP ni GPS), méta `noindex`.
+Page `/rgpd` : droits, personnalisation par zone Google Ads (sans IP ni GPS), cookies, méta `noindex`.
+
+**Consentement** : `src/lib/consentement.ts` + `src/components/bandeau-cookies.tsx`. Google Tag Manager
+(GTM-WCGZJJ8H, donc Google Ads, remarketing et suivi d'appels) n'est chargé qu'après « Accepter » ; mode de
+consentement Google v2 « refusé » par défaut (script en tête de `__root.tsx`). Choix conservé 6 mois, modifiable
+via « Gérer les cookies » (pied de page). Un refus supprime les cookies `_gcl_*` / `_ga*`.
 
 Lien discret dans le footer sous le copyright.
 

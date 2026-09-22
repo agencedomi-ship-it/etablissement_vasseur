@@ -1,11 +1,11 @@
 // Hooks de personnalisation dynamique de la landing :
 // - useKeyword() lit le mot-clé Google Ads dans ?kw= (ligne dédiée sous le sous-titre de l'en-tête)
 // - useDynamicH1() renvoie le H1 (département Google Ads ou marque)
-// - useGeoDept() renvoie le département Google Ads (?loc=, voir lib/geo-ads) avec ses voisins.
+// - useGeoDept() renvoie le département Google Ads (?loc=, voir lib/geo-ads).
 //   Sans lieu Google Ads certain : contenu générique.
 
 import { useEffect, useMemo, useState } from "react";
-import { FR_DEPT, DEPT_ADJ, DEPT_CITY } from "@/lib/geo-data";
+import { FR_DEPT } from "@/lib/geo-data";
 import { useLieuGoogleAds } from "@/lib/geo-ads";
 
 const FALLBACK_H1 = "Serrurier Vantory";
@@ -41,63 +41,20 @@ export function useDynamicH1(): string {
 }
 
 export type GeoData = {
-  /** "07" et "Ardèche", ou null si le département n'est pas connu */
+  /** "92" et "Hauts-de-Seine", ou null si le département n'est pas connu avec certitude */
   deptCode: string | null;
   deptName: string | null;
-  /** "07 — Ardèche" ou null tant que la géoloc n'a pas répondu / non localisé */
+  /** "92 — Hauts-de-Seine" (zone d'intervention) */
   deptLabel: string | null;
-  /** "Hauts-de-Seine (92), Seine-Saint-Denis (93), Val-de-Marne (94)" */
-  neighborsLabel: string | null;
-  /** "Nanterre (92), Bobigny (93) et Créteil (94)" — villes top des voisins */
-  neighborCities: string | null;
-  /** Texte court pour le footer : "tout le 07 — Ardèche et les départements limitrophes" */
-  footerLabel: string | null;
 };
 
-const EMPTY: GeoData = {
-  deptCode: null,
-  deptName: null,
-  deptLabel: null,
-  neighborsLabel: null,
-  neighborCities: null,
-  footerLabel: null,
-};
+const EMPTY: GeoData = { deptCode: null, deptName: null, deptLabel: null };
 
 function buildGeo(code: string | null | undefined): GeoData {
   if (!code) return EMPTY;
   const name = FR_DEPT[code];
   if (!name) return EMPTY;
-
-  const adjList = (DEPT_ADJ[code] || "").split(" ").filter(Boolean);
-
-  // Liste des noms de départements voisins (max 4) — pour la zone d'intervention
-  const neighborsLabel = adjList.length
-    ? adjList
-        .slice(0, 4)
-        .map((c) => FR_DEPT[c] && `${FR_DEPT[c]} (${c})`)
-        .filter(Boolean)
-        .join(", ")
-    : null;
-
-  // Villes chef-lieu des voisins (max 4) — pour le paragraphe 2 de la zone
-  const cities = adjList
-    .slice(0, 4)
-    .map((c) => (DEPT_CITY[c] ? `${DEPT_CITY[c]} (${c})` : null))
-    .filter(Boolean) as string[];
-  const neighborCities =
-    cities.length === 0
-      ? null
-      : cities.length === 1
-        ? cities[0]
-        : cities.slice(0, -1).join(", ") + " et " + cities[cities.length - 1];
-
-  // Footer
-  const footerLabel = adjList.length
-    ? `tout le ${code} — ${name} et les départements limitrophes`
-    : `tout le ${code} — ${name}`;
-
-
-  return { deptCode: code, deptName: name, deptLabel: `${code} — ${name}`, neighborsLabel, neighborCities, footerLabel };
+  return { deptCode: code, deptName: name, deptLabel: `${code} — ${name}` };
 }
 
 /** Département du visiteur d'après Google Ads (?loc=) ; EMPTY tant qu'il n'est pas connu avec certitude. */

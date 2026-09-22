@@ -10,6 +10,7 @@ import {
 
 import { useEffect } from "react";
 
+import { BandeauCookies } from "@/components/bandeau-cookies";
 import { demarrerGeoAds } from "@/lib/geo-ads";
 import appCss from "../styles.css?url";
 
@@ -79,13 +80,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Serrurier Vantory — Devis annoncé, prix tenu | Intervient en 30 mn" },
-      { name: "description", content: "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, pris en charge par la plupart des assurances." },
+      { title: "Serrurier Vantory — Dépannage 7j/7, devis avant travaux" },
+      { name: "description", content: "Serrurier Vantory : mise en relation avec un artisan serrurier près de chez vous, 7j/7 de 8h à 22h. Tarif annoncé, devis avant travaux, paiement après." },
       { name: "theme-color", content: "#1A2F4E" },
-      { property: "og:title", content: "Serrurier Vantory — Devis annoncé, prix tenu" },
-      { property: "og:description", content: "Un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé, paiement après travaux." },
+      { property: "og:title", content: "Serrurier Vantory — Un artisan près de chez vous" },
+      { property: "og:description", content: "Mise en relation avec un artisan serrurier, 7j/7 de 8h à 22h. Tarif annoncé, devis avant travaux, paiement après." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:locale", content: "fr_FR" },
+      { property: "og:site_name", content: "Serrurier Vantory" },
+      { property: "og:image", content: "https://serrurier-vantory.fr/og-vantory.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -114,32 +120,23 @@ function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
       <head>
-        {/* Google Tag Manager */}
+        {/* Consentement + Google Tag Manager : rien n'est chargé chez Google sans accord (voir lib/consentement). */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WCGZJJ8H');`,
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+window.__chargerGTM=function(){if(window.__gtmCharge)return;window.__gtmCharge=true;
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WCGZJJ8H');};
+try{var c=JSON.parse(localStorage.getItem('vantory-consentement')||'null');
+if(c&&c.choix==='accepte'&&Date.now()-c.t<182*864e5){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});window.__chargerGTM();}}catch(e){}`,
           }}
         />
-        {/* End Google Tag Manager */}
 
         <HeadContent />
       </head>
       <body>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WCGZJJ8H"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
-
         {children}
         <Scripts />
       </body>
@@ -158,6 +155,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <BandeauCookies />
     </QueryClientProvider>
   );
 }

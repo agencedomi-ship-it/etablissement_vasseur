@@ -71,7 +71,7 @@ function MerciPage() {
               </svg>
               09 70 70 82 11
             </a>
-            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-gold/80">Appel gratuit</p>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-gold/80">Appel non surtaxé</p>
           </div>
 
           <Link

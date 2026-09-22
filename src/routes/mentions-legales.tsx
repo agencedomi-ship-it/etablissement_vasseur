@@ -36,7 +36,7 @@ function MentionsLegalesPage() {
           <Row label="Téléphone"><PhoneLink /></Row>
           {EDITEUR.email && (
             <Row label="E-mail">
-              <a href={`mailto:${EDITEUR.email}`} className="text-gold font-semibold">{EDITEUR.email}</a>
+              <a href={`mailto:${EDITEUR.email}`} className="text-navy font-semibold underline underline-offset-2">{EDITEUR.email}</a>
             </Row>
           )}
           <Row label="Directeur de la publication">{EDITEUR.president}, président</Row>
@@ -48,7 +48,7 @@ function MentionsLegalesPage() {
           <Row label="Société">{HEBERGEUR.nom}</Row>
           <Row label="Adresse">{HEBERGEUR.adresse}</Row>
           <Row label="Site">
-            <a href={HEBERGEUR.site} target="_blank" rel="noopener noreferrer" className="text-gold underline">www.cloudflare.com</a>
+            <a href={HEBERGEUR.site} target="_blank" rel="noopener noreferrer" className="text-navy underline underline-offset-2">www.cloudflare.com</a>
           </Row>
         </dl>
       </LegalSection>
@@ -56,7 +56,7 @@ function MentionsLegalesPage() {
       <LegalSection title="Service proposé">
         <p>
           Les conditions dans lesquelles {EDITEUR.nomCommercial} traite votre demande et organise l'intervention sont
-          décrites dans les <Link to="/cgv" className="text-gold underline">conditions générales</Link>.
+          décrites dans les <Link to="/cgv" className="text-navy underline underline-offset-2">conditions générales</Link>.
         </p>
       </LegalSection>
 
@@ -70,7 +70,7 @@ function MentionsLegalesPage() {
       <LegalSection title="Données personnelles">
         <p>
           Le traitement de vos données est décrit dans la{" "}
-          <Link to="/rgpd" className="text-gold underline">politique de confidentialité</Link>.
+          <Link to="/rgpd" className="text-navy underline underline-offset-2">politique de confidentialité</Link>.
         </p>
       </LegalSection>
     </LegalPage>

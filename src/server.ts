@@ -75,18 +75,35 @@ function geoResponse(params: URLSearchParams): Response {
   });
 }
 
+const DOMAINE = "serrurier-vantory.fr";
+
+// En-têtes de sécurité sur les pages et l'API (les fichiers statiques les reçoivent via public/_headers).
+// Les adresses techniques (workers.dev, aperçus) sont exclues des moteurs de recherche : seul le domaine compte.
+function securiser(reponse: Response, hote: string): Response {
+  const r = new Response(reponse.body, reponse);
+  r.headers.set("X-Content-Type-Options", "nosniff");
+  r.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  r.headers.set("X-Frame-Options", "SAMEORIGIN");
+  r.headers.set("Permissions-Policy", "geolocation=(), camera=(), microphone=(), payment=()");
+  if (hote === DOMAINE) r.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  else if (hote !== "localhost") r.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return r;
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     const url = new URL(request.url);
-    if (url.hostname.startsWith("www.")) {
-      url.hostname = url.hostname.slice(4);
+    // http:// → https://, et www → domaine nu, en une seule redirection.
+    if (url.hostname.endsWith(DOMAINE) && (url.protocol === "http:" || url.hostname.startsWith("www."))) {
+      url.protocol = "https:";
+      url.hostname = DOMAINE;
       return Response.redirect(url.toString(), 301);
     }
-    if (url.pathname === "/api/geo") return geoResponse(url.searchParams);
+    if (url.pathname === "/api/geo") return securiser(geoResponse(url.searchParams), url.hostname);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return securiser(await normalizeCatastrophicSsrResponse(response), url.hostname);
     } catch (error) {
       console.error(error);
       return brandedErrorResponse();

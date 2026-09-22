@@ -23,7 +23,7 @@ function CgvPage() {
           ({EDITEUR.rcs}).
         </p>
         <p>
-          {EDITEUR.nomCommercial} vous met en relation avec un technicien de son <strong>réseau de techniciens serruriers certifiés</strong>,
+          {EDITEUR.nomCommercial} vous met en relation avec un technicien de son <strong>réseau de techniciens serruriers sélectionnés</strong>,
           professionnels indépendants intervenant près de chez vous, pour le dépannage, l'ouverture de porte, le changement
           de serrure et la sécurisation de votre logement ou de vos locaux.
         </p>
@@ -122,7 +122,7 @@ function CgvPage() {
       <LegalSection title="11. Données personnelles">
         <p>
           Le traitement de vos données est décrit dans la{" "}
-          <Link to="/rgpd" className="text-gold underline">politique de confidentialité</Link>.
+          <Link to="/rgpd" className="text-navy underline underline-offset-2">politique de confidentialité</Link>.
         </p>
       </LegalSection>
 

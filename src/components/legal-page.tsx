@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { ouvrirBandeauCookies } from "@/lib/consentement";
 import { EDITEUR } from "@/lib/editeur";
 
 export function LegalPage({ title, updated, children }: { title: string; updated: string; children: ReactNode }) {
@@ -24,6 +25,7 @@ export function LegalPage({ title, updated, children }: { title: string; updated
           <Link to="/mentions-legales" className="text-navy hover:text-gold font-semibold transition-colors">Mentions légales</Link>
           <Link to="/cgv" className="text-navy hover:text-gold font-semibold transition-colors">Conditions générales</Link>
           <Link to="/rgpd" className="text-navy hover:text-gold font-semibold transition-colors">Confidentialité</Link>
+          <button type="button" onClick={ouvrirBandeauCookies} className="text-navy hover:text-gold font-semibold transition-colors">Gérer les cookies</button>
           <Link to="/" className="text-navy hover:text-gold font-semibold transition-colors">Accueil</Link>
         </nav>
       </article>
@@ -42,7 +44,7 @@ export function LegalSection({ title, children }: { title: string; children: Rea
 
 export function PhoneLink() {
   return (
-    <a href={EDITEUR.telephoneLien} className="text-gold font-semibold">
+    <a href={EDITEUR.telephoneLien} className="text-navy font-semibold underline underline-offset-2">
       {EDITEUR.telephone}
     </a>
   );

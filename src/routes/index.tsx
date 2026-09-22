@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { type FormEvent, useId, useState } from "react";
 import { useDynamicH1, useGeoDept, useKeyword } from "@/hooks/use-dynamic-content";
+import { ouvrirBandeauCookies } from "@/lib/consentement";
 import { EDITEUR, SITE_URL } from "@/lib/editeur";
 
 function pushGtmEvent(event: string, data: Record<string, unknown> = {}) {
@@ -15,15 +16,38 @@ export const Route = createFileRoute("/")({
   component: HomePage,
   head: () => ({
     meta: [
-      { title: "Serrurier Vantory — Devis annoncé, prix tenu | Intervient en 30 mn" },
+      { title: "Serrurier Vantory — Dépannage 7j/7, devis avant travaux" },
       {
         name: "description",
         content:
-          "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, pris en charge par la plupart des assurances.",
+          "Serrurier Vantory : mise en relation avec un artisan serrurier près de chez vous, 7j/7 de 8h à 22h. Tarif annoncé, devis avant travaux, paiement après.",
       },
       { property: "og:url", content: `${SITE_URL}/` },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: EDITEUR.nomCommercial,
+          legalName: EDITEUR.raisonSociale,
+          url: `${SITE_URL}/`,
+          image: `${SITE_URL}/og-vantory.jpg`,
+          telephone: "+33970708211",
+          description: "Mise en relation avec des artisans serruriers partenaires, 7j/7 de 8h à 22h.",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "149 avenue du Maine",
+            postalCode: "75014",
+            addressLocality: "Paris",
+            addressCountry: "FR",
+          },
+          identifier: EDITEUR.siret,
+        }),
+      },
+    ],
   }),
 });
 
@@ -192,7 +216,7 @@ function PhoneButton({ small = false }: { small?: boolean }) {
       <I.phone />
       <span className="text-left leading-tight">
         <span className="block text-base md:text-lg">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
-        <span className="block text-[10px] md:text-xs uppercase tracking-wider text-navy/75 font-bold">Appel gratuit</span>
+        <span className="block text-[10px] md:text-xs uppercase tracking-wider text-navy/75 font-bold">Appel non surtaxé</span>
       </span>
     </a>
   );
@@ -211,7 +235,6 @@ function HomePage() {
       <AntiArnaqueSection />
       <AssuranceSection />
       <ZoneSection />
-      <ReviewsSection />
       <QuiSommesNousSection />
       <FonctionnementSection />
       <FaqSection />
@@ -240,7 +263,7 @@ function Header() {
             <I.phone size={18} />
             <span className="leading-tight text-left">
               <span className="block text-sm md:text-lg whitespace-nowrap">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
-              <span className="block text-[9px] md:text-xs text-gold font-bold uppercase tracking-wide">Appel gratuit</span>
+              <span className="block text-[9px] md:text-xs text-gold font-bold uppercase tracking-wide">Appel non surtaxé</span>
             </span>
           </a>
           <a href="#devis" className="btn-primary !py-2 !px-3 text-[11px] md:text-sm uppercase tracking-wide leading-tight text-center">
@@ -310,7 +333,7 @@ function Hero() {
           <div className="mt-7 md:mt-8">
             <p className="inline-flex items-center gap-1.5 text-[11px] md:text-xs font-bold text-navy bg-gold px-2.5 md:px-3 py-0.5 md:py-1 rounded-full mb-2 md:mb-3 tracking-wide shadow-md">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-              Chez vous en moins de 30 min
+              Chez vous en 30 min en moyenne
             </p>
             <br />
             <p className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4 md:mb-6">
@@ -325,7 +348,7 @@ function Hero() {
             <a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="btn-primary !py-2.5 !px-2 text-xs uppercase tracking-wide leading-tight flex-col">
               <I.phone size={16} />
               <span className="block">09 70 70 82 11</span>
-              <span className="block text-[9px]">Appel gratuit</span>
+              <span className="block text-[9px]">Appel non surtaxé</span>
             </a>
             <a href="#devis" className="inline-flex items-center justify-center gap-2 border-2 border-cream/85 text-cream hover:bg-cream hover:text-navy font-semibold uppercase tracking-wide text-xs px-3 py-3.5 rounded-md transition-all backdrop-blur bg-navy/40">
               Demander un devis
@@ -350,7 +373,7 @@ function Hero() {
             {[
               { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
               { icon: <I.key className="text-gold" />, label: <>Paiement<br />après travaux</> },
-              { icon: <I.shield className="text-gold" />, label: <>Pris en charge<br />par l'assurance</> },
+              { icon: <I.shield className="text-gold" />, label: <>Prise en charge<br />assurance possible</> },
             ].map((t, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 {t.icon}
@@ -368,7 +391,7 @@ function Hero() {
           {[
             { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
             { icon: <I.key className="text-gold" />, label: <>Paiement<br />après travaux</> },
-            { icon: <I.shield className="text-gold" />, label: <>Pris en charge<br />par l'assurance</> },
+            { icon: <I.shield className="text-gold" />, label: <>Prise en charge<br />assurance possible</> },
           ].map((t, i) => (
             <div
               key={i}
@@ -388,8 +411,8 @@ function Hero() {
 function TrustBar() {
   const items = [
     { icon: <I.doc />, label: "Devis annoncé" },
-    { icon: <I.clock />, label: "Intervient en 30 mn" },
-    { icon: <I.shield size={26} />, label: "Pris en charge par l'assurance" },
+    { icon: <I.clock />, label: "30 min en moyenne" },
+    { icon: <I.shield size={26} />, label: "Prise en charge assurance possible" },
     { icon: <I.card />, label: "Paiement après travaux" },
   ];
   return (
@@ -411,7 +434,7 @@ function TrustBar() {
 /* ------------------------------ URGENCE ------------------------------ */
 function UrgenceSection() {
   const cards = [
-    { icon: <I.clock />, title: "Intervention sous 30 minutes" },
+    { icon: <I.clock />, title: "Intervention en 30 min en moyenne" },
     { icon: <I.cal />, title: "Disponible 7j/7, 8h à 22h" },
     { icon: <I.phone size={32} />, title: "Un conseiller répond, un artisan se déplace" },
   ];
@@ -419,10 +442,10 @@ function UrgenceSection() {
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px text-center">
         <p className="section-eyebrow mb-3">Urgence serrurier</p>
-        <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 30 minutes</h2>
+        <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 30 minutes en moyenne</h2>
         <Ornament />
         <p className="section-subtitle mx-auto">
-          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous, matin, midi, soir et nuit.
+          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous, matin, midi et soir, 7j/7 de 8h à 22h.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-12">
@@ -460,7 +483,7 @@ const PRESTATIONS = [
   },
   {
     title: "Cylindre haute sécurité",
-    desc: "Pose de cylindres certifiés anti-effraction, anti-perçage et anti-crochetage.",
+    desc: "Pose de cylindres haute sécurité, résistants au perçage et au crochetage.",
     img: "cylindre-haute-securite",
     prix: "dès 189 €",
   },
@@ -575,7 +598,7 @@ function TarifsSection() {
           <p className="section-eyebrow mb-3">Transparence</p>
           <h2 className="section-title">Tarifs transparents</h2>
           <Ornament />
-          <p className="section-subtitle mx-auto">Fourchettes affichées pour les prestations courantes. Le tarif exact est confirmé au téléphone avant intervention.</p>
+          <p className="section-subtitle mx-auto">Fourchettes de prix TTC pour les prestations courantes. Le tarif exact est confirmé au téléphone avant tout déplacement. Devis gratuit.</p>
         </div>
 
         <div className="card-artisan corner-ornament overflow-hidden p-0">
@@ -583,7 +606,7 @@ function TarifsSection() {
             <thead className="bg-gradient-to-r from-navy via-[#22386b] to-navy text-cream">
               <tr>
                 <th className="text-left px-5 py-4 font-semibold text-sm uppercase tracking-wider">Prestation</th>
-                <th className="text-right px-5 py-4 font-semibold whitespace-nowrap text-sm uppercase tracking-wider">Tarif</th>
+                <th className="text-right px-5 py-4 font-semibold whitespace-nowrap text-sm uppercase tracking-wider">Tarif TTC</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-parchment">
@@ -670,7 +693,6 @@ function AntiArnaqueSection() {
 
 /* ------------------------------ ASSURANCES ------------------------------ */
 function AssuranceSection() {
-  const logos = ["maif", "macif", "mma", "axa", "allianz", "groupama", "matmut", "maaf"];
   const covered = [
     "Intervention serrurier d'urgence",
     "Sécurisation immédiate de la porte",
@@ -683,35 +705,14 @@ function AssuranceSection() {
       <div className="max-w-5xl mx-auto container-px">
         <div className="text-center mb-10">
           <p className="section-eyebrow mb-3">Prise en charge</p>
-          <h2 className="section-title">Pris en charge par la plupart des assurances habitation</h2>
+          <h2 className="section-title">Souvent pris en charge par votre assurance habitation</h2>
           <Ornament />
-          <p className="section-subtitle mx-auto">Nous nous occupons des démarches avec votre assureur. Constat d'intervention détaillé fourni systématiquement.</p>
+          <p className="section-subtitle mx-auto">En cas d'effraction ou de sinistre, beaucoup de contrats prévoient une prise en charge. L'artisan vous remet une facture détaillée à transmettre à votre assureur&nbsp;; la prise en charge dépend des garanties de votre contrat.</p>
         </div>
 
-        <div className="relative overflow-hidden mb-5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-          <div className="defile-logos flex w-max gap-3">
-            {[...logos, ...logos].map((l, i) => (
-              <div key={i} aria-hidden={i >= logos.length} className="w-36 sm:w-40 aspect-[16/9] shrink-0 bg-white border border-parchment rounded-md flex items-center justify-center p-3">
-                <img src={`/assets/logos/${l}.svg`} alt={i < logos.length ? l : ""} loading="lazy" decoding="async" width={120} height={48} className="max-h-full max-w-full object-contain opacity-85" />
-              </div>
-            ))}
-          </div>
-        </div>
-        <p className="text-center text-sm text-ink/70 italic">
-          …et toutes les autres compagnies d'assurance habitation, y compris celles non mentionnées ci-dessus.
-        </p>
-        <p className="text-center text-xs text-ink/55 mt-2 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Logos présentés à titre indicatif, pour illustrer les principaux assureurs habitation. Ils ne traduisent aucun partenariat ni agrément de ces compagnies&nbsp;; la prise en charge dépend des garanties de votre contrat.
-        </p>
-
-        <div className="mb-10 card-artisan p-6 flex flex-col sm:flex-row items-start gap-4">
-          <div className="shrink-0 w-12 h-12 rounded-full bg-navy/5 ring-1 ring-gold/30 flex items-center justify-center text-navy">
-            <I.card />
-          </div>
-          <div className="text-sm md:text-[15px] text-ink/85 leading-relaxed">
-            <p className="font-semibold text-navy mb-1 font-display text-lg">Assistance incluse à votre carte bancaire</p>
-            <p>De nombreuses cartes bleues premium (Visa Premier, Visa Infinite, Mastercard Gold, World Elite, American Express Gold ou Platinum…) intègrent une <strong className="text-navy">assistance dépannage serrurier d'urgence</strong> à domicile. Nous vous accompagnons gratuitement dans la démarche auprès de votre banque pour faire jouer cette prise en charge.</p>
-          </div>
+        <div className="mb-10 card-illustree p-6 text-sm md:text-[15px] text-ink/85 leading-relaxed">
+          <p className="font-semibold text-navy mb-1 font-display text-lg">Assistance de votre carte bancaire</p>
+          <p>Certaines cartes bancaires haut de gamme incluent une assistance dépannage à domicile. Vérifiez les garanties de votre carte auprès de votre banque avant l'intervention.</p>
         </div>
 
         <div className="bg-parchment/70 rounded-lg p-6 md:p-8 corner-ornament">
@@ -725,66 +726,6 @@ function AssuranceSection() {
             ))}
           </ul>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------ REVIEWS ------------------------------ */
-const REVIEWS = [
-  ["M", "Marie L.", "il y a 2 semaines", "Intervention rapide et tarif annoncé au téléphone. Pas de mauvaise surprise. Très satisfaite de l'artisan, très professionnel.", "#C8527A", "#fff"],
-  ["T", "Thomas D.", "il y a 1 mois", "Ma serrure était bloquée un dimanche soir, ils sont venus en 25 minutes. Travail propre, devis respecté. Je recommande.", "#2D7A3A", "#fff"],
-  ["S", "Sophie M.", "il y a 3 semaines", "Devis clair, paiement après l'intervention. Tout est expliqué. Artisan honnête, ça change.", "#1A2F4E", "#fff"],
-  ["P", "Pierre R.", "il y a 5 jours", "Effraction sur ma porte, intervention rapide et constat fourni pour mon assurance. Tout a été pris en charge sans problème.", "#9B2A2A", "#fff"],
-  ["C", "Camille V.", "il y a 4 jours", "Serrure cassée un samedi soir, dépanné en moins d'une demi-heure. Tarif respecté à l'euro près. Très bon service.", "#5F7A8C", "#fff"],
-  ["J", "Julien R.", "il y a 1 semaine", "Intervention nickel, l'artisan a pris le temps d'expliquer ce qu'il faisait. Devis tenu, paiement après. Rien à dire.", "#F2B73B", "#1A2F4E"],
-  ["M", "Mathilde K.", "il y a 2 semaines", "Cylindre haute sécurité installé en 40 minutes. Travail propre, conseils utiles pour l'entretien. Je recommande sans hésiter.", "#C8527A", "#fff"],
-  ["A", "Antoine D.", "il y a 6 jours", "Porte claquée à 22h, ils sont venus vite, dépanné sans casser. Tarif annoncé respecté. Sérieux.", "#2D7A3A", "#fff"],
-  ["É", "Émilie S.", "il y a 3 semaines", "Mon assurance a pris en charge l'intervention après effraction. Constat fourni clair, pas de stress. Merci.", "#1A2F4E", "#fff"],
-  ["N", "Nathalie B.", "il y a 1 semaine", "Très bonne expérience. Devis signé sur place, prix exact. Aucun frais surprise.", "#9B2A2A", "#fff"],
-  ["L", "Léa T.", "il y a 4 jours", "Très bonne intervention, prix exact annoncé. Artisan professionnel, j'ai été rassurée.", "#F2B73B", "#1A2F4E"],
-] as const;
-
-function ReviewsSection() {
-  return (
-    <section className="py-16 md:py-24 bg-cream">
-      <div className="max-w-6xl mx-auto container-px">
-        <div className="text-center mb-10">
-          <p className="section-eyebrow mb-3">Avis clients</p>
-          <h2 className="section-title">Ce que nos clients disent de nous</h2>
-          <div className="flex items-center justify-center gap-1 mt-5" aria-label="Note 4,8 sur 5">
-            {Array.from({ length: 5 }).map((_, i) => <I.star key={i} size={28} className="text-[#F2B73B]" />)}
-          </div>
-          <p className="font-display text-4xl text-navy font-bold mt-3">4,8 / 5</p>
-          <p className="text-ink/70 text-sm mt-1">Basé sur 127 avis clients</p>
-        </div>
-
-        <div className="relative -mx-5 md:-mx-8">
-          <div className="reviews-track flex gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory scroll-px-5 md:scroll-px-8 px-5 md:px-8 pb-5">
-            {REVIEWS.map(([initial, name, when, body, bg, fg], i) => {
-              return (
-              <article key={i} className="snap-start shrink-0 w-72 sm:w-80 bg-[#fbf4e8] rounded-xl p-5 shadow-card border border-gold/20 flex flex-col hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
-                <div className="flex gap-0.5 mb-3" aria-label="5 étoiles">
-                  {Array.from({ length: 5 }).map((_, j) => <I.star key={j} className="text-gold" />)}
-                </div>
-                <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm shrink-0 ring-2 ring-white shadow-sm"
-                       style={{ backgroundColor: bg, color: fg }}>
-                    {initial}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-navy text-sm leading-tight">{name}</p>
-                    <p className="text-xs text-ink/50">{when}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-ink/85 leading-relaxed">{body}</p>
-              </article>
-              );
-            })}
-          </div>
-          <p className="md:hidden text-center text-xs text-ink/50 italic mt-2 px-5">← faites défiler pour voir plus d'avis →</p>
-        </div>
-
       </div>
     </section>
   );
@@ -825,7 +766,7 @@ function QuiSommesNousSection() {
         <div className="grid md:grid-cols-3 gap-5 md:gap-6 max-w-5xl mx-auto">
           {exigences.map((e) => (
             <div key={e.title} className="card-illustree p-7 text-center">
-              <p className="font-display text-5xl text-gold font-bold leading-none">{e.n}</p>
+              <p className="font-display text-5xl text-brick font-bold leading-none">{e.n}</p>
               <h3 className="font-display text-2xl text-navy font-bold mt-3">{e.title}</h3>
               <p className="text-ink/75 text-sm mt-2 leading-relaxed">{e.desc}</p>
             </div>
@@ -900,7 +841,7 @@ function ZoneSection() {
         <Ornament />
         <div className="mt-6 space-y-4 text-lg text-ink/85 leading-relaxed">
           <p>
-            Nos artisans partenaires interviennent dans{" "}
+            Nous recherchons pour vous l'artisan partenaire disponible le plus proche, dans{" "}
             {geo.deptLabel ? (
               <>
                 tout le <strong className="text-navy">{geo.deptLabel}</strong>
@@ -908,20 +849,9 @@ function ZoneSection() {
             ) : (
               <strong className="text-navy">tout votre département</strong>
             )}
-            {" "}en moins de <strong className="text-navy">30 minutes</strong>, ainsi que dans
-            {" "}
-            <strong className="text-navy">
-              {geo.neighborsLabel ? `les départements limitrophes (${geo.neighborsLabel})` : "les départements limitrophes"}
-            </strong>
-            {" "}pour les cas d'urgence.
+            , et nous vous annonçons son délai d'arrivée avant tout déplacement.
           </p>
-          <p>
-            Notre réseau couvre <strong className="text-navy">le département</strong> en priorité, avec des artisans partenaires dans les{" "}
-            <strong className="text-navy">
-              {geo.neighborCities ? `départements voisins (${geo.neighborCities})` : "départements voisins"}
-            </strong>
-            {" "}prêts à intervenir en renfort sur les cas urgents — en soirée, le dimanche ou un jour férié.
-          </p>
+          <p>Service joignable 7 jours sur 7, de 8h à 22h, dimanches et jours fériés compris.</p>
         </div>
         <div className="mt-8 inline-flex items-center gap-3 bg-cream border border-gold/40 rounded-full px-6 py-3 shadow-card">
           <I.clock className="text-navy" />
@@ -937,8 +867,8 @@ function FaqSection() {
   const items = [
     ["Combien de temps pour arriver chez moi ?", "L'artisan partenaire missionné arrive en 30 minutes en moyenne pendant nos horaires (8h-22h, 7 jours sur 7)."],
     ["Comment connaître le prix avant l'intervention ?", "Le tarif vous est annoncé au téléphone avant que l'artisan ne se déplace, puis confirmé par un devis signé sur place."],
-    ["Quels modes de paiement acceptez-vous ?", "Espèces, cartes bancaires (CB, Visa, Mastercard), virements, et prise en charge directe par votre assurance habitation. Le paiement n'est demandé qu'après validation du travail."],
-    ["Mon assurance habitation prend-elle en charge ?", "Dans la majorité des cas (effraction, perte de clés, sinistre), votre assurance prend en charge tout ou partie de l'intervention. Un constat détaillé vous est remis pour faciliter votre dossier."],
+    ["Quels modes de paiement sont acceptés ?", "Le paiement se fait auprès de l'artisan, uniquement après validation du travail : carte bancaire, espèces ou virement selon l'artisan. Sa facture détaillée vous permet ensuite de faire jouer votre assurance si votre contrat le prévoit."],
+    ["Mon assurance habitation prend-elle en charge ?", "Cela dépend de votre contrat : une effraction ou un sinistre sont souvent couverts, en tout ou partie. L'artisan vous remet une facture détaillée pour votre dossier ; renseignez-vous auprès de votre assureur."],
     ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "L'artisan privilégie toujours l'ouverture sans dégât. Si c'est techniquement impossible, il vous explique les options et leur coût avant toute intervention. Vous décidez."],
     ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, notre standard répond et nos artisans partenaires interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
     ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression. Tous les artisans de notre réseau sont soumis à une charte bien définie : qualification, respect des tarifs annoncés, devis écrit avant travaux, assurance professionnelle et comportement irréprochable chez le client."],
@@ -975,6 +905,7 @@ function FaqSection() {
 function DevisForm() {
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [ouvertLe] = useState(() => Date.now());
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -990,8 +921,22 @@ function DevisForm() {
     const besoin = String(formData.get("besoin") || "").trim();
     const messageClient = String(formData.get("message") || "").trim();
 
+    // Robots : champ piège rempli ou envoi quasi instantané → rien n'est transmis.
+    if (String(formData.get("site_web") || "") || Date.now() - ouvertLe < 2500) {
+      window.location.assign("/merci");
+      return;
+    }
+
     if (!nom || !tel || !codepostal || !besoin) {
       setErrorMessage("Merci de remplir tous les champs obligatoires.");
+      return;
+    }
+    if (!/^(?:\+33\s?|0)[1-9](?:[\s.-]?\d{2}){4}$/.test(tel)) {
+      setErrorMessage("Merci d'indiquer un numéro de téléphone français valide (ex. 06 12 34 56 78).");
+      return;
+    }
+    if (!/^\d{5}$/.test(codepostal)) {
+      setErrorMessage("Merci d'indiquer un code postal à 5 chiffres.");
       return;
     }
 
@@ -1064,7 +1009,7 @@ function DevisForm() {
           </h2>
           <Ornament />
           <p className="text-cream/80 mt-2">
-            On vous rappelle sous 15 minutes avec un tarif annoncé.
+            Un conseiller vous rappelle rapidement pour vous annoncer le tarif.
           </p>
         </div>
 
@@ -1072,6 +1017,11 @@ function DevisForm() {
           className="bg-cream text-ink rounded-2xl p-6 md:p-8 shadow-card-hover space-y-4 corner-ornament"
           onSubmit={handleSubmit}
         >
+          {/* Champ piège invisible pour les personnes, rempli par les robots de spam. */}
+          <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+            <label htmlFor="f-site">Site web</label>
+            <input id="f-site" name="site_web" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
           <Field
             id="f-nom"
             name="nom"
@@ -1139,7 +1089,7 @@ function DevisForm() {
               className="block text-sm font-semibold text-navy mb-1.5"
             >
               Message{" "}
-              <span className="text-ink/50 font-normal">(optionnel)</span>
+              <span className="text-ink/70 font-normal">(optionnel)</span>
             </label>
 
             <textarea
@@ -1166,7 +1116,7 @@ function DevisForm() {
           >
             {isSending
               ? "Envoi en cours…"
-              : "Recevoir mon devis sous 15 min"}
+              : "Être rappelé pour un devis"}
           </button>
 
           <p className="text-xs text-ink/60 text-center">
@@ -1216,8 +1166,6 @@ function Field(props: {
 
 /* ------------------------------ FOOTER ------------------------------ */
 function Footer() {
-  const geo = useGeoDept();
-  const footerZone = geo.footerLabel ?? "votre département et les départements limitrophes";
   return (
     <footer className="bg-navy-deep text-cream/85 py-12 relative">
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
@@ -1229,7 +1177,7 @@ function Footer() {
               <p className="font-display text-xl text-cream font-bold">Serrurier Vantory</p>
             </div>
             <p className="text-sm text-cream/70 leading-relaxed">
-              Centrale de dépannage en serrurerie — devis annoncé, prix tenu. Serrurier Vantory missionne des artisans serruriers partenaires dans {footerZone}.
+              Centrale de dépannage en serrurerie : mise en relation avec des artisans serruriers partenaires. Devis annoncé, prix tenu.
             </p>
           </div>
 
@@ -1248,6 +1196,7 @@ function Footer() {
             <a href="/mentions-legales" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Mentions légales</a>
             <a href="/cgv" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Conditions générales</a>
             <a href="/rgpd" className="hover:text-gold transition-colors underline-offset-2 hover:underline">Politique de confidentialité (RGPD)</a>
+            <button type="button" onClick={ouvrirBandeauCookies} className="hover:text-gold transition-colors underline-offset-2 hover:underline">Gérer les cookies</button>
           </p>
         </div>
       </div>
@@ -1263,7 +1212,7 @@ function MobileStickyCta() {
         <I.phone size={18} />
         <span className="leading-tight text-left min-w-0">
           <span className="block text-[15px] tracking-tight whitespace-nowrap">09&nbsp;70&nbsp;70&nbsp;82&nbsp;11</span>
-          <span className="block text-[10px] uppercase tracking-wider text-navy/75 font-bold whitespace-nowrap">Appel gratuit · 7j/7</span>
+          <span className="block text-[10px] uppercase tracking-wider text-navy/75 font-bold whitespace-nowrap">Non surtaxé · 7j/7</span>
         </span>
       </a>
     </div>

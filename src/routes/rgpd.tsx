@@ -37,7 +37,7 @@ function RgpdPage() {
           le cas échéant, votre message.
         </p>
         <p>
-          <strong>Finalité</strong> : vous recontacter sous 15 minutes pour vous proposer un devis annoncé.
+          <strong>Finalité</strong> : vous recontacter pour vous annoncer le tarif et organiser l'intervention.
           Pour organiser l'intervention, votre nom, votre téléphone, votre code postal et votre besoin sont
           transmis au technicien de notre réseau missionné chez vous, et à lui seul. Vos données ne sont jamais
           vendues. Elles sont conservées pendant une durée maximale de 12 mois à compter de votre demande, puis supprimées.
@@ -70,15 +70,26 @@ function RgpdPage() {
         </p>
       </section>
 
-      <section className="mt-10 space-y-4 leading-relaxed">
+      <section id="cookies" className="mt-10 space-y-4 leading-relaxed scroll-mt-6">
         <h2 className="font-display text-2xl text-navy font-bold">4. Cookies et traceurs</h2>
         <p>
-          Aucun cookie publicitaire ni tracker tiers n'est déposé par défaut sur ce site.
+          <strong>Sans votre accord, aucun traceur publicitaire n'est déposé</strong> et aucun outil Google n'est chargé.
+          Un bandeau vous propose de les accepter ou de les refuser, avec la même facilité ; le site fonctionne de la même
+          façon dans les deux cas.
         </p>
         <p>
-          Le suivi des conversions Google Ads et la mesure d'audience Google Analytics 4
-          peuvent être activés ultérieurement — dans ce cas un bandeau de consentement sera affiché
-          conformément à la directive ePrivacy.
+          <strong>Avec votre accord</strong>, les outils suivants sont activés : Google Tag Manager (chargement des outils
+          ci-après), Google Ads (mesure des demandes et des appels issus de nos annonces, remarketing) et le suivi des appels
+          de Google, qui peut afficher un numéro de suivi redirigeant vers notre standard. Ces outils sont fournis par Google
+          Ireland Ltd et peuvent déposer des cookies d'une durée de vie de 13 mois au plus.
+        </p>
+        <p>
+          <strong>Sans accord nécessaire</strong> : la mesure d'audience Cloudflare Web Analytics, sans cookie ni identifiant
+          personnel, et le stockage de session décrit au point 3.
+        </p>
+        <p>
+          Votre choix est conservé 6 mois. Vous pouvez le modifier à tout moment grâce au lien « Gérer les cookies » en bas
+          de chaque page ; un refus supprime les cookies Google déjà déposés.
         </p>
       </section>
 
@@ -97,7 +108,7 @@ function RgpdPage() {
           Pour exercer ces droits, contactez-nous au{" "}
           <PhoneLink />.
           Vous disposez également du droit d'introduire une réclamation auprès de la{" "}
-          <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" className="text-gold underline">CNIL</a>.
+          <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" className="text-navy underline underline-offset-2">CNIL</a>.
         </p>
       </section>
 
