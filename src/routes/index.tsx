@@ -412,7 +412,7 @@ function UrgenceSection() {
         <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 30 minutes</h2>
         <Ornament />
         <p className="section-subtitle mx-auto">
-          Porte claquée, clé cassée dans la serrure, serrure HS — nous missionnons en express l'artisan partenaire le plus proche, matin, après-midi et soirée.
+          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous, matin, midi, soir et nuit.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-12">
