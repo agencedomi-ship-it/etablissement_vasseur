@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Serrurier Vantory — Devis annoncé, prix tenu | Intervient en 30 mn" },
-      { name: "description", content: "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances." },
+      { name: "description", content: "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, pris en charge par la plupart des assurances." },
       { name: "theme-color", content: "#1A2F4E" },
       { property: "og:title", content: "Serrurier Vantory — Devis annoncé, prix tenu" },
       { property: "og:description", content: "Un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé, paiement après travaux." },

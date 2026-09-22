@@ -247,3 +247,20 @@ details[open] .faq-chevron { transform: rotate(180deg); }
 
 /* Sticky mobile CTA padding */
 @media (max-width: 767px) { body { padding-bottom: 84px; } }
+
+/* Carte à illustration : fond teinté assorti au fond des illustrations (pas de carte blanche) */
+.card-illustree {
+  background: #fbf4e8;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklab, var(--color-gold) 22%, transparent);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card-illustree:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+
+/* Défilement continu des logos d'assurance */
+@keyframes defile-logos { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.defile-logos { animation: defile-logos 32s linear infinite; }
+.defile-logos:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .defile-logos { animation: none; } }

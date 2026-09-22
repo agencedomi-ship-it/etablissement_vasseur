@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, agréé par les assurances.",
+          "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, pris en charge par la plupart des assurances.",
       },
     ],
   }),
@@ -208,6 +208,7 @@ function HomePage() {
       <AntiArnaqueSection />
       <AssuranceSection />
       <ReviewsSection />
+      <QuiSommesNousSection />
       <FonctionnementSection />
       <ZoneSection />
       <FaqSection />
@@ -293,7 +294,7 @@ function Hero() {
           </p>
           <p className="font-display italic text-base sm:text-xl text-cream/95 mt-3 sm:mt-4 max-w-xl mx-auto leading-relaxed tracking-wide"
             style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}>
-            Un réseau d'artisans serruriers partenaires, au plus près de chez vous
+            Un artisan près de chez vous
           </p>
 
           <div className="mt-7 md:mt-8">
@@ -319,6 +320,9 @@ function Hero() {
             <a href="#devis" className="inline-flex items-center justify-center gap-2 border-2 border-cream/85 text-cream hover:bg-cream hover:text-navy font-semibold uppercase tracking-wide text-xs px-3 py-3.5 rounded-md transition-all backdrop-blur bg-navy/40">
               Demander un devis
             </a>
+            <a href="#tarifs" className="col-span-2 inline-flex items-center justify-center gap-2 border-2 border-gold text-gold hover:bg-gold hover:text-navy font-semibold uppercase tracking-wide text-xs px-3 py-3 rounded-md transition-all backdrop-blur bg-navy/40">
+              Voir nos prix
+            </a>
           </div>
 
           {/* Ordinateur : boutons + garanties */}
@@ -327,13 +331,16 @@ function Hero() {
             <a href="#devis" className="inline-flex items-center justify-center gap-2 border-2 border-cream/85 text-cream hover:bg-cream hover:text-navy font-semibold uppercase tracking-wide text-base px-6 py-3.5 rounded-md transition-all backdrop-blur bg-navy/30">
               Demander un devis
             </a>
+            <a href="#tarifs" className="inline-flex items-center justify-center gap-2 border-2 border-gold text-gold hover:bg-gold hover:text-navy font-semibold uppercase tracking-wide text-base px-6 py-3.5 rounded-md transition-all backdrop-blur bg-navy/30">
+              Nos prix
+            </a>
           </div>
 
           <div className="hidden md:grid grid-cols-3 gap-6 mt-10 max-w-xl mx-auto">
             {[
               { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
               { icon: <I.key className="text-gold" />, label: <>Paiement<br />après travaux</> },
-              { icon: <I.shield className="text-gold" />, label: <>Agréé<br />assurances</> },
+              { icon: <I.shield className="text-gold" />, label: <>Pris en charge<br />par l'assurance</> },
             ].map((t, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 {t.icon}
@@ -351,7 +358,7 @@ function Hero() {
           {[
             { icon: <I.tag className="text-gold" />, label: <>Tarif annoncé<br />avant déplacement</> },
             { icon: <I.key className="text-gold" />, label: <>Paiement<br />après travaux</> },
-            { icon: <I.shield className="text-gold" />, label: <>Agréé<br />assurances</> },
+            { icon: <I.shield className="text-gold" />, label: <>Pris en charge<br />par l'assurance</> },
           ].map((t, i) => (
             <div
               key={i}
@@ -372,7 +379,7 @@ function TrustBar() {
   const items = [
     { icon: <I.doc />, label: "Devis annoncé" },
     { icon: <I.clock />, label: "Intervient en 30 mn" },
-    { icon: <I.shield size={26} />, label: "Agréé par assurances" },
+    { icon: <I.shield size={26} />, label: "Pris en charge par l'assurance" },
     { icon: <I.card />, label: "Paiement après travaux" },
   ];
   return (
@@ -428,54 +435,58 @@ function UrgenceSection() {
 }
 
 /* ------------------------------ SERVICES ------------------------------ */
+const PRESTATIONS = [
+  {
+    title: "Ouverture de porte",
+    desc: "Porte claquée ou verrou bloqué : ouverture rapide, sans casse quand c'est techniquement possible.",
+    img: "ouverture-porte",
+    prix: "dès 79 €",
+  },
+  {
+    title: "Changement de serrure",
+    desc: "Remplacement complet de serrure usée, défectueuse ou compromise après effraction.",
+    img: "changement-serrure",
+    prix: "sur devis",
+  },
+  {
+    title: "Cylindre haute sécurité",
+    desc: "Pose de cylindres certifiés anti-effraction, anti-perçage et anti-crochetage.",
+    img: "cylindre-haute-securite",
+    prix: "dès 189 €",
+  },
+  {
+    title: "Blindage de porte",
+    desc: "Renforcement du bloc-porte existant avec plaque acier et serrure multipoints.",
+    img: "blindage-porte",
+    prix: "sur devis",
+  },
+  {
+    title: "Coffre-fort",
+    desc: "Installation, ouverture et changement de combinaison pour coffres résidentiels et professionnels.",
+    img: "coffre-fort",
+    prix: "sur devis",
+  },
+  {
+    title: "Ouverture de rideau métallique",
+    desc: "Rideau de commerce bloqué ou serrure de rideau grippée : ouverture et remise en service.",
+    img: "rideau-metallique",
+    prix: "dès 89 €",
+  },
+];
+
+function PrixButton({ prix }: { prix: string }) {
+  return (
+    <a
+      href="#tarifs"
+      className="inline-flex items-center gap-2 rounded-md bg-navy hover:bg-navy-deep text-cream text-sm font-semibold px-4 py-2.5 transition-colors"
+    >
+      Prix : <span className="text-gold">{prix}</span>
+      <span aria-hidden>→</span>
+    </a>
+  );
+}
+
 function ServicesSection() {
-  const services = [
-    {
-      title: "Ouverture de porte",
-      desc: "Porte claquée ou verrou bloqué : ouverture rapide, sans casse quand c'est techniquement possible.",
-      svg: (
-        <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="#1A2F4E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <rect x="10" y="6" width="22" height="36" rx="1" /><circle cx="27" cy="24" r="1.5" fill="#1A2F4E" /><path d="M32 26h6m0-2v4" />
-        </svg>
-      ),
-    },
-    {
-      title: "Changement de serrure",
-      desc: "Remplacement complet de serrure usée, défectueuse ou compromise après effraction.",
-      svg: (
-        <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="#1A2F4E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <rect x="10" y="20" width="28" height="22" rx="2" /><path d="M16 20v-6a8 8 0 0 1 16 0v6" /><circle cx="24" cy="30" r="2.5" fill="#1A2F4E" /><path d="M24 32.5v4" />
-        </svg>
-      ),
-    },
-    {
-      title: "Cylindre haute sécurité",
-      desc: "Pose de cylindres certifiés anti-effraction, anti-perçage et anti-crochetage.",
-      svg: (
-        <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="#1A2F4E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <rect x="8" y="18" width="32" height="12" rx="6" /><circle cx="14" cy="24" r="3" /><circle cx="34" cy="24" r="3" /><path d="M17 24h14" />
-        </svg>
-      ),
-    },
-    {
-      title: "Blindage de porte",
-      desc: "Renforcement du bloc-porte existant avec plaque acier et serrure multipoints.",
-      svg: (
-        <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="#1A2F4E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <path d="M24 4 8 10v12c0 9 7 17 16 22 9-5 16-13 16-22V10z" /><path d="M18 24l5 5 9-10" />
-        </svg>
-      ),
-    },
-    {
-      title: "Coffre-fort",
-      desc: "Installation, ouverture et changement de combinaison pour coffres résidentiels et professionnels.",
-      svg: (
-        <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="#1A2F4E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <rect x="6" y="8" width="36" height="32" rx="2" /><circle cx="28" cy="24" r="6" /><path d="M28 21v6m-3-3h6" /><path d="M14 16v16" />
-        </svg>
-      ),
-    },
-  ];
   return (
     <section className="py-16 md:py-24 bg-parchment-paper">
       <div className="max-w-6xl mx-auto container-px">
@@ -487,15 +498,52 @@ function ServicesSection() {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {services.map((s, i) => (
-            <article key={i} className="card-artisan p-7 group">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-gradient-to-br from-parchment/70 to-cream ring-1 ring-gold/20 mb-4 transition-transform group-hover:scale-105">
-                {s.svg}
+          {PRESTATIONS.map((s) => (
+            <article key={s.title} className="card-illustree group flex flex-col">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img
+                  src={`/assets/prestations/${s.img}.webp`}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width={720}
+                  height={540}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
               </div>
-              <h3 className="font-display text-2xl text-navy font-bold mt-2">{s.title}</h3>
-              <p className="text-ink/75 text-sm mt-2 leading-relaxed">{s.desc}</p>
+              <div className="px-6 pb-6 pt-2 flex flex-col flex-1">
+                <h3 className="font-display text-2xl text-navy font-bold">{s.title}</h3>
+                <p className="text-ink/75 text-sm mt-2 leading-relaxed flex-1">{s.desc}</p>
+                <div className="mt-5">
+                  <PrixButton prix={s.prix} />
+                </div>
+              </div>
             </article>
           ))}
+        </div>
+
+        <div className="card-illustree mt-5 md:mt-6 p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
+          <div className="flex-1">
+            <h3 className="font-display text-2xl text-navy font-bold">Tout autre service de serrurier</h3>
+            <p className="text-ink/75 text-sm mt-2 leading-relaxed">
+              Une demande qui ne figure pas ci-dessus&nbsp;? Toute autre prestation de serrurerie est réalisée sur devis, établi avant les travaux.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <PrixButton prix="sur devis" />
+            <a href="#devis" className="inline-flex items-center rounded-md border-2 border-navy text-navy hover:bg-navy hover:text-cream text-sm font-semibold px-4 py-2 transition-colors">
+              Demander un devis
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-8 space-y-3 max-w-4xl mx-auto">
+          <p className="bg-cream/80 border-l-4 border-gold rounded-r-md px-5 py-4 text-sm md:text-[15px] text-ink/85 leading-relaxed">
+            <strong className="text-navy">Doubles de clés&nbsp;:</strong> nous ne réalisons pas la reproduction de clés. Pour faire faire un double, rapprochez-vous d'un cordonnier.
+          </p>
+          <p className="bg-cream/80 border-l-4 border-navy rounded-r-md px-5 py-4 text-sm md:text-[15px] text-ink/85 leading-relaxed">
+            <strong className="text-navy">Devis avant travaux&nbsp;:</strong> un devis détaillé vous est remis et soumis à votre accord avant tout commencement des travaux, conformément à l'article&nbsp;4 de l'arrêté du 24&nbsp;janvier&nbsp;2017 relatif à la publicité des prix des prestations de dépannage, de réparation et d'entretien dans le secteur du bâtiment et de l'équipement de la maison.
+          </p>
         </div>
       </div>
     </section>
@@ -509,10 +557,12 @@ function TarifsSection() {
     ["Ouverture porte blindée", "149 à 189 €"],
     ["Changement cylindre standard", "119 à 159 €"],
     ["Changement cylindre haute sécurité", "189 à 249 €"],
-    ["Blindage / coffre-fort", "sur devis"],
+    ["Ouverture de rideau métallique", "dès 89 €"],
+    ["Changement de serrure, blindage, coffre-fort", "sur devis"],
+    ["Tout autre service de serrurier", "sur devis"],
   ];
   return (
-    <section className="py-16 md:py-24 bg-cream">
+    <section id="tarifs" className="py-16 md:py-24 bg-cream scroll-mt-20">
       <div className="max-w-4xl mx-auto container-px">
         <div className="text-center mb-10">
           <p className="section-eyebrow mb-3">Transparence</p>
@@ -626,20 +676,25 @@ function AssuranceSection() {
       <div className="max-w-5xl mx-auto container-px">
         <div className="text-center mb-10">
           <p className="section-eyebrow mb-3">Prise en charge</p>
-          <h2 className="section-title">Agréé par les principales assurances habitation</h2>
+          <h2 className="section-title">Pris en charge par la plupart des assurances habitation</h2>
           <Ornament />
           <p className="section-subtitle mx-auto">Nous nous occupons des démarches avec votre assureur. Constat d'intervention détaillé fourni systématiquement.</p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
-          {logos.map((l) => (
-            <div key={l} className="aspect-[16/9] bg-white border border-parchment rounded-md flex items-center justify-center p-3 hover:shadow-card transition-shadow">
-              <img src={`/assets/logos/${l}.svg`} alt={l} loading="lazy" decoding="async" width={120} height={48} className="max-h-full max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity" />
-            </div>
-          ))}
+        <div className="relative overflow-hidden mb-5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="defile-logos flex w-max gap-3">
+            {[...logos, ...logos].map((l, i) => (
+              <div key={i} aria-hidden={i >= logos.length} className="w-36 sm:w-40 aspect-[16/9] shrink-0 bg-white border border-parchment rounded-md flex items-center justify-center p-3">
+                <img src={`/assets/logos/${l}.svg`} alt={i < logos.length ? l : ""} loading="lazy" decoding="async" width={120} height={48} className="max-h-full max-w-full object-contain opacity-85" />
+              </div>
+            ))}
+          </div>
         </div>
-        <p className="text-center text-sm text-ink/70 italic mb-10">
+        <p className="text-center text-sm text-ink/70 italic">
           …et toutes les autres compagnies d'assurance habitation, y compris celles non mentionnées ci-dessus.
+        </p>
+        <p className="text-center text-xs text-ink/55 mt-2 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Logos présentés à titre indicatif, pour illustrer les principaux assureurs habitation. Ils ne traduisent aucun partenariat ni agrément de ces compagnies&nbsp;; la prise en charge dépend des garanties de votre contrat.
         </p>
 
         <div className="mb-10 card-artisan p-6 flex flex-col sm:flex-row items-start gap-4">
@@ -689,13 +744,13 @@ function ReviewsSection() {
     <section className="py-16 md:py-24 bg-parchment-paper">
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-10">
-          <p className="section-eyebrow mb-3">Avis vérifiés</p>
+          <p className="section-eyebrow mb-3">Avis clients</p>
           <h2 className="section-title">Ce que nos clients disent de nous</h2>
           <div className="flex items-center justify-center gap-1 mt-5" aria-label="Note 4,8 sur 5">
             {Array.from({ length: 5 }).map((_, i) => <I.star key={i} size={28} className="text-[#F2B73B]" />)}
           </div>
           <p className="font-display text-4xl text-navy font-bold mt-3">4,8 / 5</p>
-          <p className="text-ink/70 text-sm mt-1">Basé sur 127 avis vérifiés</p>
+          <p className="text-ink/70 text-sm mt-1">Basé sur 127 avis clients</p>
         </div>
 
         <div className="relative -mx-5 md:-mx-8">
@@ -728,10 +783,57 @@ function ReviewsSection() {
           <p className="md:hidden text-center text-xs text-ink/50 italic mt-2 px-5">← faites défiler pour voir plus d'avis →</p>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 mt-10">
-          <img src="/assets/logos/trustpilot.svg" alt="Trustpilot" loading="lazy" decoding="async" width={140} height={34} className="h-7 sm:h-8 w-auto opacity-80" />
-          <img src="/assets/logos/avis-verifies.svg" alt="Avis Vérifiés" loading="lazy" decoding="async" width={140} height={34} className="h-8 sm:h-9 w-auto opacity-80" />
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------ QUI SOMMES-NOUS ------------------------------ */
+function QuiSommesNousSection() {
+  const exigences = [
+    {
+      n: "I",
+      title: "Qualification",
+      desc: "Des serruriers professionnels, expérimentés dans le dépannage comme dans l'installation de serrures et de portes.",
+    },
+    {
+      n: "II",
+      title: "Prix",
+      desc: "Des tarifs annoncés et respectés, avec un devis détaillé remis avant tout commencement des travaux.",
+    },
+    {
+      n: "III",
+      title: "Assurance",
+      desc: "Des artisans couverts par une assurance professionnelle pour les travaux qu'ils réalisent chez vous.",
+    },
+  ];
+  return (
+    <section id="qui-sommes-nous" className="py-16 md:py-24 bg-cream scroll-mt-20 border-t border-gold/20">
+      <div className="max-w-6xl mx-auto container-px">
+        <div className="text-center mb-12 md:mb-14">
+          <p className="section-eyebrow mb-3">Qui sommes-nous</p>
+          <h2 className="section-title">Un réseau de serruriers sélectionnés</h2>
+          <Ornament />
+          <p className="section-subtitle mx-auto">
+            Serrurier Vantory est un réseau de mise en relation&nbsp;: nous vous mettons en contact avec des artisans serruriers
+            indépendants qui répondent à nos exigences de qualification, de prix et d'assurance.
+          </p>
         </div>
+
+        <div className="grid md:grid-cols-3 gap-5 md:gap-6 max-w-5xl mx-auto">
+          {exigences.map((e) => (
+            <div key={e.title} className="card-illustree p-7 text-center">
+              <p className="font-display text-5xl text-gold font-bold leading-none">{e.n}</p>
+              <h3 className="font-display text-2xl text-navy font-bold mt-3">{e.title}</h3>
+              <p className="text-ink/75 text-sm mt-2 leading-relaxed">{e.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-center text-sm text-ink/70 mt-8 max-w-2xl mx-auto leading-relaxed">
+          L'intervention est réalisée par l'artisan missionné, qui vous remet son devis puis sa facture. Le détail figure dans nos{" "}
+          <a href="/cgv" className="underline underline-offset-2 hover:text-navy">conditions générales</a>.
+        </p>
       </div>
     </section>
   );
@@ -832,6 +934,7 @@ function FaqSection() {
     ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "L'artisan privilégie toujours l'ouverture sans dégât. Si c'est techniquement impossible, il vous explique les options et leur coût avant toute intervention. Vous décidez."],
     ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, notre standard répond et nos artisans partenaires interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
     ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression."],
+    ["Faites-vous les doubles de clés ?", "Non, nous ne réalisons pas la reproduction de clés. Pour faire faire un double, rapprochez-vous d'un cordonnier."],
     ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Serrurier Vantory prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
   ];
   return (

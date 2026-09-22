@@ -46,8 +46,8 @@ function CgvPage() {
       <LegalSection title="3. Prix et devis">
         <p>
           Un tarif indicatif vous est communiqué au téléphone avant le déplacement du technicien. Sur place, celui-ci vous
-          remet un devis écrit et détaillé, conformément à l'arrêté du 24 janvier 2017 relatif à l'information des consommateurs
-          sur les prestations de dépannage, de réparation et d'entretien dans le secteur du bâtiment. Aucun travail n'est
+          remet un devis écrit et détaillé, conformément à l'article 4 de l'arrêté du 24 janvier 2017 relatif à la publicité des
+          prix des prestations de dépannage, de réparation et d'entretien dans le secteur du bâtiment et de l'équipement de la maison. Aucun travail n'est
           commencé sans votre accord signé sur ce devis.
         </p>
       </LegalSection>
