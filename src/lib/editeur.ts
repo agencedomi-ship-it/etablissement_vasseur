@@ -1,5 +1,7 @@
 // Identité légale de l'éditeur — source : registre national des entreprises (fiche Pappers
 // VANTORY, SIREN 102 609 203), relevée le 22 septembre 2026.
+export const SITE_URL = "https://serrurier-vantory.fr";
+
 export const EDITEUR = {
   nomCommercial: "Serrurier Vantory",
   raisonSociale: "VANTORY",

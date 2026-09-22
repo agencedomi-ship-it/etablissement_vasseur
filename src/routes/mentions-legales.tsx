@@ -8,7 +8,7 @@ export const Route = createFileRoute("/mentions-legales")({
     meta: [
       { title: `Mentions légales — ${EDITEUR.nomCommercial}` },
       { name: "robots", content: "noindex,follow" },
-      { name: "description", content: `Mentions légales du site ${EDITEUR.nomCommercial}.` },
+      { name: "description", content: `Mentions légales du site ${EDITEUR.nomCommercial} : éditeur ${EDITEUR.raisonSociale} (${EDITEUR.forme}), siège, immatriculation et hébergeur.` },
     ],
   }),
 });

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { type FormEvent, useId, useState } from "react";
 import { useDynamicH1, useGeoDept } from "@/hooks/use-dynamic-content";
+import { SITE_URL } from "@/lib/editeur";
 
 function pushGtmEvent(event: string, data: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
@@ -20,7 +21,9 @@ export const Route = createFileRoute("/")({
         content:
           "Dépannage serrurerie 7j/7 : un artisan serrurier partenaire chez vous en 30 minutes. Devis annoncé avant intervention, paiement après travaux, pris en charge par la plupart des assurances.",
       },
+      { property: "og:url", content: `${SITE_URL}/` },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
   }),
 });
 

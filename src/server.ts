@@ -77,7 +77,12 @@ function geoResponse(request: Request): Response {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
-    if (new URL(request.url).pathname === "/api/geo") return geoResponse(request);
+    const url = new URL(request.url);
+    if (url.hostname.startsWith("www.")) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
+    if (url.pathname === "/api/geo") return geoResponse(request);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
