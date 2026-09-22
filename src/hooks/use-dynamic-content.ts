@@ -1,5 +1,6 @@
 // Hooks de personnalisation dynamique de la landing :
-// - useDynamicH1() lit le keyword Google Ads dans ?kw= et renvoie le H1 à afficher
+// - useKeyword() lit le mot-clé Google Ads dans ?kw= (ligne dédiée sous le sous-titre de l'en-tête)
+// - useDynamicH1() renvoie le H1 (département du visiteur ou marque)
 // - useGeoDept() interroge /api/geo (département calculé côté serveur, async, non bloquant) et
 //   renvoie les informations de département + voisins + pool de villes pour les avis.
 
@@ -18,21 +19,22 @@ function sanitizeKw(raw: string | null): string | null {
     .replace(/(^|[\s\-])([a-zà-ÿ])/g, (_, sep, ch) => sep + ch.toUpperCase());
 }
 
-/**
- * Renvoie le H1 à afficher : mot-clé de l'annonce (?kw=) s'il y en a un, sinon
- * « Serrurier <département> (<code>) » si le département du visiteur est connu, sinon la marque.
- */
-export function useDynamicH1(): string {
+/** Mot-clé de l'annonce (?kw=) mis en forme, ou null s'il n'y en a pas. */
+export function useKeyword(): string | null {
   const [kw, setKw] = useState<string | null>(null);
-  const geo = useGeoDept();
   useEffect(() => {
     try {
       setKw(sanitizeKw(new URLSearchParams(window.location.search).get("kw")));
     } catch {
-      /* noop : on garde le fallback */
+      /* noop : pas de mot-clé */
     }
   }, []);
-  if (kw) return kw;
+  return kw;
+}
+
+/** H1 : « Serrurier <département> (<code>) » si le département du visiteur est connu, sinon la marque. */
+export function useDynamicH1(): string {
+  const geo = useGeoDept();
   if (geo.deptName && geo.deptCode) return `Serrurier ${geo.deptName} (${geo.deptCode})`;
   return FALLBACK_H1;
 }

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { type FormEvent, useId, useState } from "react";
-import { useDynamicH1, useGeoDept } from "@/hooks/use-dynamic-content";
+import { useDynamicH1, useGeoDept, useKeyword } from "@/hooks/use-dynamic-content";
 import { EDITEUR, SITE_URL } from "@/lib/editeur";
 
 function pushGtmEvent(event: string, data: Record<string, unknown> = {}) {
@@ -255,6 +255,7 @@ function Header() {
 /* ------------------------------ HERO ------------------------------ */
 function Hero() {
   const dynamicH1 = useDynamicH1();
+  const keyword = useKeyword();
   return (
     <section className="relative text-cream overflow-hidden bg-navy-deep">
       {/* Photo terrain en fond (technicien de dos, sans visage) */}
@@ -299,6 +300,12 @@ function Hero() {
             style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}>
             Un artisan près de chez vous
           </p>
+          {keyword && (
+            <p className="font-display text-2xl sm:text-3xl text-cream font-bold mt-3 leading-tight"
+              style={{ textShadow: "0 2px 16px rgba(0,0,0,0.45)" }}>
+              {keyword}
+            </p>
+          )}
 
           <div className="mt-7 md:mt-8">
             <p className="inline-flex items-center gap-1.5 text-[11px] md:text-xs font-bold text-navy bg-gold px-2.5 md:px-3 py-0.5 md:py-1 rounded-full mb-2 md:mb-3 tracking-wide shadow-md">
