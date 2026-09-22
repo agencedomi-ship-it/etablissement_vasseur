@@ -796,7 +796,7 @@ function QuiSommesNousSection() {
     {
       n: "II",
       title: "Prix",
-      desc: "Des tarifs annoncés et respectés, avec un devis détaillé remis avant tout commencement des travaux.",
+      desc: "Une charte tarifaire commune à tout le réseau : tarif annoncé avant le déplacement, respecté sur place, et devis détaillé remis avant tout commencement des travaux.",
     },
     {
       n: "III",
