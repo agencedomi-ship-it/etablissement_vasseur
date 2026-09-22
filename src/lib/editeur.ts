@@ -14,6 +14,8 @@ export const EDITEUR = {
   tva: "FR61102609203",
   president: "Karim Ait Abdelmalek",
   telephone: "09 70 70 82 11",
+  // Frais de déplacement TTC (arrêté du 24/01/2017), sauf prestations « déplacement compris ».
+  fraisDeplacement: "49 € TTC",
   telephoneLien: "tel:+33970708211",
   // Adresse électronique de contact (obligatoire, art. 6 LCEN) : boîte OVH MX Plan.
   email: "contact@serrurier-vantory.fr" as string | null,

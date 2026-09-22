@@ -50,6 +50,12 @@ function CgvPage() {
           prix des prestations de dépannage, de réparation et d'entretien dans le secteur du bâtiment et de l'équipement de la maison. Aucun travail n'est
           commencé sans votre accord signé sur ce devis.
         </p>
+        <p>
+          Les frais de déplacement s'élèvent à <strong>{EDITEUR.fraisDeplacement}</strong>. Ils sont déjà compris dans le prix de
+          certaines prestations, signalées « déplacement compris » dans nos tarifs, comme l'ouverture de porte claquée&nbsp;: ils ne
+          sont alors pas facturés en plus. Dans tous les cas, ils vous sont annoncés au téléphone avant le déplacement et figurent
+          sur le devis.
+        </p>
       </LegalSection>
 
       <LegalSection title="4. Délai d'intervention">

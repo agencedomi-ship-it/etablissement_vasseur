@@ -583,13 +583,14 @@ function ServicesSection() {
 /* ------------------------------ TARIFS ------------------------------ */
 function TarifsSection() {
   const rows = [
-    ["Ouverture porte simple", "79 à 99 €"],
+    ["Ouverture de porte claquée (déplacement compris)", "79 à 99 €"],
     ["Ouverture porte blindée", "149 à 189 €"],
     ["Changement cylindre standard", "119 à 159 €"],
     ["Changement cylindre haute sécurité", "189 à 249 €"],
     ["Ouverture de rideau métallique", "dès 89 €"],
     ["Changement de serrure, blindage, coffre-fort", "sur devis"],
     ["Tout autre service de serrurier", "sur devis"],
+    ["Déplacement (si non compris)", "49 €"],
   ];
   return (
     <section id="tarifs" className="py-16 md:py-24 bg-cream scroll-mt-20">
