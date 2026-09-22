@@ -541,9 +541,6 @@ function ServicesSection() {
           <p className="bg-cream/80 border-l-4 border-gold rounded-r-md px-5 py-4 text-sm md:text-[15px] text-ink/85 leading-relaxed">
             <strong className="text-navy">Doubles de clés&nbsp;:</strong> nous ne réalisons pas la reproduction de clés. Pour faire faire un double, rapprochez-vous d'un cordonnier.
           </p>
-          <p className="bg-cream/80 border-l-4 border-navy rounded-r-md px-5 py-4 text-sm md:text-[15px] text-ink/85 leading-relaxed">
-            <strong className="text-navy">Devis avant travaux&nbsp;:</strong> un devis détaillé vous est remis et soumis à votre accord avant tout commencement des travaux, conformément à l'article&nbsp;4 de l'arrêté du 24&nbsp;janvier&nbsp;2017 relatif à la publicité des prix des prestations de dépannage, de réparation et d'entretien dans le secteur du bâtiment et de l'équipement de la maison.
-          </p>
         </div>
       </div>
     </section>
@@ -591,8 +588,8 @@ function TarifsSection() {
         </div>
 
         <div className="mt-6 bg-parchment/60 border-l-4 border-gold rounded-r-md p-5 text-ink/85 leading-relaxed shadow-card">
-          <strong className="text-navy font-display text-lg">Tarif annoncé au téléphone avant intervention.</strong>
-          <span className="block mt-1">Aucun frais caché. Vous payez après validation du travail.</span>
+          <strong className="text-navy font-display text-lg">Devis avant travaux&nbsp;:</strong>{" "}
+          un devis détaillé vous est remis et soumis à votre accord avant tout commencement des travaux, conformément à l'article&nbsp;4 de l'arrêté du 24&nbsp;janvier&nbsp;2017 relatif à la publicité des prix des prestations de dépannage, de réparation et d'entretien dans le secteur du bâtiment et de l'équipement de la maison.
         </div>
       </div>
     </section>
