@@ -469,7 +469,7 @@ const PRESTATIONS = [
   {
     title: "Ouverture de rideau métallique",
     desc: "Rideau de commerce bloqué ou serrure de rideau grippée : ouverture et remise en service.",
-    img: "rideau-metallique",
+    img: "rideau-metallique-nuit",
     prix: "dès 89 €",
   },
 ];
