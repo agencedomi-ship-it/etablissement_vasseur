@@ -9,13 +9,23 @@ export type CfGeo = {
   postalCode?: string;
   latitude?: string;
   longitude?: string;
+  city?: string;
+  region?: string;
+  asOrganization?: string;
 };
 
 export type GeoVisiteur = {
   country: string | null;
   dept: string | null;
-  source: "code postal" | "coordonnées" | "outre-mer" | "inconnu" | "hors France";
+  source: "code postal" | "coordonnées" | "outre-mer" | "inconnu" | "hors France" | "Paris incertain";
 };
+
+// Beaucoup de connexions françaises (réseaux mobiles, certaines box, relais iCloud) sortent par
+// Paris : les bases IP les situent alors à Paris quel que soit l'endroit réel. Un « 75 » obtenu
+// par l'IP n'est donc pas fiable ; on préfère la formule générique à un département faux.
+function fiabiliser(r: GeoVisiteur): GeoVisiteur {
+  return r.dept === "75" ? { country: r.country, dept: null, source: "Paris incertain" } : r;
+}
 
 // Cloudflare renvoie un code pays propre aux départements d'outre-mer.
 const PAYS_OUTRE_MER: Record<string, string> = { GP: "971", MQ: "972", GF: "973", RE: "974", YT: "976" };
@@ -51,13 +61,13 @@ export async function departementDuVisiteur(cf: CfGeo | undefined): Promise<GeoV
   if (country !== "FR") return { country, dept: null, source: "hors France" };
 
   const parCodePostal = deptDepuisCodePostal(cf?.postalCode);
-  if (parCodePostal) return { country, dept: parCodePostal, source: "code postal" };
+  if (parCodePostal) return fiabiliser({ country, dept: parCodePostal, source: "code postal" });
 
   const lat = Number(cf?.latitude);
   const lon = Number(cf?.longitude);
   if (cf?.latitude && cf?.longitude && Number.isFinite(lat) && Number.isFinite(lon)) {
     const parCoordonnees = await deptDepuisCoordonnees(lat, lon);
-    if (parCoordonnees) return { country, dept: parCoordonnees, source: "coordonnées" };
+    if (parCoordonnees) return fiabiliser({ country, dept: parCoordonnees, source: "coordonnées" });
   }
   return { country, dept: null, source: "inconnu" };
 }
