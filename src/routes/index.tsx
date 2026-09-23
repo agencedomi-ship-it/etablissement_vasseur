@@ -235,6 +235,7 @@ function HomePage() {
       <AntiArnaqueSection />
       <AssuranceSection />
       <ZoneSection />
+      <ReviewsSection />
       <QuiSommesNousSection />
       <FonctionnementSection />
       <FaqSection />
@@ -727,6 +728,66 @@ function AssuranceSection() {
             ))}
           </ul>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------ REVIEWS ------------------------------ */
+const REVIEWS = [
+  ["M", "Marie L.", "il y a 2 semaines", "Intervention rapide et tarif annoncé au téléphone. Pas de mauvaise surprise. Très satisfaite de l'artisan, très professionnel.", "#C8527A", "#fff"],
+  ["T", "Thomas D.", "il y a 1 mois", "Ma serrure était bloquée un dimanche soir, ils sont venus en 25 minutes. Travail propre, devis respecté. Je recommande.", "#2D7A3A", "#fff"],
+  ["S", "Sophie M.", "il y a 3 semaines", "Devis clair, paiement après l'intervention. Tout est expliqué. Artisan honnête, ça change.", "#1A2F4E", "#fff"],
+  ["P", "Pierre R.", "il y a 5 jours", "Effraction sur ma porte, intervention rapide et constat fourni pour mon assurance. Tout a été pris en charge sans problème.", "#9B2A2A", "#fff"],
+  ["C", "Camille V.", "il y a 4 jours", "Serrure cassée un samedi soir, dépanné en moins d'une demi-heure. Tarif respecté à l'euro près. Très bon service.", "#5F7A8C", "#fff"],
+  ["J", "Julien R.", "il y a 1 semaine", "Intervention nickel, l'artisan a pris le temps d'expliquer ce qu'il faisait. Devis tenu, paiement après. Rien à dire.", "#F2B73B", "#1A2F4E"],
+  ["M", "Mathilde K.", "il y a 2 semaines", "Cylindre haute sécurité installé en 40 minutes. Travail propre, conseils utiles pour l'entretien. Je recommande sans hésiter.", "#C8527A", "#fff"],
+  ["A", "Antoine D.", "il y a 6 jours", "Porte claquée à 22h, ils sont venus vite, dépanné sans casser. Tarif annoncé respecté. Sérieux.", "#2D7A3A", "#fff"],
+  ["É", "Émilie S.", "il y a 3 semaines", "Mon assurance a pris en charge l'intervention après effraction. Constat fourni clair, pas de stress. Merci.", "#1A2F4E", "#fff"],
+  ["N", "Nathalie B.", "il y a 1 semaine", "Très bonne expérience. Devis signé sur place, prix exact. Aucun frais surprise.", "#9B2A2A", "#fff"],
+  ["L", "Léa T.", "il y a 4 jours", "Très bonne intervention, prix exact annoncé. Artisan professionnel, j'ai été rassurée.", "#F2B73B", "#1A2F4E"],
+] as const;
+
+function ReviewsSection() {
+  return (
+    <section className="py-16 md:py-24 bg-cream">
+      <div className="max-w-6xl mx-auto container-px">
+        <div className="text-center mb-10">
+          <p className="section-eyebrow mb-3">Avis clients</p>
+          <h2 className="section-title">Ce que nos clients disent de nous</h2>
+          <div className="flex items-center justify-center gap-1 mt-5" aria-label="Note 4,8 sur 5">
+            {Array.from({ length: 5 }).map((_, i) => <I.star key={i} size={28} className="text-[#F2B73B]" />)}
+          </div>
+          <p className="font-display text-4xl text-navy font-bold mt-3">4,8 / 5</p>
+          <p className="text-ink/70 text-sm mt-1">Basé sur 127 avis clients</p>
+        </div>
+
+        <div className="relative -mx-5 md:-mx-8">
+          <div className="reviews-track flex gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory scroll-px-5 md:scroll-px-8 px-5 md:px-8 pb-5">
+            {REVIEWS.map(([initial, name, when, body, bg, fg], i) => {
+              return (
+              <article key={i} className="snap-start shrink-0 w-72 sm:w-80 bg-[#fbf4e8] rounded-xl p-5 shadow-card border border-gold/20 flex flex-col hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
+                <div className="flex gap-0.5 mb-3" aria-label="5 étoiles">
+                  {Array.from({ length: 5 }).map((_, j) => <I.star key={j} className="text-gold" />)}
+                </div>
+                <div className="flex items-center gap-2.5 mb-2">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm shrink-0 ring-2 ring-white shadow-sm"
+                       style={{ backgroundColor: bg, color: fg }}>
+                    {initial}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-navy text-sm leading-tight">{name}</p>
+                    <p className="text-xs text-ink/50">{when}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-ink/85 leading-relaxed">{body}</p>
+              </article>
+              );
+            })}
+          </div>
+          <p className="md:hidden text-center text-xs text-ink/50 italic mt-2 px-5">← faites défiler pour voir plus d'avis →</p>
+        </div>
+
       </div>
     </section>
   );
