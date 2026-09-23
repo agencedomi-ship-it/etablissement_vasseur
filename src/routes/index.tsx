@@ -754,7 +754,7 @@ function ReviewsSection() {
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-10">
           <p className="section-eyebrow mb-3">Avis clients</p>
-          <h2 className="section-title">Ce que nos clients disent de nous</h2>
+          <h2 className="section-title">Ils nous ont ouvert leur porte</h2>
           <div className="flex items-center justify-center gap-1 mt-5" aria-label="Note 4,8 sur 5">
             {Array.from({ length: 5 }).map((_, i) => <I.star key={i} size={28} className="text-[#F2B73B]" />)}
           </div>
