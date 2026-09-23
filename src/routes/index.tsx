@@ -753,13 +753,13 @@ function ReviewsSection() {
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto container-px">
         <div className="text-center mb-10">
-          <p className="section-eyebrow mb-3">Avis clients</p>
+          <p className="section-eyebrow mb-3">Retours clients</p>
           <h2 className="section-title">Ce qu’ils en disent</h2>
           <div className="flex items-center justify-center gap-1 mt-5" aria-label="Note 4,8 sur 5">
             {Array.from({ length: 5 }).map((_, i) => <I.star key={i} size={28} className="text-[#F2B73B]" />)}
           </div>
           <p className="font-display text-4xl text-navy font-bold mt-3">4,8 / 5</p>
-          <p className="text-ink/70 text-sm mt-1">Basé sur 127 avis clients</p>
+          <p className="text-ink/70 text-sm mt-1">Basé sur 127 retours clients</p>
         </div>
 
         <div className="relative -mx-5 md:-mx-8">
@@ -785,7 +785,7 @@ function ReviewsSection() {
               );
             })}
           </div>
-          <p className="md:hidden text-center text-xs text-ink/50 italic mt-2 px-5">← faites défiler pour voir plus d'avis →</p>
+          <p className="md:hidden text-center text-xs text-ink/50 italic mt-2 px-5">← faites défiler pour voir plus de retours →</p>
         </div>
 
       </div>
