@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Serrurier Vantory : mise en relation avec un artisan serrurier près de chez vous, 7j/7 de 8h à 22h. Tarif annoncé, devis avant travaux, paiement après.",
+          "Serrurier Vantory : artisan serrurier près de chez vous, 8h-22h et 24h/24 du vendredi au dimanche. Tarif annoncé, devis avant travaux, paiement après.",
       },
       { property: "og:url", content: `${SITE_URL}/` },
     ],
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
           url: `${SITE_URL}/`,
           image: `${SITE_URL}/og-vantory.jpg`,
           telephone: "+33970708211",
-          description: "Mise en relation avec des artisans serruriers partenaires, 7j/7 de 8h à 22h.",
+          description: "Mise en relation avec des artisans serruriers partenaires, de 8h à 22h et 24h/24 du vendredi au dimanche.",
           address: {
             "@type": "PostalAddress",
             streetAddress: "149 avenue du Maine",
@@ -339,8 +339,8 @@ function Hero() {
             <br />
             <p className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4 md:mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-              <span className="md:hidden">Artisan partenaire dispo — 7j/7, 8h à 22h</span>
-              <span className="hidden md:inline">Artisan partenaire disponible — 7j/7, 8h à 22h</span>
+              <span className="md:hidden">Dispo 8h-22h · 24h/24 du ven. au dim.</span>
+              <span className="hidden md:inline">Artisan partenaire disponible — 8h à 22h, et 24h/24 du vendredi au dimanche</span>
             </p>
           </div>
 
@@ -436,7 +436,7 @@ function TrustBar() {
 function UrgenceSection() {
   const cards = [
     { icon: <I.clock />, title: "Intervention en 30 min en moyenne" },
-    { icon: <I.cal />, title: "Disponible 7j/7, 8h à 22h" },
+    { icon: <I.cal />, title: "8h-22h, et 24h/24 du vendredi au dimanche" },
     { icon: <I.phone size={32} />, title: "Un conseiller répond, un artisan se déplace" },
   ];
   return (
@@ -446,7 +446,7 @@ function UrgenceSection() {
         <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 30 minutes en moyenne</h2>
         <Ornament />
         <p className="section-subtitle mx-auto">
-          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous, matin, midi et soir, 7j/7 de 8h à 22h.
+          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous, de 8h à 22h, et 24h/24 du vendredi au dimanche.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-12">
@@ -913,7 +913,7 @@ function ZoneSection() {
             )}
             , et nous vous annonçons son délai d'arrivée avant tout déplacement.
           </p>
-          <p>Service joignable 7 jours sur 7, de 8h à 22h, dimanches et jours fériés compris.</p>
+          <p>Service joignable 7 jours sur 7 de 8h à 22h, et 24h/24 du vendredi au dimanche, jours fériés compris.</p>
         </div>
         <div className="mt-8 inline-flex items-center gap-3 bg-cream border border-gold/40 rounded-full px-6 py-3 shadow-card">
           <I.clock className="text-navy" />
@@ -927,12 +927,12 @@ function ZoneSection() {
 /* ------------------------------ FAQ ------------------------------ */
 function FaqSection() {
   const items = [
-    ["Combien de temps pour arriver chez moi ?", "L'artisan partenaire missionné arrive en 30 minutes en moyenne pendant nos horaires (8h-22h, 7 jours sur 7)."],
+    ["Combien de temps pour arriver chez moi ?", "L'artisan partenaire missionné arrive en 30 minutes en moyenne pendant nos horaires : 8h-22h du lundi au jeudi, et 24h/24 du vendredi au dimanche."],
     ["Comment connaître le prix avant l'intervention ?", "Le tarif vous est annoncé au téléphone avant que l'artisan ne se déplace, puis confirmé par un devis signé sur place."],
     ["Quels modes de paiement sont acceptés ?", "Le paiement se fait auprès de l'artisan, uniquement après validation du travail : carte bancaire, espèces ou virement selon l'artisan. Sa facture détaillée vous permet ensuite de faire jouer votre assurance si votre contrat le prévoit."],
     ["Mon assurance habitation prend-elle en charge ?", "Cela dépend de votre contrat : une effraction ou un sinistre sont souvent couverts, en tout ou partie. L'artisan vous remet une facture détaillée pour votre dossier ; renseignez-vous auprès de votre assureur."],
     ["Que se passe-t-il si vous ne pouvez pas ouvrir sans casse ?", "L'artisan privilégie toujours l'ouverture sans dégât. Si c'est techniquement impossible, il vous explique les options et leur coût avant toute intervention. Vous décidez."],
-    ["Travaillez-vous le dimanche et les jours fériés ?", "Oui, notre standard répond et nos artisans partenaires interviennent 7 jours sur 7, dimanches et jours fériés inclus, de 8h à 22h."],
+    ["Travaillez-vous la nuit, le dimanche et les jours fériés ?", "Oui, 7 jours sur 7 et jours fériés inclus. Du lundi au jeudi, le standard répond de 8h à 22h. Du vendredi au dimanche, il répond 24h/24, la nuit comprise."],
     ["Comment être sûr que vous n'êtes pas une arnaque ?", "Tarif annoncé avant déplacement, devis écrit signé sur place, paiement uniquement après validation du travail. Pas de surprise ni de pression. Tous les artisans de notre réseau sont soumis à une charte bien définie : qualification, respect des tarifs annoncés, devis écrit avant travaux, assurance professionnelle et comportement irréprochable chez le client."],
     ["Faites-vous les doubles de clés ?", "Non, nous ne réalisons pas la reproduction de clés. Pour faire faire un double, rapprochez-vous d'un cordonnier."],
     ["Qui intervient chez moi ?", "Un artisan serrurier indépendant de notre réseau, choisi parce qu'il est le plus proche et disponible. Serrurier Vantory prend votre appel, vous annonce le tarif et missionne l'artisan, qui réalise l'intervention."],
@@ -1247,7 +1247,7 @@ function Footer() {
             <p className="font-semibold text-gold mb-3 uppercase tracking-wider text-xs">Contact</p>
             <ul className="space-y-2 text-sm">
               <li><a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="hover:text-gold transition-colors font-semibold text-base">09 70 70 82 11</a></li>
-              <li className="text-cream/70">Disponible 7j/7 — 8h à 22h</li>
+              <li className="text-cream/70">8h-22h — et 24h/24 du vendredi au dimanche</li>
             </ul>
           </div>
         </div>

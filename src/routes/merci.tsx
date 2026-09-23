@@ -60,7 +60,7 @@ function MerciPage() {
 
           <div className="mx-auto mt-8 max-w-md rounded-xl border border-gold/25 bg-navy-deep/55 p-5">
             <p className="font-display text-xl font-bold text-gold">Besoin d'une réponse immédiate ?</p>
-            <p className="mt-1 text-sm text-cream/70">Appelez directement notre standard, disponible 7j/7 de 8h à 22h.</p>
+            <p className="mt-1 text-sm text-cream/70">Appelez directement notre standard, disponible de 8h à 22h et 24h/24 du vendredi au dimanche.</p>
             <a
               href="tel:+33970708211"
               onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211", source: "merci" })}
