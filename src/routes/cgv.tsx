@@ -60,7 +60,7 @@ function CgvPage() {
 
       <LegalSection title="4. Délai d'intervention">
         <p>
-          Le délai de 30 minutes annoncé est un délai moyen, pendant les horaires du service (de 8h à 22h du lundi au jeudi, et 24h/24 du vendredi au dimanche).
+          Le délai de 30 minutes annoncé est un délai moyen, pendant les horaires du service (7 jours sur 7, de 8h à 22h).
           Il peut varier selon la circulation, la météo ou la disponibilité des techniciens ; le délai prévu vous est confirmé
           au moment de la prise en charge.
         </p>
