@@ -339,8 +339,8 @@ function Hero() {
             <br />
             <p className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4 md:mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-              <span className="md:hidden">Artisan partenaire dispo — 7j/7, 8h à 22h</span>
-              <span className="hidden md:inline">Artisan partenaire disponible — 7j/7, 8h à 22h</span>
+              <span className="md:hidden">Lun.-jeu. 8h-22h · Ven.-dim. 24h/24</span>
+              <span className="hidden md:inline">Artisan partenaire disponible — lun.-jeu. 8h-22h · ven.-dim. 24h/24</span>
             </p>
           </div>
 
