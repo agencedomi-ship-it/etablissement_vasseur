@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Serrurier Vantory : artisan serrurier près de chez vous, 8h-22h et 24h/24 du vendredi au dimanche. Tarif annoncé, devis avant travaux, paiement après.",
+          "Serrurier Vantory : artisan serrurier près de chez vous. Lundi-jeudi 8h-22h, vendredi-dimanche 24h/24. Devis avant travaux, paiement après.",
       },
       { property: "og:url", content: `${SITE_URL}/` },
     ],
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
           url: `${SITE_URL}/`,
           image: `${SITE_URL}/og-vantory.jpg`,
           telephone: "+33970708211",
-          description: "Mise en relation avec des artisans serruriers partenaires, de 8h à 22h et 24h/24 du vendredi au dimanche.",
+          description: "Mise en relation avec des artisans serruriers partenaires. Lundi-jeudi 8h-22h, vendredi-dimanche 24h/24.",
           address: {
             "@type": "PostalAddress",
             streetAddress: "149 avenue du Maine",
@@ -339,8 +339,8 @@ function Hero() {
             <br />
             <p className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-gold bg-navy/80 backdrop-blur border border-gold/50 px-4 py-1.5 rounded-full mb-4 md:mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-gold shimmer-dot" />
-              <span className="md:hidden">Dispo 8h-22h · 24h/24 du ven. au dim.</span>
-              <span className="hidden md:inline">Artisan partenaire disponible — 8h à 22h, et 24h/24 du vendredi au dimanche</span>
+              <span className="md:hidden">Lun.-jeu. 8h-22h · Ven.-dim. 24h/24</span>
+              <span className="hidden md:inline">Artisan partenaire disponible — lundi à jeudi 8h-22h, vendredi à dimanche 24h/24</span>
             </p>
           </div>
 
@@ -436,7 +436,7 @@ function TrustBar() {
 function UrgenceSection() {
   const cards = [
     { icon: <I.clock />, title: "Intervention en 30 min en moyenne" },
-    { icon: <I.cal />, title: "8h-22h, et 24h/24 du vendredi au dimanche" },
+    { icon: <I.cal />, title: "Lundi-jeudi 8h-22h · Vendredi-dimanche 24h/24" },
     { icon: <I.phone size={32} />, title: "Un conseiller répond, un artisan se déplace" },
   ];
   return (
@@ -446,7 +446,7 @@ function UrgenceSection() {
         <h2 className="section-title">Une urgence&nbsp;? Un serrurier chez vous en 30 minutes en moyenne</h2>
         <Ornament />
         <p className="section-subtitle mx-auto">
-          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous, de 8h à 22h, et 24h/24 du vendredi au dimanche.
+          Porte claquée, clé cassée dans la serrure, serrure HS — un artisan près de chez vous du lundi au jeudi de 8h à 22h, et 24h/24 du vendredi au dimanche.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-12">
@@ -913,7 +913,7 @@ function ZoneSection() {
             )}
             , et nous vous annonçons son délai d'arrivée avant tout déplacement.
           </p>
-          <p>Service joignable 7 jours sur 7 de 8h à 22h, et 24h/24 du vendredi au dimanche, jours fériés compris.</p>
+          <p>Service joignable du lundi au jeudi de 8h à 22h, et 24h/24 du vendredi au dimanche, jours fériés compris.</p>
         </div>
         <div className="mt-8 inline-flex items-center gap-3 bg-cream border border-gold/40 rounded-full px-6 py-3 shadow-card">
           <I.clock className="text-navy" />
@@ -1247,7 +1247,8 @@ function Footer() {
             <p className="font-semibold text-gold mb-3 uppercase tracking-wider text-xs">Contact</p>
             <ul className="space-y-2 text-sm">
               <li><a href="tel:+33970708211" onClick={() => pushGtmEvent("phone_click", { phone: "+33970708211" })} className="hover:text-gold transition-colors font-semibold text-base">09 70 70 82 11</a></li>
-              <li className="text-cream/70">8h-22h — et 24h/24 du vendredi au dimanche</li>
+              <li className="text-cream/70">Lundi – jeudi : 8h – 22h</li>
+              <li className="text-cream/70">Vendredi – dimanche : 24h/24</li>
             </ul>
           </div>
         </div>
